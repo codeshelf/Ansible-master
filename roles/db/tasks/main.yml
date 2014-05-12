@@ -1,0 +1,34 @@
+---
+- name: Make sure that the ansible_backup directory exsists
+  action: file path=/home/ansible/files/ state=directory
+
+- name: Upload repo file
+  copy: src=pgdg-centos93-9.3-1.noarch.rpm dest=/home/ansible/files/ mode=0644
+
+- name: install postgres931 repo
+  yum: name=/home/ansible/files/pgdg-centos93-9.3-1.noarch.rpm state=installed
+  sudo: yes
+
+- name: update yum cache
+  command: yum makecache
+  sudo: yes
+  changed_when: False
+
+- name: install postgresql server
+  yum: name=postgresql93-server state=installed
+  sudo: yes
+  register: pg
+
+- name: run initdb
+  command: service postgresql-9.3 initdb
+  sudo: yes
+  when: pg.changed
+
+- name: start and enable postgresql
+  service: name=postgresql-9.3 state=started enabled=yes
+  sudo: yes
+
+- name: update firewall
+  copy: src=ferm_postgres.conf dest=/etc/ferm/ferm.d/ owner=root group=root mode=0600
+
+  

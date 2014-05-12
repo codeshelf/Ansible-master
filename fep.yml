@@ -1,0 +1,6 @@
+---
+- hosts: fep
+  sudo: yes
+  roles:
+    - centos
+    - fep

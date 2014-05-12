@@ -1,0 +1,10 @@
+---
+- name: Automatically generate /etc/hosts
+  hosts: localhost
+  connection: local
+  sudo: yes
+  gather_facts: False 
+
+  tasks:
+    - name: Update file /etc/hosts
+      local_action: command /home/ansible/rax/rsinfo.py --config /home/ansible/.rackspace_cloud_credentials hosts

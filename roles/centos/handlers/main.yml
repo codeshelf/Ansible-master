@@ -1,0 +1,9 @@
+---
+- name: restart nrpe
+  service: name=nrpe state=restarted
+
+- name: run ferm
+  shell: ferm /etc/ferm/ferm.conf
+
+- name: save iptables
+  shell: service iptables save

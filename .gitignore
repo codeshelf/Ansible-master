@@ -1,0 +1,17 @@
+/.ssh/
+/.rackspace_cloud_credentials
+/.bash*
+/.ansible/
+/dbb/
+/tmp/
+/.viminfo
+/log/
+/ssl/
+/.novaclient/
+/.profile
+/.viminfo
+*.retry
+/.ansible/
+/.nano_history
+/.lesshst
+*.jks
