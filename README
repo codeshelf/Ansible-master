@@ -1,0 +1,36 @@
+Ansible-master user home directory
+
+/README
+	- This file
+
+/ansible.cfg
+	- main configuration file
+
+/setup_env.sh
+	- environment setup, call this from e.g. ~/.bashrc 
+
+/spinup.yml
+	- Playbook to create a new server and assign it a role (interactive prompts)
+
+/updatehosts.yml
+	- Update local /etc/hosts file from Rackspace inventory (automatically called at end of spinup)
+
+/site.yml
+/db.yml
+/fep.yml
+/other.yml
+	- Declarative configuration for entire site, by roles. site.yml includes the other 3 files.
+
+/inventory
+	- Production inventory (dynamic, see rax_inventory.py)
+
+/rax
+	- Pyrax scripts
+	- rax_inventory.py generates inventory from Rackspace each time Ansible runs
+	- rsinfo.py used to generate hosts file by updatehosts.yml
+	- utilities to list available flavors/images, etc
+
+/group_vars
+/roles/...
+	- Ansible groups/roles folder structure
+	- see http://docs.ansible.com/playbooks_best_practices.html#directory-layout
