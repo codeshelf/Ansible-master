@@ -1,0 +1,5 @@
+---
+- hosts: all:!localhost:!nagios
+  sudo: yes
+  roles:
+    - nrpe

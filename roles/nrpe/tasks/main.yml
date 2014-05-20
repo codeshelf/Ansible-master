@@ -1,0 +1,19 @@
+---
+- name: nrpe installed
+  yum: name={{ item }} state=installed
+  with_items:
+    - nrpe  
+    - nagios-plugins-procs
+    - nagios-plugins-pgsql
+    - nagios-plugins-disk
+    - nagios-plugins-users
+    - nagios-plugins-log
+    - nagios-plugins-swap
+    - nagios-plugins-load
+  notify:
+    - restart nrpe
+
+- name: nrpe.cfg
+  copy: src=nrpe.cfg dest=/etc/nagios/nrpe.cfg owner=root group=root mode=0644
+  notify:
+    - restart nrpe

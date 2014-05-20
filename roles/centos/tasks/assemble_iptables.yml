@@ -1,0 +1,9 @@
+---
+- name: iptables configuration in place
+  copy: src=iptables.d dest=/etc/sysconfig/ owner=root group=root mode=0600
+
+- name: assemble configuration
+  assemble: src=/etc/sysconfig/iptables.d dest=/etc/sysconfig/iptables owner=root group=root mode=0600
+  notify:
+    - iptables restore
+

@@ -1,0 +1,4 @@
+---
+- name: iptables restore
+  shell: iptables-restore < /etc/sysconfig/iptables
+
