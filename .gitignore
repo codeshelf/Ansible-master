@@ -1,4 +1,5 @@
 /.ssh/
+/.rnd
 /.rackspace_cloud_credentials
 /.bash*
 /.ansible/

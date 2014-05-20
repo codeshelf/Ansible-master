@@ -28,8 +28,13 @@
       private: no
       default: "DFW"
 
+    - name: "auxnetwork"
+      prompt: "private network name (production, engineering)"
+      private: no
+      default: "production"
+
     - name: "flavor"
-      prompt: "machine flavor number (default 2 = 512MB standard)"
+      prompt: "machine flavor ID (default 2 = 512MB standard)"
       private: no
       default: "2"
      
@@ -52,7 +57,7 @@
         networks:
           - public
           - private
-          - production
+          - "{{ auxnetwork }}"
         count: 1
         auto_increment: False
         wait: yes

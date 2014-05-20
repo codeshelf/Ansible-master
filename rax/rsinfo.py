@@ -146,8 +146,13 @@ def getServerInfo(serverName, serverList):
 
         for key in _server_info_keys:
             result[key] = item.__getattr__(key)
-
-        result['productionip']=item.addresses['production'][0]['addr']
+        
+        if 'production' in item.addresses:
+            result['productionip']=item.addresses['production'][0]['addr']
+        elif 'engineering' in item.addresses:
+            result['productionip']=item.addresses['engineering'][0]['addr']
+        else:
+            result['productionip']=item.accessIPv4
          
     return result
 
