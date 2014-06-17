@@ -1,0 +1,20 @@
+com.gadgetworks.memorydebug=false 
+user.language=en
+user.country=US
+jsse.SSLEngine.acceptLargeFragments=true
+#javax.net.debug=all:handshake:verbose
+javax.net.debug=none
+#localhost setup
+websocket.uri=wss://192.168.131.225:8444
+websocket.debug=false
+keystore.type=JKS
+keystore.path=/usr/lib/jvm/jdk1.7.0_51/jre/lib/security/cacerts
+keystore.store.password=changeit
+keystore.key.password=changeit
+organizationId=DEMO1
+facilityId=sfbay
+networkId=DEFAULT
+networkCredential=0.6910096026612129
+codeshelf.networknum=1
+codeshelf.preferred.channel=5
+cs.logfile.name=codeshelf.network.log

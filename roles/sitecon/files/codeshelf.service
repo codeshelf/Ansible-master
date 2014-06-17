@@ -1,0 +1,14 @@
+[Unit]
+Description=Codeshelf
+After=syslog.target
+
+[Service]
+Type=forking
+WorkingDirectory=/opt/codeshelf/
+ExecStart=/usr/bin/bash /opt/codeshelf/start.netcontroller
+User=codeshelf
+Group=codeshelf
+
+[Install]
+WantedBy=multi-user.target
+

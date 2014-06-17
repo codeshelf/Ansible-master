@@ -1,0 +1,4 @@
+[sitecons]
+sc10000 ansible_ssh_port=10000 ansible_ssh_host=home
+sc10001 ansible_ssh_port=10001 ansible_ssh_host=home
+

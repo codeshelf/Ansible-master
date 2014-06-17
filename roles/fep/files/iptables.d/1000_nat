@@ -1,0 +1,8 @@
+# FEP role forwarding
+*nat
+:PREROUTING ACCEPT [93097:5336505]
+:POSTROUTING ACCEPT [364222:22040220]
+:OUTPUT ACCEPT [364222:22040220]
+-A PREROUTING -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 8443 
+COMMIT
+# end of FEP role forwarding

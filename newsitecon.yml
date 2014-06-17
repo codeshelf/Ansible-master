@@ -1,0 +1,100 @@
+---
+- name: Create a new site controller from template image
+  hosts: provision0
+  sudo: no
+
+  vars:
+    - ansiblepubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDc4mcehc00Id14sAe0H1HvRD2jh6DMVRXzrAF4Svu4QLZVvT5U43DNCCxfFZJcU9VYsWkME3L7Yd/Mjsml1nOCvlMWUvN57F2rqcY1/vDHO+5kVhsddD4gx1MH+uVtt8koT0LlH56Agv8nwMRorR2Del6Ec9mNTRQBQJ3q1Ga7zqqybvJiqPy0WdXh2BtQEwbVnET7Q9kJgH/RMlhDEPscycVktOwV48UMJdNye+4TGjkWFkh3G314p04X/drGr17iqYvXFatczjCJLhgoHEHShEdJTEvL4DPiROZ01XGrBHwvIUNdUFVm/SnqO1VdGjzjqa+ArgY1XVCEr9FVYih/ ansible
+
+  vars_prompt:
+    - name: "serial"
+      prompt: "serial number"
+      private: no
+
+    - name: "fep"
+      prompt: "FEP assigment domain name (e.g. test.codeshelf.com)"
+      private: no
+
+    - name: "new_root_password"
+      prompt: "root password (paste from password manager)"
+      private: yes
+      confirm: yes
+      encrypt: "md5_crypt"
+      salt_size: 7
+      
+  tasks:
+    - name: Create Ansible user
+      user: name=ansible
+
+    - name: Remove setup user
+      user: name=setup force=yes remove=yes state=absent
+
+    - name: Authorize ansible
+      authorized_key: 'key="{{ ansiblepubkey }}" user=ansible'  
+
+    - name: Setup sudoers
+      copy: src=/home/ansible/roles/sitecon/files/sudoers
+             dest=/etc/sudoers 
+             owner=root group=root mode=0440 
+             validate='visudo -cf %s'
+
+    - name: Configure SSHD
+      copy: src=/home/ansible/roles/sitecon/files/sshd_config
+             dest=/etc/ssh/sshd_config
+             owner=root group=root mode=0600
+
+    - name: Set root password
+      user: name=root password="{{ new_root_password }}"
+
+    - name: Create codeshelf service user
+      user: name=codeshelf
+
+    - name: Create app folder
+      file: path=/opt/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
+
+    - name: Create app config folder
+      file: path=/etc/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
+
+    - name: Install configuration file (ALDEBARAN)
+      copy: src=/home/ansible/roles/sitecon/files/sitecontroller.config.properties.codeshelf
+             dest=/etc/codeshelf/sitecontroller.config.properties.codeshelf
+             owner=codeshelf group=codeshelf mode=0644
+
+    - name: Startup script installed
+      copy: src=/home/ansible/roles/sitecon/files/start.netcontroller
+             dest=/opt/codeshelf/start.netcontroller
+             owner=codeshelf group=codeshelf mode=0755
+
+    - name: Service launcher installed
+      copy: src=/home/ansible/roles/sitecon/files/codeshelf.service
+             dest=/usr/lib/systemd/system/codeshelf.service
+             owner=root group=root mode=0644
+
+    - name: Radio udev rule installed
+      copy: src=/home/ansible/roles/sitecon/files/99-usbftdi.rules
+             dest=/etc/udev/rules.d/99-usbftdi.rules
+             owner=root group=root mode=0644
+
+    - name: Hostname scXXXXX
+      command: hostname sc{{ serial }}
+
+    - name: Phone home user
+      lineinfile: dest=/etc/init.d/autossh regexp="^SSHUSERNAME" insertafter="^start"
+                   line="SSHUSERNAME=u{{ serial }}"
+      register: phonehome
+
+    - name: Phone home port
+      lineinfile: dest=/etc/init.d/autossh regexp="^SSHRPORT" insertafter="^start"
+                   line="SSHRPORT={{ serial }}"
+      when: phonehome.changed
+
+    - name: SSH identity
+      copy: src=/home/ansible/sitecon/home/u{{ serial }}/.ssh/id_rsa
+             dest=/home/et/.ssh/id_rsa
+             owner=et group=et mode=0600
+
+    - name: Reload systemctl?
+      command: systemctl daemon-reload
+      when: phonehome.changed
+
+# reboot here

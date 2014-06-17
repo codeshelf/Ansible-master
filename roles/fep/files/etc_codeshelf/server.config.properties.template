@@ -1,0 +1,35 @@
+com.gadgetworks.memorydebug=false 
+user.language=en
+user.country=US
+jsse.SSLEngine.acceptLargeFragments=true
+javax.net.debug=none
+#
+# WebApp (https://)
+#
+webapp.hostname=test.codeshelf.com
+webapp.portnum=8443
+webapp.content.path=/opt/codeshelf/web/app/
+#
+# WebSocket (wss://)
+#
+websocket.hostname=test.codeshelf.com
+websocket.portnum=8444
+websocket.debug=false
+#
+# DB
+#
+db.name=database
+db.schemaname=codeshelf
+db.userid=codeshelf
+db.password=medrogarkinagife
+db.address=db1
+db.portnum=5432
+#db.ssl=true
+db.ssl=false
+#
+# Keystore
+#
+keystore.type=JKS
+keystore.path=/etc/codeshelf/codeshelfcom.signed.keystore.jks
+keystore.store.password=vplortonikatwiqpfrin
+keystore.key.password=vplortonikatwiqpfrin

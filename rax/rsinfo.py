@@ -151,6 +151,8 @@ def getServerInfo(serverName, serverList):
             result['productionip']=item.addresses['production'][0]['addr']
         elif 'engineering' in item.addresses:
             result['productionip']=item.addresses['engineering'][0]['addr']
+        elif 'sitecon' in item.addresses:
+            result['productionip']=item.addresses['sitecon'][0]['addr']
         else:
             result['productionip']=item.accessIPv4
          

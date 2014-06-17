@@ -228,6 +228,8 @@ def _list(regions):
                     host=server.addresses['production'][0]['addr']
                 elif 'engineering' in server.addresses:
                     host=server.addresses['engineering'][0]['addr']
+                elif 'sitecon' in server.addresses:
+                    host=server.addresses['sitecon'][0]['addr']
                 else:
                     host=server.accessIPv4
 

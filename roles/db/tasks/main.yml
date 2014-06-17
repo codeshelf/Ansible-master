@@ -23,4 +23,16 @@
   command: service postgresql-9.3 initdb
   when: pg.changed
 
+# todo: create appropriate config files
+
+- name: enable postgresql service
+  command: chkconfig postgresql-9.3 on
+  when: pg.changed
+
+- name: start postgresql
+  command: service postgresql-9.3 start
+  when: pg.changed
+
+# todo: create codeshelf + replicator users
+
 - include: assemble_iptables.yml

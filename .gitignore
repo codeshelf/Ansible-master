@@ -16,3 +16,4 @@
 /.nano_history
 /.lesshst
 *.jks
+*id_rsa

@@ -1,0 +1,223 @@
+#!/usr/bin/env python
+
+import os
+import re
+import sys
+import argparse
+import collections
+
+from types import NoneType
+
+try:
+    import json
+except:
+    import simplejson as json
+
+try:
+    import pyrax
+except ImportError:
+    print('pyrax is required for this module')
+    sys.exit(1)
+
+NON_CALLABLES = (basestring, bool, dict, int, list, NoneType)
+
+
+def rax_slugify(value):
+    return 'rax_%s' % (re.sub('[^\w-]', '_', value).lower().lstrip('_'))
+
+
+def cleanup_metadata_string(mstr):
+    if mstr.startswith("u'") and mstr.endswith("'") and len(mstr) >= 3:
+        lastchar=len(mstr)-1
+        result=mstr[2:lastchar]
+    else:
+        result=mstr
+    return result
+
+
+def to_dict(obj):
+    instance = {}
+    for key in dir(obj):
+        value = getattr(obj, key)
+        if (isinstance(value, NON_CALLABLES) and not key.startswith('_')):
+            key = rax_slugify(key)
+            instance[key] = value
+
+    return instance
+
+
+def host(regions, hostname):
+    hostvars = {}
+
+    for region in regions:
+        # Connect to the region
+        cs = pyrax.connect_to_cloudservers(region=region)
+        for server in cs.servers.list():
+            if server.name == hostname:
+                for key, value in to_dict(server).items():
+                    hostvars[key] = value
+
+                # And finally, add an IP address
+                hostvars['ansible_ssh_host'] = server.addresses['production'][0]['addr']
+		# default = server.accessIPv4
+                print(json.dumps(hostvars, sort_keys=True, indent=4))
+    print('done')
+
+def _list(regions):
+    groups = collections.defaultdict(list)
+    hostvars = collections.defaultdict(dict)
+    images = {}
+
+    # Go through all the regions looking for servers
+    for region in regions:
+        # Connect to the region
+        cs = pyrax.connect_to_cloudservers(region=region)
+        for server in cs.servers.list():
+            if server.name != os.getenv('RAX_EXCLUDE_HOST',''):
+                # Check if group metadata key in servers' metadata
+                group = server.metadata.get('group')
+                if group:
+                    groups[cleanup_metadata_string(group)].append(server.name)
+
+                for extra_group in cleanup_metadata_string(server.metadata.get('groups', '')).split(','):
+                    if extra_group:
+                        groups[extra_group].append(server.name)
+
+                # Create a group on region
+                groups[region].append(server.name)
+
+                # Create a group on role / roles and region-role
+                # my roles are being inserted by ansible rax module which makes them unicode
+                role = server.metadata.get('role')
+                if role:
+                    role = cleanup_metadata_string(role)
+                else:
+                    role = 'other'
+
+                groups[role].append(server.name)
+                groups[region+'-'+role].append(server.name)
+                
+                for extra_role in cleanup_metadata_string(server.metadata.get('roles', '')).split(','):
+                    if extra_role:
+                        groups[extra_role].append(server.name)
+                        groups[region+'-'+extra_role].append(server.name)
+
+                # Add host metadata
+                for key, value in to_dict(server).items():
+                    hostvars[server.name][key] = value
+
+                hostvars[server.name]['rax_region'] = region
+
+                for key, value in server.metadata.iteritems():
+                    prefix = os.getenv('RAX_META_PREFIX', 'meta')
+                    groups['%s_%s_%s' % (prefix, key, value)].append(server.name)
+
+                groups['instance-%s' % server.id].append(server.name)
+                groups['flavor-%s' % server.flavor['id']].append(server.name)
+                try:
+                    imagegroup = 'image-%s' % images[server.image['id']]
+                    groups[imagegroup].append(server.name)
+                    groups['image-%s' % server.image['id']].append(server.name)
+                except KeyError:
+                    try:
+                        image = cs.images.get(server.image['id'])
+                    except cs.exceptions.NotFound:
+                        groups['image-%s' % server.image['id']].append(server.name)
+                    else:
+                        images[image.id] = image.human_id
+                        groups['image-%s' % image.human_id].append(server.name)
+                        groups['image-%s' % server.image['id']].append(server.name)
+
+                # And finally, add an IP address
+                if 'production' in server.addresses:
+                    host=server.addresses['production'][0]['addr']
+                elif 'engineering' in server.addresses:
+                    host=server.addresses['engineering'][0]['addr']
+                else:
+                    host=server.accessIPv4
+
+    if hostvars:
+        groups['_meta'] = {'hostvars': hostvars}
+    print(json.dumps(groups, sort_keys=True, indent=4))
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Ansible Rackspace Cloud '
+                                                 'inventory module')
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('--list', action='store_true',
+                       help='List active servers')
+    group.add_argument('--host', help='List details about the specific host')
+    return parser.parse_args()
+
+
+def setup():
+    #pyrax.set_http_debug(True) 
+    pyrax.regions=["DFW","ORD","IAD","SYD","HKG"]
+
+    default_creds_file = os.path.expanduser('~/.rackspace_cloud_credentials')
+
+    env = os.getenv('RAX_ENV', None)
+    if env:
+        pyrax.set_environment(env)
+
+    keyring_username = pyrax.get_setting('keyring_username')
+
+    # Attempt to grab credentials from environment first
+    try:
+        creds_file = os.path.expanduser(os.environ['RAX_CREDS_FILE'])
+    except KeyError, e:
+        # But if that fails, use the default location of
+        # ~/.rackspace_cloud_credentials
+        if os.path.isfile(default_creds_file):
+            creds_file = default_creds_file
+        elif not keyring_username:
+            sys.stderr.write('No value in environment variable %s and/or no '
+                             'credentials file at %s\n'
+                             % (e.message, default_creds_file))
+            sys.exit(1)
+
+    identity_type = pyrax.get_setting('identity_type')
+    pyrax.set_setting('identity_type', identity_type or 'rackspace')
+
+    region = pyrax.get_setting('region')
+
+    try:
+        if keyring_username:
+            pyrax.keyring_auth(keyring_username, region=region)
+        else:
+            pyrax.set_credential_file(creds_file, region=region)
+    except Exception, e:
+        sys.stderr.write("%s: %s\n" % (e, e.message))
+        sys.exit(1)
+
+    regions = []
+    if region:
+        regions.append(region)
+    else:
+        for region in os.getenv('RAX_REGION', 'all').split(','):
+            region = region.strip().upper()
+            if region == 'ALL':
+                regions = pyrax.regions
+                break
+            elif region not in pyrax.regions:
+                sys.stderr.write('Unsupported region %s' % region)
+                sys.exit(1)
+            elif region not in regions:
+                regions.append(region)
+
+    return regions
+
+
+def main():
+    args = parse_args()
+    regions = setup()
+    if args.list:
+        _list(regions)
+    elif args.host:
+        host(regions, args.host)
+    sys.exit(0)
+
+
+if __name__ == '__main__':
+    main()

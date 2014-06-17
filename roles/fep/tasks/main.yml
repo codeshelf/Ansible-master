@@ -1,0 +1,51 @@
+---
+- name: Make sure that the ansible/files directory exsists
+  file: path=/home/ansible/files/ state=directory
+
+- name: JRE installation file
+  copy: src=jre-7u55-linux-x64.rpm dest=/home/ansible/files/ mode=0644
+
+- name: JRE installed 
+  yum: name=/home/ansible/files/jre-7u55-linux-x64.rpm state=installed
+
+- name: Codeshelf user
+  user: name=codeshelf state=present
+
+- name: Codeshelf ssh login authorization (legacy)
+  authorized_key: user=codeshelf key="{{ lookup('file','codeshelf_id_rsa.pub') }}"
+
+- name: Codeshelf local log file folder
+  file: path=/home/codeshelf/.Codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
+
+- name: Codeshelf local log file folder (2)
+  file: path=/home/codeshelf/.Codeshelf/logs/ state=directory owner=codeshelf group=codeshelf mode=0755
+
+- name: Codeshelf configuration folder
+  file: path=/etc/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0700
+
+- name: Keystore
+  copy: src=etc_codeshelf/codeshelfcom.signed.keystore.jks dest=/etc/codeshelf/codeshelfcom.signed.keystore.jks owner=codeshelf group=codeshelf mode=0600
+
+- name: Configuration file template
+  copy: src=etc_codeshelf/server.config.properties.template dest=/etc/codeshelf/server.config.properties.template owner=codeshelf group=codeshelf mode=0600
+
+# - name: Install initial version of FEP (legacy)
+#  unarchive: src=opt_codeshelf.tar.gz dest=/opt creates=/opt/codeshelf
+
+- name: codeshelf init script
+  copy: src=init/codeshelf.conf dest=/etc/init/codeshelf.conf owner=root group=root mode=0644
+
+- name: deploy user
+  user: name=deploy state=present
+
+- name: deploy ssh key
+  authorized_key: user=deploy key="{{ lookup('file','deploy_id_rsa.pub') }}"
+
+- name: deploy script
+  copy: src=autodeploy.sh dest=/opt/codeshelf/autodeploy.sh owner=root group=root mode=0700
+
+- name: deploy cron job
+  cron: name="autodeploy" job="/opt/codeshelf/autodeploy.sh"
+
+- include: assemble_iptables.yml
+
