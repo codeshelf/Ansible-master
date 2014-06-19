@@ -15,6 +15,9 @@ Ansible-master user home directory
 /updatehosts.yml
 	- Update local /etc/hosts file from Rackspace inventory (automatically called at end of spinup)
 
+/newsitecon.yml
+	- Look for a site controller at home:9999 and commission it (interactive)
+
 /site.yml
 /db.yml
 /fep.yml
@@ -34,3 +37,6 @@ Ansible-master user home directory
 /roles/...
 	- Ansible groups/roles folder structure
 	- see http://docs.ansible.com/playbooks_best_practices.html#directory-layout
+/sitecon
+	- files used when building a site controller
+
