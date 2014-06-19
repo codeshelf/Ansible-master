@@ -1,4 +1,17 @@
 [sitecons]
-sc10000 ansible_ssh_port=10000 ansible_ssh_host=home
-sc10001 ansible_ssh_port=10001 ansible_ssh_host=home
+sc10000 ansible_ssh_port=10000
+sc10001 ansible_ssh_port=10001
+
+[provisioning]
+provision0 ansible_ssh_port=9999
+
+[sitecons:vars]
+ansible_ssh_host=home
+exclude_from_hosts=yes
+
+[provisioning:vars]
+ansible_ssh_host=home
+ansible_ssh_user=root
+ansible_ssh_pass=codeshelf510changeme
+exclude_from_hosts=yes
 

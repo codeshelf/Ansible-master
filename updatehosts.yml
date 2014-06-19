@@ -1,10 +1,10 @@
 ---
-- name: Automatically generate /etc/hosts
-  hosts: localhost
-  connection: local
+- name: create hosts files
+  hosts: db:fep:other:localhost
   sudo: yes
-  gather_facts: False 
 
   tasks:
-    - name: Update file /etc/hosts
-      local_action: command /home/ansible/rax/rsinfo.py --config /home/ansible/.rackspace_cloud_credentials hosts
+  - lineinfile: dest=/etc/hosts regexp='.*{{ item }}$' line="{{ hostvars[item]['ansible_ssh_host'] }} {{item}}" state=present
+#  - debug: msg="{{ hostvars[item]['ansible_ssh_host'] }} {{item}}"
+    when: hostvars[item]['exclude_from_hosts'] is not defined
+    with_items: groups['all']

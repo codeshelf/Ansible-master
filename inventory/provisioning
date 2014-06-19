@@ -1,2 +1,0 @@
-[provisioning]
-provision0 ansible_ssh_port=9999 ansible_ssh_host=home ansible_ssh_user=root ansible_ssh_pass=codeshelf510changeme
