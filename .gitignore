@@ -15,5 +15,6 @@
 /.ansible/
 /.nano_history
 /.lesshst
+/sitecon/home/
 *.jks
 *id_rsa
