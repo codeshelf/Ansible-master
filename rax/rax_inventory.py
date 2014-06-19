@@ -223,15 +223,18 @@ def _list(regions):
                         groups['image-%s' % image.human_id].append(server.name)
                         groups['image-%s' % server.image['id']].append(server.name)
 
+                # Set hostname
+                hostvars[server.name]['ansible_hostname']=server.name
+
                 # And finally, add an IP address
                 if 'production' in server.addresses:
-                    host=server.addresses['production'][0]['addr']
+                    hostvars[server.name]['ansible_ssh_host']=server.addresses['production'][0]['addr']
                 elif 'engineering' in server.addresses:
-                    host=server.addresses['engineering'][0]['addr']
+                    hostvars[server.name]['ansible_ssh_host']=server.addresses['engineering'][0]['addr']
                 elif 'sitecon' in server.addresses:
-                    host=server.addresses['sitecon'][0]['addr']
+                    hostvars[server.name]['ansible_ssh_host']=server.addresses['sitecon'][0]['addr']
                 else:
-                    host=server.accessIPv4
+                    hostvars[server.name]['ansible_ssh_host']=server.accessIPv4
 
     if hostvars:
         groups['_meta'] = {'hostvars': hostvars}
