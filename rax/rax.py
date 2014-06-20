@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # (c) 2013, Jesse Keating <jesse.keating@rackspace.com>
 #
 # This file is part of Ansible,
@@ -83,6 +84,17 @@ notes:
   - RAX_META_PREFIX is an environment variable that changes the prefix used
     for meta key/value groups. For compatibility with ec2.py set to
     RAX_META_PREFIX=tag
+  - RAX_EXCLUDE_HOSTS is an optional environment variable with a list of
+    hostnames to exclude from inventory (for example, the name of the 
+    local host). Multiple hostnames are separated by a comma
+  - RAX_OTHER_GROUP is an optional environment variable specifying a group
+    to add the host to, if there is not a group specified in metadata
+  - RAX_NETWORK_PRIORITY is an optional environment variable specifying an 
+    ordered list of network names. It controls how the ansible_ssh_host
+    value will be set. The IP address from the first matching network
+    is used. For example, if RAX_NETWORK_PRIORITY="private,public" then
+    ansible_ssh_host will correspond to the "private" network IP address 
+    if present, or else the "public" address
 requirements: [ "pyrax" ]
 examples:
     - description: List server instances
@@ -121,15 +133,6 @@ def rax_slugify(value):
     return 'rax_%s' % (re.sub('[^\w-]', '_', value).lower().lstrip('_'))
 
 
-def cleanup_metadata_string(mstr):
-    if mstr.startswith("u'") and mstr.endswith("'") and len(mstr) >= 3:
-        lastchar=len(mstr)-1
-        result=mstr[2:lastchar]
-    else:
-        result=mstr
-    return result
-
-
 def to_dict(obj):
     instance = {}
     for key in dir(obj):
@@ -139,6 +142,14 @@ def to_dict(obj):
             instance[key] = value
 
     return instance
+
+
+def select_ssh_address(server):
+    for network in os.getenv('RAX_NETWORK_PRIORITY','').split(','):
+        if network in server.addresses:
+            return server.addresses[network][0]['addr']
+    # default:
+    return server.accessIPv4
 
 
 def host(regions, hostname):
@@ -153,8 +164,7 @@ def host(regions, hostname):
                     hostvars[key] = value
 
                 # And finally, add an IP address
-                hostvars['ansible_ssh_host'] = server.addresses['production'][0]['addr']
-		# default = server.accessIPv4
+                hostvars['ansible_ssh_host'] = select_ssh_address(server)
     print(json.dumps(hostvars, sort_keys=True, indent=4))
 
 
@@ -162,79 +172,62 @@ def _list(regions):
     groups = collections.defaultdict(list)
     hostvars = collections.defaultdict(dict)
     images = {}
+    other_group = os.getenv('RAX_OTHER_GROUP','')
 
     # Go through all the regions looking for servers
     for region in regions:
         # Connect to the region
         cs = pyrax.connect_to_cloudservers(region=region)
         for server in cs.servers.list():
-            if server.name != os.getenv('RAX_EXCLUDE_HOST',''):
-                # Check if group metadata key in servers' metadata
-                group = server.metadata.get('group')
-                if group:
-                    groups[cleanup_metadata_string(group)].append(server.name)
+            # Do not add specified hosts to inventory
+            if server.name in os.getenv('RAX_EXCLUDE_HOSTS','').split(','):
+                continue
 
-                for extra_group in cleanup_metadata_string(server.metadata.get('groups', '')).split(','):
-                    if extra_group:
-                        groups[extra_group].append(server.name)
+            # Create a group on region
+            groups[region].append(server.name)
 
-                # Create a group on region
-                groups[region].append(server.name)
+            # Check if group metadata key in servers' metadata
+            group = server.metadata.get('group')
+            if group:
+                groups[group].append(server.name)
+            elif other_group != '':
+                groups[other_group].append(server.name)
 
-                # Create a group on role / roles and region-role
-                # my roles are being inserted by ansible rax module which makes them unicode
-                role = server.metadata.get('role')
-                if role:
-                    role = cleanup_metadata_string(role)
-                else:
-                    role = 'other'
+            for extra_group in server.metadata.get('groups', '').split(','):
+                if extra_group:
+                    groups[extra_group].append(server.name)
 
-                groups[role].append(server.name)
-                groups[region+'-'+role].append(server.name)
-                
-                for extra_role in cleanup_metadata_string(server.metadata.get('roles', '')).split(','):
-                    if extra_role:
-                        groups[extra_role].append(server.name)
-                        groups[region+'-'+extra_role].append(server.name)
+            # Add host metadata
+            for key, value in to_dict(server).items():
+                hostvars[server.name][key] = value
 
-                # Add host metadata
-                for key, value in to_dict(server).items():
-                    hostvars[server.name][key] = value
+            hostvars[server.name]['rax_region'] = region
 
-                hostvars[server.name]['rax_region'] = region
+            for key, value in server.metadata.iteritems():
+                prefix = os.getenv('RAX_META_PREFIX', 'meta')
+                groups['%s_%s_%s' % (prefix, key, value)].append(server.name)
 
-                for key, value in server.metadata.iteritems():
-                    prefix = os.getenv('RAX_META_PREFIX', 'meta')
-                    groups['%s_%s_%s' % (prefix, key, value)].append(server.name)
-
-                groups['instance-%s' % server.id].append(server.name)
-                groups['flavor-%s' % server.flavor['id']].append(server.name)
+            groups['instance-%s' % server.id].append(server.name)
+            groups['flavor-%s' % server.flavor['id']].append(server.name)
+            try:
+                imagegroup = 'image-%s' % images[server.image['id']]
+                groups[imagegroup].append(server.name)
+                groups['image-%s' % server.image['id']].append(server.name)
+            except KeyError:
                 try:
-                    imagegroup = 'image-%s' % images[server.image['id']]
-                    groups[imagegroup].append(server.name)
+                    image = cs.images.get(server.image['id'])
+                except cs.exceptions.NotFound:
                     groups['image-%s' % server.image['id']].append(server.name)
-                except KeyError:
-                    try:
-                        image = cs.images.get(server.image['id'])
-                    except cs.exceptions.NotFound:
-                        groups['image-%s' % server.image['id']].append(server.name)
-                    else:
-                        images[image.id] = image.human_id
-                        groups['image-%s' % image.human_id].append(server.name)
-                        groups['image-%s' % server.image['id']].append(server.name)
-
-                # Set hostname
-                hostvars[server.name]['ansible_hostname']=server.name
-
-                # And finally, add an IP address
-                if 'production' in server.addresses:
-                    hostvars[server.name]['ansible_ssh_host']=server.addresses['production'][0]['addr']
-                elif 'engineering' in server.addresses:
-                    hostvars[server.name]['ansible_ssh_host']=server.addresses['engineering'][0]['addr']
-                elif 'sitecon' in server.addresses:
-                    hostvars[server.name]['ansible_ssh_host']=server.addresses['sitecon'][0]['addr']
                 else:
-                    hostvars[server.name]['ansible_ssh_host']=server.accessIPv4
+                    images[image.id] = image.human_id
+                    groups['image-%s' % image.human_id].append(server.name)
+                    groups['image-%s' % server.image['id']].append(server.name)
+
+            # Set hostname
+            hostvars[server.name]['ansible_hostname'] = server.name
+
+            # And finally, add an IP address
+            hostvars[server.name]['ansible_ssh_host'] = select_ssh_address(server)
 
     if hostvars:
         groups['_meta'] = {'hostvars': hostvars}
@@ -252,9 +245,6 @@ def parse_args():
 
 
 def setup():
-    #pyrax.set_http_debug(True) 
-    pyrax.regions=["DFW","ORD","IAD","SYD","HKG"]
-
     default_creds_file = os.path.expanduser('~/.rackspace_cloud_credentials')
 
     env = os.getenv('RAX_ENV', None)

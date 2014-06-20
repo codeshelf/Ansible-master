@@ -13,15 +13,10 @@
       prompt: "hostname for new CentOS 6 vm (e.g. db4)"
       private: no
 
-    - name: "role"
-      prompt: "role name (db, fep, other)"
+    - name: "group"
+      prompt: "group/role name (db, fep, other)"
       private: no
       default: "other"
-
-    - name: "backend"
-      prompt: "backend server or cluster name (required for fep)"
-      private: no
-      default: "none"
 
     - name: "region"
       prompt: "region code (DFW, ORD ...)"
@@ -48,8 +43,7 @@
         name: "{{ name }}"
         flavor: "{{ flavor }}"
         meta:
-          role: "{{ role }}"
-          backend: "{{ backend }}"
+          group: "{{ group }}"
         image: "{{ image }}"
         region: "{{ region }}"
         creds_file: "{{ credentials }}"

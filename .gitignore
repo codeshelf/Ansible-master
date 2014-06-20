@@ -10,7 +10,7 @@
 /ssl/
 /.novaclient/
 /.profile
-/.viminfo
+/.vim*
 *.retry
 /.ansible/
 /.nano_history

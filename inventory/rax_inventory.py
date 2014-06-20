@@ -1,1 +1,0 @@
-../rax/rax_inventory.py
