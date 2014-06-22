@@ -1,0 +1,6 @@
+---
+- hosts: www
+  sudo: yes
+  roles:
+    - centos
+    - www

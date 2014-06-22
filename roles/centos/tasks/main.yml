@@ -1,2 +1,38 @@
 ---
-- include: iptables.yml 
+# centos (base role) 
+- name: Make sure that the ansible/files directory exsists
+  file: path=/home/ansible/files/ state=directory
+
+- name: nrpe installed
+  yum: name={{ item }} state=installed
+  with_items:
+    - nrpe  
+    - nagios-plugins-procs
+    - nagios-plugins-pgsql
+    - nagios-plugins-disk
+    - nagios-plugins-users
+    - nagios-plugins-log
+    - nagios-plugins-swap
+    - nagios-plugins-load
+  notify:
+    - restart nrpe
+
+- name: nrpe.cfg
+  copy: src=nrpe.cfg dest=/etc/nagios/nrpe.cfg owner=root group=root mode=0644
+  notify:
+    - restart nrpe
+
+- name: iptables is running and enabled
+  service: name=iptables state=started enabled=yes
+
+- name: iptables configuration assembly folder
+  file: path=/etc/sysconfig/iptables.d state=directory owner=root group=root mode=0700
+
+- name: JRE installation file
+  copy: src=jre-7u60-linux-x64.rpm dest=/home/ansible/files/ mode=0644
+
+- name: JRE installed 
+  yum: name=/home/ansible/files/jre-7u60-linux-x64.rpm state=installed
+
+- include: assemble_iptables.yml
+

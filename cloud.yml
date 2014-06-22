@@ -1,0 +1,7 @@
+---
+# file: site.yml
+- include: db.yml
+- include: fep.yml
+- include: logstash.yml
+- include: other.yml
+

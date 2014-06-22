@@ -1,2 +1,7 @@
 ---
+# centos handlers
+- name: restart nrpe
+  service: name=nrpe state=restarted
+
 - include: iptables_reload.yml
+

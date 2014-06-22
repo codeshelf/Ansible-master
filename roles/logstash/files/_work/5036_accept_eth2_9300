@@ -1,0 +1,3 @@
+# begin logstash role accept cluster port
+-A INPUT -i eth2 -p tcp -m state --state NEW -m tcp --dport 9300 -j ACCEPT
+# end logstash role accept cluster port

@@ -1,6 +1,6 @@
 ---
 - name: create hosts files
-  hosts: db:fep:other:localhost
+  hosts: DFW:localhost
   sudo: yes
 
   tasks:

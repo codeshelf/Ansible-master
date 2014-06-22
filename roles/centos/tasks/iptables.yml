@@ -1,8 +1,0 @@
----
-- name: iptables is running and enabled
-  service: name=iptables state=started enabled=yes
-
-- name: iptables configuration assembly folder
-  file: path=/etc/sysconfig/iptables.d state=directory owner=root group=root mode=0700
-
-- include: assemble_iptables.yml

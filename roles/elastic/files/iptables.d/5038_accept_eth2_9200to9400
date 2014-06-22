@@ -1,0 +1,3 @@
+# begin elasticsearch role accept ports
+-A INPUT -i eth2 -p tcp -m state --state NEW -m tcp --dport 9200:9400 -j ACCEPT
+# end elasticsearch role accept ports

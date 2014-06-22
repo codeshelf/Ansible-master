@@ -1,6 +1,0 @@
----
-# file: site.yml
-- include: db.yml
-- include: fep.yml
-- include: other.yml
-

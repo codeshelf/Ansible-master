@@ -1,13 +1,4 @@
 ---
-- name: Make sure that the ansible/files directory exsists
-  file: path=/home/ansible/files/ state=directory
-
-- name: JRE installation file
-  copy: src=jre-7u55-linux-x64.rpm dest=/home/ansible/files/ mode=0644
-
-- name: JRE installed 
-  yum: name=/home/ansible/files/jre-7u55-linux-x64.rpm state=installed
-
 - name: Codeshelf user
   user: name=codeshelf state=present
 
@@ -29,9 +20,6 @@
 - name: Configuration file template
   copy: src=etc_codeshelf/server.config.properties.template dest=/etc/codeshelf/server.config.properties.template owner=codeshelf group=codeshelf mode=0600
 
-# - name: Install initial version of FEP (legacy)
-#  unarchive: src=opt_codeshelf.tar.gz dest=/opt creates=/opt/codeshelf
-
 - name: codeshelf init script
   copy: src=init/codeshelf.conf dest=/etc/init/codeshelf.conf owner=root group=root mode=0644
 
@@ -46,6 +34,8 @@
 
 - name: deploy cron job
   cron: name="autodeploy" job="/opt/codeshelf/autodeploy.sh"
+
+# and deploy
 
 - include: assemble_iptables.yml
 

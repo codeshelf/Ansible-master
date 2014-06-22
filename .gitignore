@@ -15,7 +15,8 @@
 /.ansible/
 /.nano_history
 /.lesshst
-/.pip/*
+/.pip/
 /sitecon/home/
+/bigfiles/
 *.jks
 *id_rsa

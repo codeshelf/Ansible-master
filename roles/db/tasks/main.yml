@@ -1,7 +1,4 @@
 ---
-- name: Make sure that the ansible/files directory exsists
-  action: file path=/home/ansible/files/ state=directory
-
 - name: Check for Postgresql repo installation
   copy: src=pgdg-centos93-9.3-1.noarch.rpm dest=/home/ansible/files/ mode=0644
   register: pgrepo

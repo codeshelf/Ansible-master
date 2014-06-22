@@ -1,0 +1,37 @@
+---
+- name: apache httpd with SSL
+  yum: name=mod_ssl state=installed
+
+- name: private codeshelf CA
+  copy: src=codeshelf-ca.crt dest=/etc/pki/tls/certs/ owner=root group=root
+
+- name: kibana cert
+  copy: src=kibana.codeshelf.com.crt dest=/etc/pki/tls/certs/ owner=root group=root
+
+- name: kibana priv key
+  copy: src=kibana.codeshelf.com.key dest=/etc/pki/tls/private/ owner=root group=root mode=0600
+
+#- name: GeoTrust CA
+#  copy: src=
+- name: default web content
+  copy: src=html dest=/var/www/ owner=root group=root mode=0644
+
+- name: main httpd config
+  copy: src=httpd.conf dest=/etc/httpd/conf/ owner=root group=root mode=0644
+  notify: restart httpd
+
+- name: web configs
+  copy: src=conf.d dest=/etc/httpd/ owner=root group=root mode=0644
+  notify: restart httpd
+
+- name: kibana app
+  copy: src=kibana-3.1.0 dest=/var/www owner=root group=root mode=0644
+
+- name: kibana symlink
+  file: state=link src=kibana-3.1.0 dest=/var/www/kibana owner=root group=root
+
+- name: enable httpd service
+  service: name=httpd enabled=yes
+
+- include: assemble_iptables.yml
+

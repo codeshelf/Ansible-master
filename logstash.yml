@@ -1,0 +1,6 @@
+---
+- hosts: logstash
+  sudo: yes
+  roles:
+    - centos
+    - logstash

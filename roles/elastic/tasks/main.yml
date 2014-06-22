@@ -1,0 +1,22 @@
+---
+- name: Check for Elasticsearch repo installation
+  copy: src=elasticsearch.repo dest=/etc/yum.repos.d/ owner=root group=root mode=0644
+  register: rsrepo
+
+- name: update yum cache
+  command: yum makecache
+  changed_when: False
+  when: rsrepo.changed
+
+- name: install Elasticsearch
+  yum: name=elasticsearch state=installed
+
+- name: configure Elastic network.host
+  lineinfile: 'dest=/etc/elasticsearch/elasticsearch.yml regexp="^network\.host" insertafter="^#.*network\.host" line="network.host: {{ ansible_ssh_host }}"'
+  
+# todo: create appropriate config files
+
+- name: enable Elasticsearch service
+  service: name=elasticsearch enabled=yes state=started
+
+- include: assemble_iptables.yml
