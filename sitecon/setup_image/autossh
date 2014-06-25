@@ -21,7 +21,7 @@ echo -n Starting $prog, $SSHUSERNAME:
 su et -c "$autossh -f -M 0 \
 	-TNn -i ~et/.ssh/id_rsa -p 8022 -o StrictHostKeyChecking=no \
 	-o ConnectTimeout=20 -o ServerAliveInterval=20 \
-	-R $SSHRPORT:127.0.0.1:22 $SSHUSERNAME@home.codeshelf.com"
+	-R $SSHRPORT:127.0.0.1:22 $SSHUSERNAME@home1.codeshelf.com"
 RETVAL=$?
 [ $RETVAL -eq 0 ] && touch /var/lock/subsys/$prog
 echo

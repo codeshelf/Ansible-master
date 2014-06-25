@@ -1,0 +1,6 @@
+---
+- hosts: nagios
+  sudo: yes
+  roles:
+    - centos
+    - nagios

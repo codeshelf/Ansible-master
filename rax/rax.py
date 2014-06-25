@@ -226,6 +226,8 @@ def _list(regions):
             # Set hostname
             hostvars[server.name]['ansible_hostname'] = server.name
 
+            hostvars[server.name]['public_ip'] = server.accessIPv4
+
             # And finally, add an IP address
             hostvars[server.name]['ansible_ssh_host'] = select_ssh_address(server)
 

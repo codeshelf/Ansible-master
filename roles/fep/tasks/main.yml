@@ -14,6 +14,18 @@
 - name: Codeshelf configuration folder
   file: path=/etc/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0700
 
+- name: Codeshelf installation folder
+  file: path=/opt/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
+
+- name: Codeshelf engine folder
+  file: path=/opt/codeshelf/engine/ state=directory owner=codeshelf group=codeshelf mode=0755
+
+- name: Codeshelf web folder
+  file: path=/opt/codeshelf/web/ state=directory owner=codeshelf group=codeshelf mode=0755
+
+- name: Codeshelf webapp folder
+  file: path=/opt/codeshelf/web/app/ state=directory owner=codeshelf group=codeshelf mode=0755
+
 - name: Keystore
   copy: src=etc_codeshelf/codeshelfcom.signed.keystore.jks dest=/etc/codeshelf/codeshelfcom.signed.keystore.jks owner=codeshelf group=codeshelf mode=0600
 

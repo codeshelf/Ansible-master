@@ -1,0 +1,69 @@
+---
+- name: Nagios and utilities prerequisites
+  yum: name={{ item }} state=installed
+  with_items:
+    - php
+    - net-snmp
+    - gd
+    - openssl
+    - gcc
+    - openssl-devel
+    - mod_ssl
+    - "perl(Net::SSLeay)"
+    - "perl(IO::Socket::SSL)"
+
+- name: sendEmail
+  copy: src=sendEmail dest=/usr/bin/ owner=root group=root mode=0755
+
+- name: nagcmd group
+  group: name=nagcmd
+
+- name: private codeshelf CA
+  copy: src=codeshelf-ca.crt dest=/etc/pki/tls/certs/ owner=root group=root 
+
+- name: nagios cert
+  copy: src=nagios.codeshelf.com.crt dest=/etc/pki/tls/certs/ owner=root group=root
+
+- name: nagios priv key
+  copy: src=nagios.codeshelf.com.key dest=/etc/pki/tls/private/ owner=root group=root mode=0600
+
+- name: SSL configuratiokn
+  copy: src=ssl.conf dest=/etc/httpd/conf.d/ owner=root group=root mode=0644
+
+- name: nagios user
+  user: name=nagios groups=nagcmd
+
+- name: apache user group
+  user: name=apache groups=nagcmd
+
+- name: nagios precompiled src
+  unarchive: src=nagios-407-plugins-202-centos65-compiled.tar.gz dest=/usr/local/src/ creates=/usr/local/src/nagios
+  register: install
+
+- name: install nagios
+  command: /usr/local/src/nagios/install.sh
+  when: install.changed
+
+- name: nagios admin account
+  copy: src=htpasswd.users dest=/opt/nagios/etc/ owner=nagios group=nagios mode=0644
+  notify: restart httpd
+
+- name: nagios base and services config
+  copy: src=nagios dest=/opt/ owner=nagios group=nagios
+  notify: restart nagios
+
+- name: nagios DFW hosts
+  template: src=host.j2 dest=/opt/nagios/etc/hosts/hostlist.cfg
+#  with_items: groups['DFW']
+  notify: restart nagios
+
+- name: nagios enable service
+  service: name=nagios enabled=yes state=started
+  when: install.changed
+
+- name: apache enable service
+  service: name=httpd enabled=yes state=started
+  when: install.changed
+
+- include: assemble_iptables.yml
+

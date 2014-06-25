@@ -1,0 +1,3 @@
+# begin build role accept ports
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 9090 -j ACCEPT
+# end build role accept ports

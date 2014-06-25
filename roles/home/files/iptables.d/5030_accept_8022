@@ -1,0 +1,3 @@
+# begin home role accept incoming ssh port
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 8022 -j ACCEPT
+# end home role accept incoming ssh port

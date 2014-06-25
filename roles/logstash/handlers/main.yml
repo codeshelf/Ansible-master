@@ -1,4 +1,9 @@
 ---
 - name: restart logstash
-  service: name=logstash state=restarted
+  service: name=logstash state=stopped
+  changed_when: True
+  notify: start logstash
+
+- name: start logstash
+  service: name=logstash state=started
 

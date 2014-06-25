@@ -1,0 +1,3 @@
+# begin FEP role accept ports (legacy ssh)
+-A INPUT -i eth2 -p tcp -m tcp --dport 9000:60000 -j ACCEPT
+# end FEP role accept ports (legacy ssh)

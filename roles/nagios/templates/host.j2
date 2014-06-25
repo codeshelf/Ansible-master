@@ -1,0 +1,55 @@
+# group=fep
+{% for host in groups['fep'] %}
+define host{
+	use		linux-box
+	host_name	{{ hostvars[host]['ansible_hostname'] }}
+	hostgroups	device,linux,nrpe,fep
+	_publicaddress	{{ hostvars[host]['public_ip'] }}
+}
+{% endfor %}
+
+# group=db
+{% for host in groups['db'] %}
+define host{
+        use             linux-box
+        host_name       {{ hostvars[host]['ansible_hostname'] }}
+        hostgroups      device,linux,nrpe,db
+}
+{% endfor %}
+
+# group=elastic
+{% for host in groups['elastic'] %}
+define host{
+        use             linux-box
+        host_name       {{ hostvars[host]['ansible_hostname'] }}
+        hostgroups      device,linux,nrpe
+}
+{% endfor %}
+
+# group=logstash
+{% for host in groups['logstash'] %}
+define host{
+        use             linux-box
+        host_name       {{ hostvars[host]['ansible_hostname'] }}
+        hostgroups      device,linux,nrpe
+}
+{% endfor %}
+
+# group=db
+{% for host in groups['www'] %}
+define host{
+        use             linux-box
+        host_name       {{ hostvars[host]['ansible_hostname'] }}
+        hostgroups      device,linux,nrpe
+}
+{% endfor %}
+
+# group=other
+{% for host in groups['other'] %}
+define host{
+	use		linux-box
+	host_name	{{ hostvars[host]['ansible_hostname'] }}
+	hostgroups	device,linux,nrpe
+}
+{% endfor %}
+

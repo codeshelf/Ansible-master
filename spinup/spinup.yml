@@ -1,0 +1,132 @@
+---
+- name: Provision Rackspace DFW CentOS 6.5 host on production network
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars:
+    - image: 592c879e-f37d-43e6-8b54-8c2d97cf04d4
+    - credentials: /home/ansible/.rackspace_cloud_credentials
+
+  vars_prompt:
+    - name: "name"
+      prompt: "hostname for new CentOS 6 vm (e.g. db4)"
+      private: no
+
+    - name: "group"
+      prompt: "group/role name (db, fep, other)"
+      private: no
+      default: "other"
+
+    - name: "region"
+      prompt: "region code (DFW, ORD ...)"
+      private: no
+      default: "DFW"
+
+    - name: "auxnetwork"
+      prompt: "private network name (production, engineering)"
+      private: no
+      default: "production"
+
+    - name: "flavor"
+      prompt: "machine flavor ID (default 2 = 512MB standard)"
+      private: no
+      default: "2"
+     
+      # see also: root password prompt in next play
+
+  tasks:
+    - name: Server create request
+      local_action:
+        module: rax
+        state: present
+        name: "{{ name }}"
+        flavor: "{{ flavor }}"
+        meta:
+          group: "{{ group }}"
+        image: "{{ image }}"
+        region: "{{ region }}"
+        creds_file: "{{ credentials }}"
+        disk_config: manual
+        networks:
+          - public
+          - private
+          - "{{ auxnetwork }}"
+        count: 1
+        auto_increment: False
+        wait: yes
+        wait_timeout: 600
+      register: rax
+
+    - name: Add server to temporary group
+      local_action:
+        module: add_host
+        hostname: "{{ item.name }}"
+        ansible_ssh_host: "{{ item.rax_accessipv4 }}"
+        ansible_ssh_pass: "{{ item.rax_adminpass }}"
+        ansible_ssh_user: root
+        groupname: tempservers
+      with_items: rax.success
+      when: rax.action == 'create'
+
+    - name: Wait for SSH to come up on host
+      local_action: wait_for "host={{ item.rax_accessipv4 }} port=22 delay=20"
+      sudo: false
+      with_items: rax.success
+      when: rax.action == 'create'
+
+- name: Configure new temporary group
+  hosts: tempservers
+  gather_facts: False 
+  vars:
+    - ansiblepubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDc4mcehc00Id14sAe0H1HvRD2jh6DMVRXzrAF4Svu4QLZVvT5U43DNCCxfFZJcU9VYsWkME3L7Yd/Mjsml1nOCvlMWUvN57F2rqcY1/vDHO+5kVhsddD4gx1MH+uVtt8koT0LlH56Agv8nwMRorR2Del6Ec9mNTRQBQJ3q1Ga7zqqybvJiqPy0WdXh2BtQEwbVnET7Q9kJgH/RMlhDEPscycVktOwV48UMJdNye+4TGjkWFkh3G314p04X/drGr17iqYvXFatczjCJLhgoHEHShEdJTEvL4DPiROZ01XGrBHwvIUNdUFVm/SnqO1VdGjzjqa+ArgY1XVCEr9FVYih/ ansible
+
+ # vars_prompt:
+ #   - name: "new_root_password"
+ #     prompt: "root password (paste from password manager)"
+ #     private: yes
+ #     confirm: yes
+ #     encrypt: "md5_crypt"
+ #     salt_size: 7
+      
+  tasks:
+    - name: Create Ansible user
+      user: name=ansible
+
+    - name: Remove cloud-user
+      user: name=cloud-user force=yes remove=yes state=absent
+
+    - name: Authorize ansible
+      authorized_key: 'key="{{ ansiblepubkey }}" user=ansible'  
+
+    - name: Update packages
+      yum: pkg=* state=latest
+
+    - name: Setup sudoers
+      copy: src=/home/ansible/spinup/sudoers
+             dest=/etc/sudoers
+             owner=root group=root mode=0440
+             validate='visudo -cf %s'
+
+    - name: Configure SSHD
+      copy: src=/home/ansible/spinup/sshd_config
+             dest=/etc/ssh/sshd_config
+             owner=root group=root mode=0600
+
+    - name: Report password
+      debug: msg="{{ ansible_ssh_pass }}"
+
+    - name: Reboot
+      command: shutdown -r now "Ansible triggered"
+
+    - name: Wait for SSH to come up on host
+      local_action: wait_for "host={{ ansible_ssh_host }} port=22 state=started delay=20"
+      sudo: false
+
+    - name: Report password
+      local_action: debug "msg={{ ansible_ssh_pass }}"
+
+#    - name: Set root password
+#      user: name=root password="{{ new_root_password }}"
+# regenerate hosts file
+- include: updatehosts.yml
