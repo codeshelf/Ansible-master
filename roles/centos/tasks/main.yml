@@ -50,12 +50,12 @@
 - name: swap in fstab
   lineinfile: dest=/etc/fstab regexp="^\/xswap" line="/xswap none swap sw 0 0" state=present
 
-- name: swappiness {{ swappiness }} (sysctl)
+- name: configure swappiness in sysctl
   lineinfile: dest=/etc/sysctl.conf regexp="^vm.swappiness" line="vm.swappiness = 25" state=present
   register: config_swappiness
 
-- name: set swappiness 25
-  shell: "echo 25 > 
+- name: change swappiness
+  shell: "echo 25 > /proc/sys/vm/swappiness"
   when: config_swappiness.changed
 
 - name: swap on
