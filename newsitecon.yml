@@ -43,22 +43,33 @@
              dest=/etc/ssh/sshd_config
              owner=root group=root mode=0600
 
-    - name: Set root password
-      user: name=root password="{{ new_root_password }}"
-
     - name: Create codeshelf service user
       user: name=codeshelf
 
     - name: Create app folder
       file: path=/opt/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
 
+    - name: ID release version sitecon app
+      copy: src=/home/ansible/release/build.txt dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0755
+
+    - name: Install app libraries
+      unarchive: src=/home/ansible/release/lib.tgz dest=/opt/codeshelf owner=codeshelf group=codeshelf
+
+    - name: Install app JAR
+      copy: src=/home/ansible/release/sitecontroller.codeshelf.jar dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0644
+
     - name: Create app config folder
       file: path=/etc/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
 
-    - name: Install configuration file (ALDEBARAN)
-      copy: src=/home/ansible/roles/sitecon/files/sitecontroller.config.properties.codeshelf
-             dest=/etc/codeshelf/sitecontroller.config.properties.codeshelf
-             owner=codeshelf group=codeshelf mode=0644
+    - name: Install configuration file
+      copy: src=/home/ansible/roles/sitecon/files/sitecontroller.config.properties.codeshelf.template
+             dest=/etc/codeshelf/ owner=codeshelf group=codeshelf mode=0644
+
+    - name: Specify server in config
+      shell: "cat /etc/codeshelf/sitecontroller.config.properties.codeshelf.template | sed -e 's/servernamehere/{{ fep }}/g' > /etc/codeshelf/sitecontroller.config.properties.codeshelf"
+
+    - name: Config file permissions
+      file: path=/etc/codeshelf/sitecontroller.config.properties.codeshelf owner=codeshelf group=codeshelf mode=0644
 
     - name: Startup script installed
       copy: src=/home/ansible/roles/sitecon/files/start.netcontroller
@@ -97,4 +108,9 @@
       command: systemctl daemon-reload
       when: phonehome.changed
 
-# reboot here
+    - name: Reboot (wait 1 minute)
+      command: shutdown -r
+
+    - name: Set root password
+      user: name=root password="{{ new_root_password }}"
+

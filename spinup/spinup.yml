@@ -129,4 +129,4 @@
 #    - name: Set root password
 #      user: name=root password="{{ new_root_password }}"
 # regenerate hosts file
-- include: updatehosts.yml
+#- include: updatehosts.yml

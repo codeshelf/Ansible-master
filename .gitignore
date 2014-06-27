@@ -10,7 +10,6 @@
 /ssl/
 /.novaclient/
 /.profile
-/.vim*
 *.retry
 /.ansible/
 /.nano_history
@@ -20,3 +19,4 @@
 /bigfiles/
 *.jks
 *id_rsa
+/release/

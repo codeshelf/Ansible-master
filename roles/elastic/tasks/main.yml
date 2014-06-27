@@ -13,9 +13,10 @@
 
 - name: configure Elastic network.host
   lineinfile: 'dest=/etc/elasticsearch/elasticsearch.yml regexp="^network\.host" insertafter="^#.*network\.host" line="network.host: {{ ansible_ssh_host }}"'
-  
-# todo: create appropriate config files
 
+- name: configure Elastic cluster
+  lineinfile: 'dest=/etc/elasticsearch/elasticsearch.yml regexp="^cluster\.name" insertafter="^#.*cluster\.name" line="cluster.name: elasticsearch"'
+  
 - name: enable Elasticsearch service
   service: name=elasticsearch enabled=yes state=started
 
