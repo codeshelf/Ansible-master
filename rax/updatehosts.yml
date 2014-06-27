@@ -1,3 +1,4 @@
+#!/usr/local/src/ansible/bin/ansible-playbook
 ---
 - name: create hosts files
   hosts: DFW:localhost

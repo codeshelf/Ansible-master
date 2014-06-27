@@ -5,5 +5,5 @@
   notify: start logstash
 
 - name: start logstash
-  service: name=logstash state=started
+  service: name=logstash state=restarted
 

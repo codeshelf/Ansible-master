@@ -20,3 +20,5 @@
 *.jks
 *id_rsa
 /release/
+*.swp
+

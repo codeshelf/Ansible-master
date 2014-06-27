@@ -9,26 +9,28 @@ Ansible-master user home directory
 /setup_env.sh
 	- environment setup, call this from e.g. ~/.bashrc 
 
-/spinup.yml
-	- Playbook to create a new server and assign it a role (interactive prompts)
+/spinup/
+	- Playbook and data to create a new server and assign it a role
 
 /updatehosts.yml
-	- Update local /etc/hosts file from Rackspace inventory (automatically called at end of spinup)
+	- Update all systems' /etc/hosts file from Rackspace inventory
 
-/newsitecon.yml
-	- Look for a site controller at home:9999 and commission it (interactive)
-
-/site.yml
 /db.yml
 /fep.yml
+/nagios.yml
 /other.yml
-	- Declarative configuration for entire site, by roles. site.yml includes the other 3 files.
+(etc)
+	- Role-to-host mapping
+
+/cloud.yml
+        - Run role playbooks for all cloud servers
 
 /inventory
 	- Production inventory (dynamic, see rax_inventory.py)
 
 /rax
 	- Pyrax scripts
+	- updatehosts.yml - run to update hosts files
 	- rax_inventory.py generates inventory from Rackspace each time Ansible runs
 	- rsinfo.py used to generate hosts file by updatehosts.yml
 	- utilities to list available flavors/images, etc
@@ -37,6 +39,7 @@ Ansible-master user home directory
 /roles/...
 	- Ansible groups/roles folder structure
 	- see http://docs.ansible.com/playbooks_best_practices.html#directory-layout
+
 /sitecon
 	- files used when building a site controller
 

@@ -11,13 +11,26 @@
 - name: install Elasticsearch
   yum: name=elasticsearch state=installed
 
-- name: configure Elastic network.host
-  lineinfile: 'dest=/etc/elasticsearch/elasticsearch.yml regexp="^network\.host" insertafter="^#.*network\.host" line="network.host: {{ ansible_ssh_host }}"'
+- name: Elastic network.host
+  lineinfile: 'dest=/etc/elasticsearch/elasticsearch.yml regexp="^network\.publish_host" insertafter="^#.*network\.publish_host" line="network.publish_host: {{ ansible_ssh_host }}"'
 
-- name: configure Elastic cluster
+- name: Elastic multicast.address
+  lineinfile: 'dest=/etc/elasticsearch/elasticsearch.yml regexp="^discovery\.zen\.ping\.multicast\.address" insertafter="^network\.publish_host" line="discovery.zen.ping.multicast.address: {{ ansible_ssh_host }}"'
+
+- name: Elastic cluster.name
   lineinfile: 'dest=/etc/elasticsearch/elasticsearch.yml regexp="^cluster\.name" insertafter="^#.*cluster\.name" line="cluster.name: elasticsearch"'
-  
+
 - name: enable Elasticsearch service
   service: name=elasticsearch enabled=yes state=started
+
+- name: Logstash installation file
+  copy: src=logstash-1.4.1-1_bd507eb.noarch.rpm dest=/home/ansible/files/ owner=ansible group=ansible mode=0644
+
+- name: Logstash installed
+  yum: name=/home/ansible/files/logstash-1.4.1-1_bd507eb.noarch.rpm state=installed
+
+- name: Logstash config files
+  copy: src=conf.d dest=/etc/logstash/ owner=root group=root mode=0644
+  notify: restart logstash
 
 - include: assemble_iptables.yml

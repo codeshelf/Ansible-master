@@ -26,15 +26,6 @@ define host{
 }
 {% endfor %}
 
-# group=logstash
-{% for host in groups['logstash'] %}
-define host{
-        use             linux-box
-        host_name       {{ hostvars[host]['ansible_hostname'] }}
-        hostgroups      device,linux,nrpe
-}
-{% endfor %}
-
 # group=db
 {% for host in groups['www'] %}
 define host{

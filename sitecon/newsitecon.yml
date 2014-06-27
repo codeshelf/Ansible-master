@@ -97,7 +97,6 @@
     - name: Phone home port
       lineinfile: dest=/etc/init.d/autossh regexp="^SSHRPORT" insertafter="^start"
                    line="SSHRPORT={{ serial }}"
-      when: phonehome.changed
 
     - name: SSH identity
       copy: src=/home/ansible/sitecon/home/u{{ serial }}/.ssh/id_rsa

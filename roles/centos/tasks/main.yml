@@ -3,8 +3,17 @@
 - name: Make sure that the ansible/files directory exsists
   file: path=/home/ansible/files/ state=directory
 
-- name: nrpe installed
-  yum: name={{ item }} state=installed
+- name: Utilities for troubleshooting
+  yum: name={{ item }} state=present
+  with_items:
+    - vim
+    - lsof
+    - telnet
+    - elinks
+    - tmux
+
+- name: latest nrpe
+  yum: name={{ item }} state=latest
   with_items:
     - nrpe  
     - nagios-plugins-procs
@@ -26,9 +35,6 @@
   service: name=nrpe enabled=yes
   notify:
     - restart nrpe
-
-- name: iptables is running and enabled
-  service: name=iptables state=started enabled=yes
 
 - name: iptables configuration assembly folder
   file: path=/etc/sysconfig/iptables.d state=directory owner=root group=root mode=0700
