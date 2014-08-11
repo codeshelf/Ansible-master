@@ -3,4 +3,5 @@
   sudo: yes
   roles:
     - centos
+    - tcollector
     - fep

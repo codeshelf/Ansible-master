@@ -1,0 +1,12 @@
+
+IPTABLES ((%{WORD:action}).*IN=(%{USERNAME:interface}).*SRC=(%{IPV4:source_ip}).*PROTO=(%{WORD:protocol}).*DPT=(%{INT:port}?.*))
+
+SSHD_NOISE ((input_userauth_request: invalid user|Connection closed by |session closed for user ansible|subsystem request for sftp|Accepted publickey for ansible from| ansible : TTY).*)
+
+CROND_NOISE (\/opt\/codeshelf\/autodeploy\.sh)
+
+SSHD_NOTALLOWED (User (%{WORD:username}) from (%{IPV4:source_ip}) not allowed because not listed in AllowUsers)
+
+SSHD_INVALID (Invalid user (%{WORD:username}) from (%{IPV4:source_ip}))
+
+SYSLOG_ANACRON_FIX (<%{POSINT:priority}(?:%{SYSLOGTIMESTAMP:timestamp}|%{TIMESTAMP_ISO8601:timestamp8601}) (?:%{SYSLOGFACILITY} )?%{SYSLOGHOST:logsource})

@@ -1,0 +1,6 @@
+---
+- name: Ansible files directory
+  file: path=/home/ansible/files/ state=directory owner=ansible group=ansible
+
+- include: install_logstash.yml
+

@@ -45,6 +45,9 @@
 - name: JRE installed 
   yum: name=/home/ansible/files/jre-7u60-linux-x64.rpm state=installed
 
+- name: JAVA_HOME in profile
+  copy: src=java.sh dest=/etc/profile.d/ owner=root group=root mode=0644
+
 - name: Create swap space
   command: dd if=/dev/zero of=/xswap bs=1M count=2048
   when: ansible_swaptotal_mb < 500
@@ -67,6 +70,11 @@
 - name: swap on
   command: swapon -a
   changed_when: False
+
+- name: rsyslog configuration
+  copy: src=rsyslog.conf dest=/etc/ owner=root group=root mode=0644 
+  notify:
+    - restart rsyslog
 
 - include: assemble_iptables.yml
 

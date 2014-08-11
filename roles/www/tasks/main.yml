@@ -2,17 +2,24 @@
 - name: apache httpd with SSL
   yum: name=mod_ssl state=installed
 
-- name: private codeshelf CA
-  copy: src=codeshelf-ca.crt dest=/etc/pki/tls/certs/ owner=root group=root
+- name: Certs
+  copy: src=certs/{{ item }}  dest=/etc/pki/tls/certs/ owner=root group=root
+  with_items:
+    - codeshelf-ca.crt
+    - GeoTrust_SSL_CA_G2_Cert_bundle.pem
+    - kibana.codeshelf.com.crt
+    - tsdb.codeshelf.com.crt
+    - grafana.codeshelf.com.crt
+    - codeshelfcom.crt
 
-- name: kibana cert
-  copy: src=kibana.codeshelf.com.crt dest=/etc/pki/tls/certs/ owner=root group=root
+- name: Keys
+  copy: src=keys/{{ item }} dest=/etc/pki/tls/private/ owner=root group=root mode=0600
+  with_items:
+    - kibana.codeshelf.com.key
+    - tsdb.codeshelf.com.key
+    - grafana.codeshelf.com.key
+    - codeshelfcom.key
 
-- name: kibana priv key
-  copy: src=kibana.codeshelf.com.key dest=/etc/pki/tls/private/ owner=root group=root mode=0600
-
-#- name: GeoTrust CA
-#  copy: src=
 - name: default web content
   copy: src=html dest=/var/www/ owner=root group=root mode=0644
 
@@ -25,10 +32,16 @@
   notify: restart httpd
 
 - name: kibana app
-  copy: src=kibana-3.1.0 dest=/var/www owner=root group=root mode=0644
+  synchronize: src=kibana-3.1.0 dest=/var/www/kibana-3.1.0 owner=no group=no delete=yes
 
 - name: kibana symlink
   file: state=link src=kibana-3.1.0 dest=/var/www/kibana owner=root group=root
+
+- name: grafana app
+  synchronize: src=grafana-1.6.1 dest=/var/www/grafana-1.6.1 owner=no group=no delete=yes
+
+- name: grafana symlink
+  file: state=link src=grafana-1.6.1 dest=/var/www/grafana owner=root group=root
 
 - name: enable httpd service
   service: name=httpd enabled=yes

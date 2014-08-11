@@ -2,7 +2,7 @@
 {% for host in groups['fep'] %}
 define host{
 	use		linux-box
-	host_name	{{ hostvars[host]['ansible_hostname'] }}
+	host_name	{{ hostvars[host]['inventory_hostname'] }}
 	hostgroups	device,linux,nrpe,fep
 	_publicaddress	{{ hostvars[host]['public_ip'] }}
 }
@@ -12,7 +12,7 @@ define host{
 {% for host in groups['db'] %}
 define host{
         use             linux-box
-        host_name       {{ hostvars[host]['ansible_hostname'] }}
+        host_name       {{ hostvars[host]['inventory_hostname'] }}
         hostgroups      device,linux,nrpe,db
 }
 {% endfor %}
@@ -21,7 +21,7 @@ define host{
 {% for host in groups['elastic'] %}
 define host{
         use             linux-box
-        host_name       {{ hostvars[host]['ansible_hostname'] }}
+        host_name       {{ hostvars[host]['inventory_hostname'] }}
         hostgroups      device,linux,nrpe
 }
 {% endfor %}
@@ -30,17 +30,26 @@ define host{
 {% for host in groups['www'] %}
 define host{
         use             linux-box
-        host_name       {{ hostvars[host]['ansible_hostname'] }}
+        host_name       {{ hostvars[host]['inventory_hostname'] }}
         hostgroups      device,linux,nrpe
 }
 {% endfor %}
 
-# group=other
-{% for host in groups['other'] %}
+# group=opentsdb
+{% for host in groups['opentsdb'] %}
 define host{
 	use		linux-box
-	host_name	{{ hostvars[host]['ansible_hostname'] }}
+	host_name	{{ hostvars[host]['inventory_hostname'] }}
 	hostgroups	device,linux,nrpe
+}
+{% endfor %}
+
+# aws
+{% for host in groups['aws'] %}
+define host{
+        use             linux-box
+        host_name       {{ hostvars[host]['inventory_hostname'] }}
+        hostgroups      device,linux,nrpe
 }
 {% endfor %}
 

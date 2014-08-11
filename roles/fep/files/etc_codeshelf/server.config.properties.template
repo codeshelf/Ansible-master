@@ -15,6 +15,7 @@ webapp.content.path=/opt/codeshelf/web/app/
 websocket.hostname=test.codeshelf.com
 websocket.portnum=8444
 websocket.debug=false
+websocket.idle.kill=true
 #
 # DB
 #

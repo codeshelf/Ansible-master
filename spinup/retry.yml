@@ -1,0 +1,33 @@
+#!/usr/local/src/ansible/bin/ansible-playbook
+---
+- name: Retry provision Rackspace DFW CentOS host
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars_prompt:
+    - name: "name"
+      prompt: "hostname"
+      private: no
+
+    - name: "ipaddress"
+      prompt: "ip address"
+      private: no
+
+    - name: "rootpw"
+      prompt: "root password"
+      private: no
+
+      # see also: root password prompt in next play
+
+  tasks:
+    - name: Add server to temporary group
+      local_action:
+        module: add_host
+        hostname: "{{ name }}"
+        ansible_ssh_host: "{{ ipaddress }}"
+        ansible_ssh_pass: "{{ rootpw }}"
+        ansible_ssh_user: root
+        groupname: tempservers
+
+- include: do_configure.yml

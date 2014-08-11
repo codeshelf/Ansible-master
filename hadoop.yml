@@ -1,0 +1,7 @@
+---
+- hosts: hadoop
+  sudo: yes
+  roles:
+    - centos
+    - tcollector
+    - hadoop

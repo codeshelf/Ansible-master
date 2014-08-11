@@ -4,17 +4,16 @@
 
 if [ -f /home/deploy/deploy.engine ] 
   then
-	stop codeshelf
+	/sbin/stop codeshelf > /dev/null
+        sleep 3
 	cd /opt/codeshelf/engine
 	rm -rf lib
-	mv /home/deploy/server.codeshelf.jar .
+	cp /home/deploy/server.codeshelf.jar .
 	tar -xzf /home/deploy/lib.tgz
 	chown -R codeshelf:codeshelf *
-	start codeshelf
+	/sbin/start codeshelf > /dev/null
 
-	mv /home/deploy/build.txt /opt/codeshelf
-	rm /home/deploy/lib.tgz
-	rm /home/deploy/server.codeshelf.jar
+	cp /home/deploy/build.txt /opt/codeshelf
 	rm /home/deploy/deploy.engine
 fi
 
@@ -26,8 +25,7 @@ if [ -f /home/deploy/deploy.webapp ]
 	cp /etc/codeshelf/websocket.addr.json .
 	chown -R codeshelf:codeshelf *
 
-	mv /home/deploy/buildweb.txt /opt/codeshelf
-	rm /home/deploy/web_app.tgz
+	cp /home/deploy/buildweb.txt /opt/codeshelf
 	rm /home/deploy/deploy.webapp
 fi
 

@@ -1,0 +1,17 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+{% for netw in hostvars[host]['rax_addresses'] %}
+  {% for addr in netw %}
+    {% if addr.version = 4 %}
+{{ addr.addr }} {{ inventory_hostname }}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+{% for host in groups['DFW'] %}
+  {% if hostvars[host].inventory_hostname != inventory_hostname %}
+{{ hostvars[host].ansible_ssh_host}} {{ hostvars[host].inventory_hostname }}
+  {% endif}
+{% endfor %}
+

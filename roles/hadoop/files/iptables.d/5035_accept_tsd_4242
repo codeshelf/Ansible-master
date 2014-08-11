@@ -1,0 +1,3 @@
+# begin opentsdb role accept port
+-A INPUT -i eth2 -p tcp -m state --state NEW -m tcp --dport 4242 -j ACCEPT
+# end opentsdb role accept port

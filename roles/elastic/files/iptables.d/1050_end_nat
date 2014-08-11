@@ -1,0 +1,4 @@
+-A PREROUTING -i eth2 -p udp -m udp --dport 514 -j REDIRECT --to-ports 10514
+-A PREROUTING -i eth2 -p tcp -m tcp --dport 514 -j REDIRECT --to-ports 10514
+COMMIT
+# end of home role forwarding

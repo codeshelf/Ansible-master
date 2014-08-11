@@ -87,7 +87,7 @@
              owner=root group=root mode=0644
 
     - name: Hostname scXXXXX
-      command: hostname sc{{ serial }}
+      command: hostnamectl set-hostname --static sc{{ serial }}
 
     - name: Phone home user
       lineinfile: dest=/etc/init.d/autossh regexp="^SSHUSERNAME" insertafter="^start"
@@ -102,6 +102,21 @@
       copy: src=/home/ansible/sitecon/home/u{{ serial }}/.ssh/id_rsa
              dest=/home/et/.ssh/id_rsa
              owner=et group=et mode=0600
+
+    - name: Logstash RPM
+      copy: src=/home/ansible/roles/sitecon/files/logstash-1.4.1-1_bd507eb.noarch.rpm
+             dest=/home/ansible/
+             owner=ansible group=ansible
+      register: logstash
+
+    - name: Logstash config
+      copy: src=/home/ansible/roles/sitecon/files/siteconlogging.conf
+             dest=/etc/logstash/conf.d/
+             owner=root group=root mode=0644
+
+    - name: Install Logstash
+      yum: name=/home/ansible/logstash-1.4.1-1_bd507eb.noarch.rpm state=present
+      when: logstash.changed
 
     - name: Reload systemctl?
       command: systemctl daemon-reload
