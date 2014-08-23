@@ -1,0 +1,3 @@
+Aug 13 01:06:35 master sendEmail[1895]: Email was sent successfully!  From: <notifications@codeshelf.com> To: <ivan@codeshelf.com> Subject: [subjectline] Server: [smtp.gmail.com:587]
+Aug 23 17:58:45 master sendEmail[7483]: Email was sent successfully!  From: <notifications@codeshelf.com> To: <ivan.cooper@codeshelf.com> Subject: [Backup report] Server: [smtp.gmail.com:587]
+Aug 23 17:59:43 master sendEmail[7581]: Email was sent successfully!  From: <notifications@codeshelf.com> To: <ivan.cooper@codeshelf.com> Subject: [Backup report] Server: [smtp.gmail.com:587]

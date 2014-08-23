@@ -1,0 +1,4 @@
+#!/bin/bash
+cd /home/ansible/backup
+python backup.py
+

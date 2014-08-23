@@ -21,4 +21,5 @@
 *id_rsa
 /release/
 *.swp
-
+.joe_state
+/backup/data/

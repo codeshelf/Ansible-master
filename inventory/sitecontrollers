@@ -1,8 +1,8 @@
 [sitecon]
 sc10000 ansible_ssh_port=10000 codeshelf_server=aldebaran.codeshelf.com customer=goodeggs
-sc10001 ansible_ssh_port=10001 codeshelf_server=betelgeuse.codeshelf.com customer=acculogistics
-sc10002 ansible_ssh_port=10002 codeshelf_server=test customer=TEST
-sc10003 ansible_ssh_port=10003 codeshelf_server=stage customer=STAGING
+sc10001 ansible_ssh_port=10001 codeshelf_server=betelgeuse.codeshelf.com customer=TEST
+sc10002 ansible_ssh_port=10002 codeshelf_server=test.codeshelf.com customer=LOST
+sc10003 ansible_ssh_port=10003 codeshelf_server=stage.codeshelf.com customer=STAGING
 
 [provisioning]
 provision0 ansible_ssh_port=9999

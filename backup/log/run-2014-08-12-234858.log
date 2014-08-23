@@ -1,0 +1,6 @@
+2014-08-12 23:48:59,531 - root [INFO] success: backup_appdb - sent_to_dest_local (0.000000,0.010000,4610447)
+2014-08-12 23:49:02,634 - root [INFO] success: backup_appdb - sent_to_dest_sftp_drop (0.000000,0.470000,4610447)
+2014-08-12 23:49:03,228 - root [INFO] success: backup_teamcity_db - sent_to_dest_local (0.000000,0.000000,335029)
+2014-08-12 23:49:05,462 - root [INFO] success: backup_teamcity_db - sent_to_dest_sftp_drop (0.000000,0.230000,335029)
+2014-08-12 23:49:08,535 - root [INFO] success: backup_teamcity_incremental - sent_to_dest_local (0.000000,0.060000,27987361)
+2014-08-12 23:49:17,262 - root [INFO] success: backup_teamcity_incremental - sent_to_dest_sftp_drop (0.000000,1.810000,27987361)

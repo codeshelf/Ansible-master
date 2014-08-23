@@ -35,12 +35,14 @@
     - name: Install nrpe and utilities
       yum: name={{ item }} state=latest
       with_items:
-      - vim
       - lsof
       - telnet
       - elinks
       - tmux
       - nrpe
+      - vim
+      - joe
+      - nano
       - nagios-plugins-procs
       - nagios-plugins-pgsql
       - nagios-plugins-disk

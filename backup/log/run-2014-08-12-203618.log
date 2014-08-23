@@ -1,0 +1,4 @@
+2014-08-12 20:36:19,415,root,INFO,success,sent to dest_local,backup_appdb,0.000000,0.020000,4551873,4551873
+2014-08-12 20:36:19,416,backup.success,INFO,success,sent to dest_local,backup_appdb,0.000000,0.020000,4551873,4551873
+2014-08-12 20:36:22,731,root,INFO,success,sent to dest_sftp_drop,backup_appdb,0.000000,0.500000,4551873,4551873
+2014-08-12 20:36:22,732,backup.success,INFO,success,sent to dest_sftp_drop,backup_appdb,0.000000,0.500000,4551873,4551873
