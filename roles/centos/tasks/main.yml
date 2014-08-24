@@ -71,6 +71,11 @@
   command: swapon -a
   changed_when: False
 
+- name: /etc/hosts
+  template: src=hosts.j2 dest=/etc/hosts
+  with_items:
+  - "{{ inventory_hostname }}"
+
 - name: rsyslog configuration
   copy: src=rsyslog.conf dest=/etc/ owner=root group=root mode=0644 
   notify:

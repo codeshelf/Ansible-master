@@ -1,0 +1,15 @@
+---
+- name: setup template
+  hosts: localhost
+  tasks:
+  - name: set master IP address
+    command: roles/centos/templates/this_ip.sh
+
+- name: update hosts files
+  hosts: DFW
+  sudo: yes
+  tasks:
+  - name: /etc/hosts
+    template: src=roles/centos/templates/hosts.j2 dest=/etc/hosts
+    with_items:
+    - "{{ inventory_hostname }}"

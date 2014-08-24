@@ -29,8 +29,11 @@
 - name: Keystore
   copy: src=etc_codeshelf/codeshelfcom.signed.keystore.jks dest=/etc/codeshelf/codeshelfcom.signed.keystore.jks owner=codeshelf group=codeshelf mode=0600
 
-- name: Configuration file template
-  copy: src=etc_codeshelf/server.config.properties.template dest=/etc/codeshelf/server.config.properties.template owner=codeshelf group=codeshelf mode=0600
+- name: Configuration file from template
+  template: src=server.config.properties.codeshelf.j2 dest=/etc/codeshelf/server.config.properties.codeshelf owner=codeshelf group=codeshelf mode=0600
+
+- name: Websocket browser config from template
+  template: src=websocket.addr.json.j2 dest=/opt/codeshelf/web/app/websocket.addr.json owner=codeshelf group=codeshelf mode=0644
 
 - name: codeshelf init script
   copy: src=init/codeshelf.conf dest=/etc/init/codeshelf.conf owner=root group=root mode=0644

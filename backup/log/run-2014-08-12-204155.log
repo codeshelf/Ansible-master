@@ -1,3 +1,0 @@
-2014-08-12 20:41:55,203 - root [WARNING] retry,no_file,backup_appdb,0.010000,0.000000,0,0
-2014-08-12 20:41:55,209 - root [WARNING] retry,no_file,backup_appdb,0.000000,0.000000,0,0
-2014-08-12 20:41:55,216 - root [ERROR] failed,no_file,backup_appdb,0.000000,0.000000,0,0

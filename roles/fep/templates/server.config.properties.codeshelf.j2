@@ -1,0 +1,48 @@
+com.gadgetworks.memorydebug=false 
+user.language=en
+user.country=US
+jsse.SSLEngine.acceptLargeFragments=true
+javax.net.debug=none
+#
+# WebApp (https://)
+#
+webapp.hostname={{ inventory_hostname }}.codeshelf.com
+webapp.portnum=8443
+webapp.content.path=/opt/codeshelf/web/app/
+#
+# WebSocket (wss://)
+#
+websocket.hostname={{ inventory_hostname }}.codeshelf.com
+websocket.portnum=8444
+websocket.debug=false
+websocket.idle.kill=true
+#
+# DB
+#
+db.name=database
+db.schemaname={{ inventory_hostname }}
+db.userid=codeshelf
+{% if inventory_hostname == 'stage' or inventory_hostname == 'test' %}
+db.password=golbwomgkneomqi
+db.address=pgtest
+{% else %}
+db.password=medrogarkinagife
+db.address=dbmaster
+{% endif %}
+db.portnum=5432
+db.ssl=false
+#
+# Keystore
+#
+keystore.type=JKS
+keystore.path=/etc/codeshelf/codeshelfcom.signed.keystore.jks
+keystore.store.password=vplortonikatwiqpfrin
+keystore.key.password=vplortonikatwiqpfrin
+#
+# runtime metrics
+#
+metrics.adminserver=true
+metrics.reporter.enabled=true
+metrics.reporter.interval=10
+metrics.reporter.backoff=60
+metrics.reporter.serverurl=http://hadoop1:4242/

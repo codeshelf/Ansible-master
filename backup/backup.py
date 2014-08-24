@@ -12,14 +12,14 @@ import paramiko
 
 # configuration ------------------------------
 
-folderBase = '/home/ansible/backup'
-folderLog = folderBase + '/log'
+folderLog = '/var/log/backup'
 folderWork = '/tmp'
-folderArchive = folderBase + '/data'
+folderArchive = '/home/ansible/backup/data'
 
 now = datetime.datetime.fromtimestamp(time.time())
 mainLogName = folderLog + '/backup.log'
 runLogName = folderLog + now.strftime('/run-%Y-%m-%d-%H%M%S.log')
+lastRunLogName = folderLog + '/lastrun.log'
 successLogName = folderLog + '/success.log'
 emailLogName = folderLog + '/sendEmail.log'
 
@@ -266,6 +266,10 @@ backup("sql.gz",backup_teamcity_db,defaultDestinations)
 backup("tar.gz",backup_teamcity_incremental,defaultDestinations)
 logger.debug("sending email")
 email_report()
+try:
+    shutil.copy(runLogName, lastRunLogName)
+except OSError:
+    logger.error("couldn't create "+lastRunLogName)
 logger.debug("all done.")
 
 

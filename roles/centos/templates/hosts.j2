@@ -1,0 +1,25 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+{% if item in groups['home'] %}
+{% for host in groups['DFW'] %}
+{% for netname in hostvars[host]['rax_addresses'] %}
+{% if netname == 'sitecon' %}
+{% for addr in hostvars[host]['rax_addresses'][netname] %}
+{% if addr.version == 4 %}
+{{ addr.addr }} {{ hostvars[host].inventory_hostname }}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% else %}
+{% for host in groups['DFW'] %}
+{% if host == dbmaster %}
+{{ hostvars[host].ansible_ssh_host}} {{ hostvars[host].inventory_hostname }} dbmaster
+{% else %}
+{{ hostvars[host].ansible_ssh_host}} {{ hostvars[host].inventory_hostname }} 
+{% endif %}
+{% endfor %}
+{% endif %}
+192.168.3.11 master

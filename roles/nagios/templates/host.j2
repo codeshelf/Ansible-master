@@ -1,3 +1,9 @@
+define host{
+	use		linux-box
+	host_name	master
+	hostgroups	device,linux,nrpe,backup
+}
+
 # group=fep
 {% for host in groups['fep'] %}
 define host{
@@ -36,7 +42,7 @@ define host{
 {% endfor %}
 
 # group=opentsdb
-{% for host in groups['opentsdb'] %}
+{% for host in groups['hadoop'] %}
 define host{
 	use		linux-box
 	host_name	{{ hostvars[host]['inventory_hostname'] }}

@@ -1,4 +1,0 @@
-2014-08-12 20:45:23,770 - root [INFO] success,sent to dest_local,backup_appdb,0.000000,0.010000,4552306,4552306
-2014-08-12 20:45:26,568 - root [INFO] success,sent to dest_sftp_drop,backup_appdb,0.000000,0.470000,4552306,4552306
-2014-08-12 20:45:28,028 - root [INFO] success,sent to dest_local,backup_teamcitydb,0.000000,0.020000,4552294,4552294
-2014-08-12 20:45:31,415 - root [INFO] success,sent to dest_sftp_drop,backup_teamcitydb,0.000000,0.470000,4552294,4552294
