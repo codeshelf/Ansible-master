@@ -21,7 +21,7 @@
     - codeshelfcom.key
 
 - name: default web content
-  copy: src=html dest=/var/www/ owner=root group=root mode=0644
+  copy: src=default_html dest=/var/www/ owner=root group=root mode=0644
 
 - name: main httpd config
   copy: src=httpd.conf dest=/etc/httpd/conf/ owner=root group=root mode=0644
@@ -32,13 +32,13 @@
   notify: restart httpd
 
 - name: kibana app
-  synchronize: src=kibana-3.1.0 dest=/var/www/kibana-3.1.0 owner=no group=no delete=yes
+  synchronize: src=kibana-3.1.0 dest=/var/www owner=no group=no delete=yes
 
 - name: kibana symlink
   file: state=link src=kibana-3.1.0 dest=/var/www/kibana owner=root group=root
 
 - name: grafana app
-  synchronize: src=grafana-1.6.1 dest=/var/www/grafana-1.6.1 owner=no group=no delete=yes
+  synchronize: src=grafana-1.6.1 dest=/var/www owner=no group=no delete=yes
 
 - name: grafana symlink
   file: state=link src=grafana-1.6.1 dest=/var/www/grafana owner=root group=root
