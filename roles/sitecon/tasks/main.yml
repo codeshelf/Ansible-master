@@ -2,5 +2,58 @@
 - name: Ansible files directory
   file: path=/home/ansible/files/ state=directory owner=ansible group=ansible
 
-- include: install_logstash.yml
+- name: Create codeshelf service user
+  user: name=codeshelf
 
+- name: Create app folder
+  file: path=/opt/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
+
+- name: Create app config folder
+  file: path=/etc/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
+
+- name: Install configuration file
+  template: src=sitecontroller.config.properties.j2
+         dest=/etc/codeshelf/sitecontroller.config.properties owner=codeshelf group=codeshelf mode=0600
+  register: configfile
+
+- name: Startup script installed
+  copy: src=/home/ansible/roles/sitecon/files/start.netcontroller
+         dest=/opt/codeshelf/start.netcontroller
+         owner=codeshelf group=codeshelf mode=0755
+
+- name: Service launcher installed
+  copy: src=/home/ansible/roles/sitecon/files/codeshelf.service
+         dest=/usr/lib/systemd/system/codeshelf.service
+         owner=root group=root mode=0644
+  register: servicelauncher
+
+- name: Service enabled
+  command: chkconfig codeshelf on
+  when: servicelauncher.changed
+
+- name: Radio udev rule installed
+  copy: src=/home/ansible/roles/sitecon/files/99-usbftdi.rules
+         dest=/etc/udev/rules.d/99-usbftdi.rules
+         owner=root group=root mode=0644
+
+- name: Version sitecon app
+  copy: src=/home/ansible/release/Codeshelf/latest/build.txt dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0644
+  register: scversion
+
+- name: Stop site controller
+  command: service codeshelf stop
+  when: scversion.changed or configfile.changed
+
+- name: Install app libraries
+  unarchive: src=/home/ansible/release/Codeshelf/latest/lib.tgz dest=/opt/codeshelf owner=codeshelf group=codeshelf
+  when: scversion.changed
+
+- name: Install app JAR
+  copy: src=/home/ansible/release/Codeshelf/latest/sitecontroller.codeshelf.jar dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0644
+  when: scversion.changed
+
+- name: Start site controller
+  command: service codeshelf start
+  when: scversion.changed or configfile.changed
+
+- include: install_logstash.yml

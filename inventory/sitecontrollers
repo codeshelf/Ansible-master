@@ -1,19 +1,21 @@
 [sitecon]
-sc10000 ansible_ssh_port=10000 codeshelf_server=aldebaran.codeshelf.com customer=goodeggs
-sc10001 ansible_ssh_port=10001 codeshelf_server=betelgeuse.codeshelf.com customer=TEST
-sc10002 ansible_ssh_port=10002 codeshelf_server=test.codeshelf.com customer=LOST
-sc10003 ansible_ssh_port=10003 codeshelf_server=stage.codeshelf.com customer=STAGING
+sc10000 ansible_ssh_port=10000 codeshelf_server=aldebaran.codeshelf.com customer=GoodEggs codeshelf_facility=sfbay
+sc10001 ansible_ssh_port=10001 codeshelf_server=betelgeuse.codeshelf.com customer=TEST codeshelf_facility=F1
+sc10002 ansible_ssh_port=10002 codeshelf_server=test.codeshelf.com customer=__LOST__ codeshelf_facility=F1
+sc10003 ansible_ssh_port=10003 codeshelf_server=stage.codeshelf.com customer=STAGING codeshelf_facility=sfbay
+sc10004 ansible_ssh_port=10004 codeshelf_server=betelgeuse.codeshelf.com customer=Accu-Logistics codeshelf_facility=F1
 
 [provisioning]
 provision0 ansible_ssh_port=9999
 
 [sitecon:vars]
+codeshelf_networknumber=1
+codeshelf_channel=5
 ansible_ssh_host=home1
 exclude_from_hosts=yes
 
 [provisioning:vars]
-ansible_ssh_host=home
+ansible_ssh_host=home1
 ansible_ssh_user=root
 ansible_ssh_pass=codeshelf510changeme
 exclude_from_hosts=yes
-

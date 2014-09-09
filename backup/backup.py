@@ -44,12 +44,12 @@ logger = logging.getLogger('')
 logger.setLevel(logLevel)
 
 main_fh = logging.handlers.RotatingFileHandler(mainLogName, maxBytes = 1000000, backupCount = 9)
-main_fh.setLevel(logging.INFO)
+main_fh.setLevel(logging.DEBUG)
 main_fh.setFormatter(fileFormatter)
 logger.addHandler(main_fh)
 
 run_fh = logging.FileHandler(runLogName)
-run_fh.setLevel(logging.INFO)
+run_fh.setLevel(logging.DEBUG)
 run_fh.setFormatter(fileFormatter)
 logger.addHandler(run_fh)
 

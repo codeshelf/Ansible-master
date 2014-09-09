@@ -1,0 +1,25 @@
+websocket.uri=wss://{{ codeshelf_server }}:8444
+codeshelf.networknum={{ codeshelf_networknumber }}
+codeshelf.preferred.channel={{ codeshelf_channel }}
+
+organizationId=DEMO1
+facilityId={{ codeshelf_facility }}
+networkId=DEFAULT
+networkCredential=0.6910096026612129
+
+javax.net.ssl.trustStoreType=JKS
+javax.net.ssl.trustStore=/usr/local/java/default/jre/lib/security/cacerts
+javax.net.ssl.trustStorePassword=changeit
+keystore.type=JKS
+keystore.path=/usr/local/java/default/jre/lib/security/cacerts
+keystore.store.password=changeit
+keystore.key.password=changeit
+
+websocket.idle.kill=true
+websocket.idle.suppresskeepalive=false
+
+com.gadgetworks.memorydebug=false 
+user.language=en
+user.country=US
+jsse.SSLEngine.acceptLargeFragments=true
+cs.logfile.name=codeshelf.network.log

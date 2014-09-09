@@ -1,4 +1,4 @@
 #!/bin/bash
 cd /home/ansible/backup
-python backup.py
+python backup.py 2> /var/log/backup/backup.stderr | tee /var/log/backup/backup.stdout
 

@@ -43,49 +43,6 @@
              dest=/etc/ssh/sshd_config
              owner=root group=root mode=0600
 
-    - name: Create codeshelf service user
-      user: name=codeshelf
-
-    - name: Create app folder
-      file: path=/opt/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
-
-    - name: ID release version sitecon app
-      copy: src=/home/ansible/release/build.txt dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0755
-
-    - name: Install app libraries
-      unarchive: src=/home/ansible/release/lib.tgz dest=/opt/codeshelf owner=codeshelf group=codeshelf
-
-    - name: Install app JAR
-      copy: src=/home/ansible/release/sitecontroller.codeshelf.jar dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0644
-
-    - name: Create app config folder
-      file: path=/etc/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
-
-    - name: Install configuration file
-      copy: src=/home/ansible/roles/sitecon/files/sitecontroller.config.properties.codeshelf.template
-             dest=/etc/codeshelf/ owner=codeshelf group=codeshelf mode=0644
-
-    - name: Specify server in config
-      shell: "cat /etc/codeshelf/sitecontroller.config.properties.codeshelf.template | sed -e 's/servernamehere/{{ fep }}/g' > /etc/codeshelf/sitecontroller.config.properties.codeshelf"
-
-    - name: Config file permissions
-      file: path=/etc/codeshelf/sitecontroller.config.properties.codeshelf owner=codeshelf group=codeshelf mode=0644
-
-    - name: Startup script installed
-      copy: src=/home/ansible/roles/sitecon/files/start.netcontroller
-             dest=/opt/codeshelf/start.netcontroller
-             owner=codeshelf group=codeshelf mode=0755
-
-    - name: Service launcher installed
-      copy: src=/home/ansible/roles/sitecon/files/codeshelf.service
-             dest=/usr/lib/systemd/system/codeshelf.service
-             owner=root group=root mode=0644
-
-    - name: Radio udev rule installed
-      copy: src=/home/ansible/roles/sitecon/files/99-usbftdi.rules
-             dest=/etc/udev/rules.d/99-usbftdi.rules
-             owner=root group=root mode=0644
-
     - name: Hostname scXXXXX
       command: hostnamectl set-hostname --static sc{{ serial }}
 
@@ -103,24 +60,12 @@
              dest=/home/et/.ssh/id_rsa
              owner=et group=et mode=0600
 
-    - name: Logstash RPM
-      copy: src=/home/ansible/roles/sitecon/files/logstash-1.4.1-1_bd507eb.noarch.rpm
-             dest=/home/ansible/
-             owner=ansible group=ansible
-      register: logstash
-
-    - name: Logstash config
-      copy: src=/home/ansible/roles/sitecon/files/siteconlogging.conf
-             dest=/etc/logstash/conf.d/
-             owner=root group=root mode=0644
-
-    - name: Install Logstash
-      yum: name=/home/ansible/logstash-1.4.1-1_bd507eb.noarch.rpm state=present
-      when: logstash.changed
-
     - name: Reload systemctl?
       command: systemctl daemon-reload
       when: phonehome.changed
+
+    - name: Reset MAC address
+      file: path=/etc/smsc_95xx_addr state=absent
 
     - name: Reboot (wait 1 minute)
       command: shutdown -r
