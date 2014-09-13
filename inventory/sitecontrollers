@@ -1,5 +1,5 @@
 [sitecon]
-sc10000 ansible_ssh_port=10000 codeshelf_server=aldebaran.codeshelf.com customer=GoodEggs codeshelf_facility=sfbay
+sc10000 ansible_ssh_port=10000 codeshelf_server=aldebaran.codeshelf.com customer=GoodEggs codeshelf_facility=sfbay monitor=yes
 sc10001 ansible_ssh_port=10001 codeshelf_server=betelgeuse.codeshelf.com customer=TEST codeshelf_facility=F1
 sc10002 ansible_ssh_port=10002 codeshelf_server=test.codeshelf.com customer=__LOST__ codeshelf_facility=F1
 sc10003 ansible_ssh_port=10003 codeshelf_server=stage.codeshelf.com customer=STAGING codeshelf_facility=sfbay

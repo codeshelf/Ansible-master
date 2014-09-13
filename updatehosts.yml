@@ -2,8 +2,8 @@
 - name: setup template
   hosts: localhost
   tasks:
-  - name: set master IP address
-    command: roles/centos/templates/this_ip.sh
+#  - name: set master IP address
+#    command: roles/centos/templates/this_ip.sh
 
 - name: update hosts files
   hosts: DFW

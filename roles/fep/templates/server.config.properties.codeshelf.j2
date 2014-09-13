@@ -46,3 +46,10 @@ metrics.reporter.enabled=true
 metrics.reporter.interval=10
 metrics.reporter.backoff=60
 metrics.reporter.serverurl=http://hadoop1:4242/
+
+{% if inventory_hostname == 'betelgeuse' %}
+facility.sequencer=BayDistanceTopLast
+{% else %}
+facility.sequencer=BayDistance
+{% endif %}
+

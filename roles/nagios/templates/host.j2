@@ -28,7 +28,7 @@ define host{
 define host{
         use             linux-box
         host_name       {{ hostvars[host]['inventory_hostname'] }}
-        hostgroups      device,linux,nrpe
+        hostgroups      device,linux,nrpe,elastic
 }
 {% endfor %}
 
