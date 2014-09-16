@@ -10,6 +10,7 @@
     - kibana.codeshelf.com.crt
     - tsdb.codeshelf.com.crt
     - grafana.codeshelf.com.crt
+    - dev.codeshelf.com.crt
     - codeshelfcom.crt
 
 - name: Keys
@@ -18,6 +19,7 @@
     - kibana.codeshelf.com.key
     - tsdb.codeshelf.com.key
     - grafana.codeshelf.com.key
+    - dev.codeshelf.com.key
     - codeshelfcom.key
 
 - name: default web content
@@ -39,6 +41,9 @@
 
 - name: grafana app
   synchronize: src=grafana-1.6.1 dest=/var/www owner=no group=no delete=yes
+
+- name: dev site
+  synchronize: src=dev dest=/var/www owner=no group=no delete=yes
 
 - name: grafana symlink
   file: state=link src=grafana-1.6.1 dest=/var/www/grafana owner=root group=root

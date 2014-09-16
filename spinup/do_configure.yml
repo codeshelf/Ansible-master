@@ -69,7 +69,7 @@
              owner=root group=root mode=0600
 
     - name: Reboot in 1 minute
-      shell: shutdown -r +1 "Ansible triggered" &
+      shell: shutdown -r now "Ansible triggered" &
 
     - name: Set root password
       user: name=root password="{{ new_root_password }}"
