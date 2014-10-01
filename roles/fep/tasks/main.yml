@@ -31,6 +31,7 @@
 
 - name: codeshelf init script
   copy: src=init/codeshelf.conf dest=/etc/init/codeshelf.conf owner=root group=root mode=0644
+  register: initscript
 
 - name: deploy user
   user: name=deploy state=present
@@ -54,7 +55,8 @@
 
 - name: Stop service
   command: stop codeshelf
-  when: engine.changed or config.changed
+  when: engine.changed or config.changed or initscript.changed
+  ignore_errors: yes
 
 - name: Install app libraries
   unarchive: src=/home/ansible/release/Codeshelf/latest/lib.tgz dest=/opt/codeshelf/engine/ owner=codeshelf group=codeshelf
@@ -78,7 +80,7 @@
 
 - name: Start service
   command: start codeshelf
-  when: engine.changed or config.changed
+  when: engine.changed or config.changed or initscript.changed
 
 - include: assemble_iptables.yml
 

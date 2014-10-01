@@ -1,8 +1,15 @@
+codeshelf.remotelog.ipaddress=elastic1
+codeshelf.remotelog.port=56445
+# Misc global settings
 com.gadgetworks.memorydebug=false 
 user.language=en
 user.country=US
 jsse.SSLEngine.acceptLargeFragments=true
 javax.net.debug=none
+websocket.debug=false
+console.appender=org.apache.log4j.varia.NullAppender
+
+
 #
 # WebApp (https://)
 #
@@ -16,6 +23,8 @@ websocket.hostname={{ inventory_hostname }}.codeshelf.com
 websocket.portnum=8444
 websocket.debug=false
 websocket.idle.kill=true
+websocket.idle.suppresskeepalive=false
+
 #
 # DB
 #

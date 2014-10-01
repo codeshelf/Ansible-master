@@ -19,18 +19,18 @@
 - name: hadoop logs
   file: state=directory dest=/opt/hbase/logs/ owner=hadoop group=hadoop mode=0755
 
-#- name: hbase service symlink
-#  copy: src=hbase.service dest=/usr/lib/systemd/system/ owner=root group=root mode=0755
-#  register: hbase_service
+- name: hbase service symlink
+  copy: src=hbase.service dest=/usr/lib/systemd/system/ owner=root group=root mode=0755
+  register: hbase_service
 
 #- name: systemctl daemon-reload
 #  shell: systemctl daemon-reload
 #  when: hbase_service.changed
 
-#- name: enable service
-#  service: name=hbase enabled=yes
-#  when: hbase_service.changed
-#  notify: restart hbase
+- name: enable service
+  service: name=hbase enabled=yes
+  when: hbase_service.changed
+  notify: restart hbase
 
 - name: opentsdb installation file
   copy: src=opentsdb-2.1.0-ivan.noarch.rpm dest=/home/ansible/files/ owner=ansible group=ansible mode=0644

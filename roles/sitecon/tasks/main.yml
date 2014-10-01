@@ -11,6 +11,9 @@
 - name: Create app config folder
   file: path=/etc/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
 
+- name: Remove old configuration
+  file: path=/etc/codeshelf/sitecontroller.config.properties.codeshelf state=absent
+
 - name: Install configuration file
   template: src=sitecontroller.config.properties.j2
          dest=/etc/codeshelf/sitecontroller.config.properties owner=codeshelf group=codeshelf mode=0600
@@ -20,6 +23,7 @@
   copy: src=/home/ansible/roles/sitecon/files/start.netcontroller
          dest=/opt/codeshelf/start.netcontroller
          owner=codeshelf group=codeshelf mode=0755
+  register: servicescript
 
 - name: Service launcher installed
   copy: src=/home/ansible/roles/sitecon/files/codeshelf.service
@@ -42,7 +46,7 @@
 
 - name: Stop site controller
   command: service codeshelf stop
-  when: scversion.changed or configfile.changed
+  when: scversion.changed or configfile.changed or servicescript.changed
 
 - name: Install app libraries
   unarchive: src=/home/ansible/release/Codeshelf/latest/lib.tgz dest=/opt/codeshelf owner=codeshelf group=codeshelf
@@ -54,6 +58,6 @@
 
 - name: Start site controller
   command: service codeshelf start
-  when: scversion.changed or configfile.changed
+  when: scversion.changed or configfile.changed or servicescript.changed
 
 - include: install_logstash.yml
