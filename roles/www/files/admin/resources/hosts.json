@@ -1,20 +1,41 @@
+[{
+	"host": "aldebaran",
+	"description": "dedicated GoodEggs server",
+	"roles": [ "appserver" ]
+},
 {
-  "elastic":[
-    {"host":"elastic1"},
-    {"host":"elastic2"},
-    {"host":"elastic3"},
-    {"host":"elastic4"}
-  ],
-  "app":[
-    {"host":"aldebaran","customer":"GoodEggs","production":"true"},
-    {"host":"betelgeuse","customer":"Accu-Logistics","production":"true"},
-    {"host":"test","customer":"TEST","production":"false"},
-    {"host":"stage","customer":"STAGE","production":"false"}
-  ],
-  "sitecontroller":[
-    {"host":"sc10000","customer":"GoodEggs","production":"true"},
-    {"host":"sc10001","customer":"TEST","production":"false"},
-    {"host":"sc10003","customer":"STAGING","production":"false"},
-    {"host":"sc10004","customer":"Accu-Logistics","production":"true"}
-  ]
-}
+	"host": "betelgeuse",
+	"description": "dedicated Accu server",
+	"roles": [ "appserver" ]
+},
+{
+	"host": "sc10000",
+	"description": "GoodEggs site controller",
+	"roles": [ "sitecontroller" ]
+},
+{
+	"host": "sc10004",
+	"description": "Accu site controller",
+	"roles": [ "sitecontroller" ]
+},
+{
+	"host": "elastic1",
+	"description": "",
+	"roles": [ "elasticsearch" ]
+},
+{
+	"host": "elastic2",
+	"description": "",
+	"roles": [ "elasticsearch" ]
+},
+{
+	"host": "elastic3",
+	"description": "",
+	"roles": [ "elasticsearch" ]
+},
+{
+	"host": "elastic4",
+	"description": "",
+	"roles": [ "elasticsearch" ]
+}]
+

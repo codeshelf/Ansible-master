@@ -57,8 +57,14 @@ metrics.reporter.backoff=60
 metrics.reporter.serverurl=http://hadoop1:4242/
 
 {% if inventory_hostname == 'betelgeuse' %}
-facility.sequencer=BayDistanceTopLast
+# facility.sequencer=BayDistanceTopLast
+facility.sequencer=BayDistance
 {% else %}
 facility.sequencer=BayDistance
+{% endif %}
+
+{% if inventory_hostname == 'aldebaran' or inventory_hostname == 'stage' %}
+facility.housekeeping.baychange=None
+facility.housekeeping.repeatposition=ContainerAndCount
 {% endif %}
 

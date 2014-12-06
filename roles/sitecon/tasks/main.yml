@@ -40,8 +40,28 @@
          dest=/etc/udev/rules.d/99-usbftdi.rules
          owner=root group=root mode=0644
 
+- name: diagnostic port set
+  lineinfile: dest=/etc/init.d/autossh regexp="^DIAGRPORT" insertafter="^SSHRPORT"
+               line="DIAGRPORT={{ diag_port }}"
+  register: diagport
+
+- name: restart autossh
+  command: service autossh restart
+  ignore_errors: True
+  when: diagport.changed
+
+- name: Got test site controller
+  local_action: command /home/ansible/release/get_deployed.sh test
+  sudo: False
+  when: codeshelf_version == 'test'
+
+- name: Got stage site controller
+  local_action: command /home/ansible/release/get_deployed.sh stage
+  sudo: False
+  when: codeshelf_version == 'stage'
+
 - name: Version sitecon app
-  copy: src=/home/ansible/release/Codeshelf/latest/build.txt dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0644
+  copy: src=/home/ansible/release/Codeshelf/{{ codeshelf_version }}/build.txt dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0644
   register: scversion
 
 - name: Stop site controller
@@ -49,11 +69,11 @@
   when: scversion.changed or configfile.changed or servicescript.changed
 
 - name: Install app libraries
-  unarchive: src=/home/ansible/release/Codeshelf/latest/lib.tgz dest=/opt/codeshelf owner=codeshelf group=codeshelf
+  unarchive: src=/home/ansible/release/Codeshelf/{{ codeshelf_version }}/lib.tgz dest=/opt/codeshelf owner=codeshelf group=codeshelf
   when: scversion.changed
 
 - name: Install app JAR
-  copy: src=/home/ansible/release/Codeshelf/latest/sitecontroller.codeshelf.jar dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0644
+  copy: src=/home/ansible/release/Codeshelf/{{ codeshelf_version }}/sitecontroller.codeshelf.jar dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0644
   when: scversion.changed
 
 - name: Start site controller
@@ -61,3 +81,4 @@
   when: scversion.changed or configfile.changed or servicescript.changed
 
 - include: install_logstash.yml
+

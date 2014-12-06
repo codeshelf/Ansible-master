@@ -48,6 +48,7 @@
 - name: App engine version
   copy: src=/home/ansible/release/Codeshelf/latest/build.txt dest=/opt/codeshelf/ owner=codeshelf group=codeshelf mode=0644
   register: engine
+  when: ansible_hostname != 'test' and ansible_hostname != 'stage'
 
 - name: Configuration file from template
   template: src=server.config.properties.codeshelf.j2 dest=/etc/codeshelf/server.config.properties.codeshelf owner=codeshelf group=codeshelf mode=0600
@@ -69,6 +70,7 @@
 - name: Web app version
   copy: src=/home/ansible/release/CodeshelfUX/latest/buildweb.txt dest=/opt/codeshelf/ owner=codeshelf group=codeshelf mode=0644
   register: webapp
+  when: ansible_hostname != 'test' and ansible_hostname != 'stage'
 
 - name: Web app installation
   unarchive: src=/home/ansible/release/CodeshelfUX/latest/web_app.tgz dest=/opt/codeshelf/web/app/ owner=codeshelf group=codeshelf

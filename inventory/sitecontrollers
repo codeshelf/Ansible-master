@@ -1,9 +1,9 @@
 [sitecon]
-sc10000 ansible_ssh_port=10000 codeshelf_server=aldebaran.codeshelf.com customer=GoodEggs codeshelf_facility=sfbay monitor=yes
-sc10001 ansible_ssh_port=10001 codeshelf_server=test.codeshelf.com customer=TEST codeshelf_facility=F1
-sc10002 ansible_ssh_port=10002 codeshelf_server=test.codeshelf.com customer=__LOST__ codeshelf_facility=F1
-sc10003 ansible_ssh_port=10003 codeshelf_server=stage.codeshelf.com customer=STAGING codeshelf_facility=sfbay
-sc10004 ansible_ssh_port=10004 codeshelf_server=betelgeuse.codeshelf.com customer=Accu-Logistics codeshelf_facility=F1
+sc10000 ansible_ssh_port=10000 diag_port=30000 codeshelf_server=aldebaran.codeshelf.com customer=GoodEggs codeshelf_facility=sfbay codeshelf_version=latest alert=yes
+sc10001 ansible_ssh_port=10001 diag_port=30001 codeshelf_server=test.codeshelf.com customer=TEST codeshelf_facility=F1 codeshelf_version=test
+sc10002 ansible_ssh_port=10002 diag_port=30002 codeshelf_server=test.codeshelf.com customer=__LOST__ codeshelf_facility=F1 codeshelf_version=test
+sc10003 ansible_ssh_port=10003 diag_port=30003 codeshelf_server=stage.codeshelf.com customer=STAGING codeshelf_facility=sfbay codeshelf_version=stage
+sc10004 ansible_ssh_port=10004 diag_port=30004 codeshelf_server=betelgeuse.codeshelf.com customer=Accu-Logistics codeshelf_facility=F1 codeshelf_version=latest alert=yes
 
 [provisioning]
 provision0 ansible_ssh_port=9999

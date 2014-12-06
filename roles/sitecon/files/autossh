@@ -17,12 +17,15 @@ RETVAL=0
 start() {
 SSHUSERNAME=provisioning
 SSHRPORT=9999
+DIAGRPORT=5999
 echo -n Starting $prog, $SSHUSERNAME: 
 su et -c "$autossh -f -M 0 \
 	-TNn -i ~et/.ssh/id_rsa -p 8022 -o StrictHostKeyChecking=no \
 	-o ConnectTimeout=20 -o ServerAliveInterval=20 \
         -L 56440:elastic1:56440 \
-	-R $SSHRPORT:127.0.0.1:22 $SSHUSERNAME@home1.codeshelf.com"
+	-R $SSHRPORT:127.0.0.1:22 \
+	-R $DIAGRPORT:127.0.0.1:8089 \
+	$SSHUSERNAME@home1.codeshelf.com"
 RETVAL=$?
 [ $RETVAL -eq 0 ] && touch /var/lock/subsys/$prog
 echo

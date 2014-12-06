@@ -6,7 +6,6 @@
   copy: src=certs/{{ item }}  dest=/etc/pki/tls/certs/ owner=root group=root
   with_items:
     - codeshelf-ca.crt
-    - GeoTrust_SSL_CA_G2_Cert_bundle.pem
     - kibana.codeshelf.com.crt
     - tsdb.codeshelf.com.crt
     - grafana.codeshelf.com.crt
@@ -24,9 +23,6 @@
     - admin.codeshelf.com.key
     - codeshelfcom.key
 
-- name: default web content
-  copy: src=default_html dest=/var/www/ owner=root group=root mode=0644
-
 - name: main httpd config
   copy: src=httpd.conf dest=/etc/httpd/conf/ owner=root group=root mode=0644
   notify: restart httpd
@@ -35,23 +31,25 @@
   copy: src=conf.d dest=/etc/httpd/ owner=root group=root mode=0644
   notify: restart httpd
 
-- name: kibana app
-  synchronize: src=kibana-3.1.0 dest=/var/www owner=no group=no delete=yes
+- name: static sites
+  synchronize: src={{ item }} dest=/var/www owner=no group=no delete=yes
+  with_items:
+    - dev
+    - html
+    - admin
+    - mail
+    - calendar
+    - sites
+    - drive
+    - support
+    - grafana-1.8.1
+    - kibana-3.1.0
+
+- name: grafana symlink
+  file: state=link src=grafana-1.8.1 dest=/var/www/grafana owner=root group=root
 
 - name: kibana symlink
   file: state=link src=kibana-3.1.0 dest=/var/www/kibana owner=root group=root
-
-- name: grafana app
-  synchronize: src=grafana-1.6.1 dest=/var/www owner=no group=no delete=yes
-
-- name: dev site
-  synchronize: src=dev dest=/var/www owner=no group=no delete=yes
-
-- name: admin site
-  synchronize: src=admin dest=/var/www owner=no group=no delete=yes
-
-- name: grafana symlink
-  file: state=link src=grafana-1.6.1 dest=/var/www/grafana owner=root group=root
 
 - name: enable httpd service
   service: name=httpd enabled=yes

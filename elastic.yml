@@ -4,3 +4,4 @@
   roles:
     - centos
     - elastic
+    - tcollector

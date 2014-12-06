@@ -11,14 +11,26 @@
 - name: install Elasticsearch
   yum: name=elasticsearch state=installed
 
-- name: Elastic network.host
-  lineinfile: 'dest=/etc/elasticsearch/elasticsearch.yml regexp="^network\.publish_host" insertafter="^#.*network\.publish_host" line="network.publish_host: {{ ansible_ssh_host }}"'
+- name: ES data folder
+  file: dest=/var/lib/elasticsearch/ state=directory owner=elasticsearch group=elasticsearch mode=0755
 
-- name: Elastic multicast.address
-  lineinfile: 'dest=/etc/elasticsearch/elasticsearch.yml regexp="^discovery\.zen\.ping\.multicast\.address" insertafter="^network\.publish_host" line="discovery.zen.ping.multicast.address: {{ ansible_ssh_host }}"'
+- name: setup xvde1
+  lineinfile: dest=/etc/fstab regexp="^\/dev\/xvde1" line="/dev/xvde1 /var/lib/elasticsearch ext3 defaults,noatime,barrier=0 1 1" state=present
+  when: rsrepo.changed
 
-- name: Elastic cluster.name
-  lineinfile: 'dest=/etc/elasticsearch/elasticsearch.yml regexp="^cluster\.name" insertafter="^#.*cluster\.name" line="cluster.name: elasticsearch"'
+- name: create xvde1 fs
+  command: /sbin/mkfs.ext3 /dev/xvde1
+  when: rsrepo.changed
+
+- name: mount xvde1
+  command: /bin/mount /var/lib/elasticsearch
+  when: rsrepo.changed
+
+- name: Elasticsearch environment vars
+  copy: src=sysconfig/elasticsearch dest=/etc/sysconfig/elasticsearch owner=root group=root mode=0644
+
+- name: Elasticsearch config file
+  template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml owner=root group=root mode=0644
 
 - name: enable Elasticsearch service
   service: name=elasticsearch enabled=yes state=started
