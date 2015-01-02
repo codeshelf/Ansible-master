@@ -181,13 +181,13 @@ def backup_appdb(filename):
     backup_postgres(filename,'dbmaster','database')
 
 def backup_teamcity_db(filename):
-    backup_postgres(filename,'teamcity','teamcity_db')
+    backup_postgres(filename,'tc1','teamcity_db')
     
 def backup_teamcity_incremental(filename):
     partial = False
     try:
-        subprocess.check_call(['./remote_tar.sh','teamcity','--exclude=.BuildServer/system/cache --listed-incremental=/home/ansible/system.tar.snapshot','/opt/jetbrains/TeamCity/.BuildServer',filename])
-    except subprocess.CalledProcessError as cpe:
+        subprocess.check_call(['./remote_tar.sh','tc1','--exclude=.BuildServer/system/cache --listed-incremental=/home/ansible/system.tar.snapshot','/opt/TeamCity/.BuildServer',filename])
+    except subprocess.CalledProcessError as cpa:
         logger.debug("CalledProcessError {:d} {}".format(cpa.returncode,cpa.cmd))
         partial = True
     except OSError:

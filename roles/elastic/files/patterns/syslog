@@ -11,6 +11,6 @@ SSHD_INVALID (Invalid user (%{WORD:username}) from (%{IPV4:source_ip}))
 
 SYSLOG_ANACRON_FIX (<%{POSINT:priority}(?:%{SYSLOGTIMESTAMP:timestamp}|%{TIMESTAMP_ISO8601:timestamp8601}) (?:%{SYSLOGFACILITY} )?%{SYSLOGHOST:logsource})
 
-CUSTOM_HTTPD_ACCESS (%{IPV4:source_ip} %{NOTSPACE:username} \[%{HTTPDATE:timestamp}\] %{NOTSPACE:vhost} %{INT:port:int} "%{DATA:verb}" "%{DATA:request}" "%{DATA:protocol}" %{NOTSPACE:http_code:int} %{INT:bytes:int} %{INT:microseconds:int} "%{DATA:browser}" "%{DATA:referrer}".*)
+CUSTOM_HTTPD_ACCESS (%{IPV4:source_ip} %{NOTSPACE:username} \[%{HTTPDATE:timestamp}\] %{NOTSPACE:vhost} %{INT:port:int} "%{DATA:verb}" "%{DATA:request}" "%{DATA:protocol}" %{NOTSPACE:http_code:int} %{INT:bytes:int} %{NUMBER:seconds:float} "%{DATA:browser}" "%{DATA:referrer}".*)
 
 

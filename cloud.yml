@@ -7,6 +7,7 @@
 - include: home.yml
 - include: www.yml
 - include: tc.yml
+- include: nginx.yml
 - include: build.yml
 - include: other.yml
 
