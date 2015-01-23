@@ -1,31 +1,31 @@
 ---
 # centos (base role) 
-- name: Make sure that the ansible/files directory exsists
-  file: path=/home/ansible/files/ state=directory
-
-- name: Utilities for troubleshooting
-  yum: name={{ item }} state=present
-  with_items:
-    - vim
-    - lsof
-    - telnet
-    - elinks
-    - tmux
-
-- name: latest nrpe
-  yum: name={{ item }} state=latest
-  with_items:
-    - nrpe  
-    - nagios-plugins-procs
-    - nagios-plugins-pgsql
-    - nagios-plugins-disk
-    - nagios-plugins-users
-    - nagios-plugins-log
-    - nagios-plugins-swap
-    - nagios-plugins-load
-  notify:
-    - restart nrpe
-
+#- name: Make sure that the ansible/files directory exsists
+#  file: path=/home/ansible/files/ state=directory
+#
+#- name: Utilities for troubleshooting
+#  yum: name={{ item }} state=present
+#  with_items:
+#    - vim
+#    - lsof
+#    - telnet
+#    - elinks
+#    - tmux
+#
+#- name: latest nrpe
+#  yum: name={{ item }} state=latest
+#  with_items:
+#    - nrpe  
+#    - nagios-plugins-procs
+#    - nagios-plugins-pgsql
+#    - nagios-plugins-disk
+#    - nagios-plugins-users
+#    - nagios-plugins-log
+#    - nagios-plugins-swap
+#    - nagios-plugins-load
+#  notify:
+#    - restart nrpe
+#
 - name: nrpe.cfg
   copy: src=nrpe.cfg dest=/etc/nagios/nrpe.cfg owner=root group=root mode=0644
   notify:
@@ -39,11 +39,11 @@
 - name: iptables configuration assembly folder
   file: path=/etc/sysconfig/iptables.d state=directory owner=root group=root mode=0700
 
-- name: JRE installation file
-  copy: src=jre-7u60-linux-x64.rpm dest=/home/ansible/files/ mode=0644
+- name: JDK installation file
+  copy: src=jdk-7u75-linux-x64.rpm dest=/home/ansible/files/ mode=0644
 
-- name: JRE installed 
-  yum: name=/home/ansible/files/jre-7u60-linux-x64.rpm state=installed
+- name: JDK installed 
+  yum: name=/home/ansible/files/jdk-7u75-linux-x64.rpm state=installed
 
 - name: JAVA_HOME in profile
   copy: src=java.sh dest=/etc/profile.d/ owner=root group=root mode=0644

@@ -29,6 +29,9 @@
     - name: Authorize ansible
       authorized_key: 'key="{{ ansiblepubkey }}" user=ansible'  
 
+    - name: ansible/files folder
+      file: path=/home/ansible/files/ state=directory owner=ansible group=ansible
+
     - name: Update packages
       yum: pkg=* state=latest
 

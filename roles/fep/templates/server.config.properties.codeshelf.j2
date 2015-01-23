@@ -1,5 +1,7 @@
 codeshelf.remotelog.ipaddress=elastic1
 codeshelf.remotelog.port=56445
+api.port=8181
+
 # Misc global settings
 com.gadgetworks.memorydebug=false 
 user.language=en
@@ -8,48 +10,16 @@ jsse.SSLEngine.acceptLargeFragments=true
 javax.net.debug=none
 websocket.debug=false
 console.appender=org.apache.log4j.varia.NullAppender
-
-
-#
-# WebApp (https://)
-#
-webapp.hostname={{ inventory_hostname }}.codeshelf.com
-webapp.portnum=8443
-webapp.content.path=/opt/codeshelf/web/app/
-#
-# WebSocket (wss://)
-#
-websocket.hostname={{ inventory_hostname }}.codeshelf.com
-websocket.portnum=8444
-websocket.debug=false
 websocket.idle.kill=true
-websocket.idle.suppresskeepalive=false
-
-#
-# DB
-#
-db.name=database
 db.schemaname={{ inventory_hostname }}
 db.userid=codeshelf
 {% if inventory_hostname == 'stage' or inventory_hostname == 'test' %}
 db.password=golbwomgkneomqi
-db.address=pgtest
+db.connectionurl=jdbc:postgresql://pgtest:5432/database
 {% else %}
 db.password=medrogarkinagife
-db.address=dbmaster
+db.connectionurl=jdbc:postgresql://dbmaster:5432/database
 {% endif %}
-db.portnum=5432
-db.ssl=false
-#
-# Keystore
-#
-keystore.type=JKS
-keystore.path=/etc/codeshelf/codeshelfcom.signed.keystore.jks
-keystore.store.password=vplortonikatwiqpfrin
-keystore.key.password=vplortonikatwiqpfrin
-#
-# runtime metrics
-#
 metrics.adminserver=true
 metrics.reporter.enabled=true
 metrics.reporter.interval=10
@@ -66,5 +36,11 @@ facility.sequencer=BayDistance
 {% if inventory_hostname == 'aldebaran' or inventory_hostname == 'stage' %}
 facility.housekeeping.baychange=None
 facility.housekeeping.repeatposition=ContainerAndCount
+{% endif %}
+
+{% if inventory_hostname == 'test' or inventory_hostname == 'stage' or inventory_hostname == 'aldebaran' %}
+adminserver.schemamanagement=true
+{% else %}
+adminserver.schemamanagement=false
 {% endif %}
 

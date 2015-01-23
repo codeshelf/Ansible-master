@@ -45,8 +45,8 @@ define host{
 }
 {% endfor %}
 
-# group=db
-{% for host in groups['www'] %}
+# group=nginx
+{% for host in groups['nginx'] %}
 define host{
         use             linux-box
         host_name       {{ hostvars[host]['inventory_hostname'] }}

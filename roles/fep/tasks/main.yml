@@ -67,18 +67,18 @@
   copy: src=/home/ansible/release/Codeshelf/latest/server.codeshelf.jar dest=/opt/codeshelf/engine/ owner=codeshelf group=codeshelf mode=0644
   when: engine.changed
 
-- name: Web app version
-  copy: src=/home/ansible/release/CodeshelfUX/latest/buildweb.txt dest=/opt/codeshelf/ owner=codeshelf group=codeshelf mode=0644
-  register: webapp
-  when: ansible_hostname != 'test' and ansible_hostname != 'stage'
-
-- name: Web app installation
-  unarchive: src=/home/ansible/release/CodeshelfUX/latest/web_app.tgz dest=/opt/codeshelf/web/app/ owner=codeshelf group=codeshelf
-  when: webapp.changed
-
-- name: Websocket browser config from template
-  template: src=websocket.addr.json.j2 dest=/opt/codeshelf/web/app/websocket.addr.json owner=codeshelf group=codeshelf mode=0644
-  when: webapp.changed
+#- name: Web app version
+#  copy: src=/home/ansible/release/CodeshelfUX/latest/buildweb.txt dest=/opt/codeshelf/ owner=codeshelf group=codeshelf mode=0644
+#  register: webapp
+#  when: ansible_hostname != 'test' and ansible_hostname != 'stage'
+#
+#- name: Web app installation
+#  unarchive: src=/home/ansible/release/CodeshelfUX/latest/web_app.tgz dest=/opt/codeshelf/web/app/ owner=codeshelf group=codeshelf
+#  when: webapp.changed
+#
+#- name: Websocket browser config from template
+#  template: src=websocket.addr.json.j2 dest=/opt/codeshelf/web/app/websocket.addr.json owner=codeshelf group=codeshelf mode=0644
+#  when: webapp.changed
 
 - name: Start service
   command: start codeshelf

@@ -51,7 +51,7 @@ http {
     server {
         listen 80 default_server;
 
-        root /var/www/sites/default/;
+        root /var/www/static/default/;
     }
     server {
         listen 443 default_server ssl;
@@ -59,9 +59,9 @@ http {
         ssl_certificate_key /etc/pki/tls/private/codeshelfcom.key;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
 
-        root /var/www/sites/default/;
+        root /var/www/static/default/;
     }
-{% for staticsite in ['calendar','dev','drive','mail','sites','support','teamcity'] %}
+{% for staticsite in ['calendar','drive','mail','sites','support','teamcity'] %}
     server {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/codeshelfcom.crt;
@@ -69,7 +69,7 @@ http {
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
 
         server_name {{ staticsite }}.codeshelf.com;
-        root /var/www/sites/{{ staticsite }}/;
+        root /var/www/static/{{ staticsite }}/;
     }
 {% endfor %}
     server {
@@ -82,7 +82,7 @@ http {
         ssl_verify_client on;
 
         server_name admin.codeshelf.com;
-        root /var/www/sites/admin/;
+        root /var/www/static/admin/;
 
 {% for elastichost in groups['elastic'] %}
         location /{{ elastichost }}/ {
@@ -91,7 +91,11 @@ http {
 {% endfor %}
 {% for apphost in groups['fep'] %}
         location /{{ apphost }}/ {
+{% if apphost == 'test' or apphost == 'stage' %}
+            proxy_pass http://{{ apphost }}:8181/;
+{% else %}
             proxy_pass http://{{ apphost }}:8088/;
+{% endif %}
         }
 {% endfor %}
 {% for sitecon in groups['sitecon'] %}
@@ -111,7 +115,7 @@ http {
         ssl_verify_client on;
 
         server_name kibana.codeshelf.com;
-        root /var/www/sites/kibana-3.1.0/;
+        root /var/www/static/kibana-3.1.0/;
 
         location /elastic/ {
             proxy_pass http://elastic/;
@@ -128,7 +132,7 @@ http {
         ssl_verify_client on;
 
         server_name grafana.codeshelf.com;
-        root /var/www/sites/grafana-1.8.1/;
+        root /var/www/static/grafana-1.8.1/;
 
         location /elastic/ {
             proxy_pass http://elastic/;
@@ -169,5 +173,60 @@ http {
             proxy_pass http://tc1:8111/;
         }
     }
+
+    server {
+        listen 443 ssl;
+        ssl_certificate /etc/pki/tls/certs/dev.codeshelf.com.crt;
+        ssl_certificate_key /etc/pki/tls/private/dev.codeshelf.com.key;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+
+        ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
+        ssl_verify_client on;
+
+        server_name dev.codeshelf.com;
+        root /var/www/static/dev/;
+    }
+
+    server {
+        listen 443 ssl;
+        ssl_certificate /etc/pki/tls/certs/productivity.codeshelf.com.crt;
+        ssl_certificate_key /etc/pki/tls/private/productivity.codeshelf.com.key;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+
+        ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
+        ssl_verify_client on;
+
+        server_name productivity.codeshelf.com;
+        root /var/www/static/productivity/;
+    }
+{% for apphost in groups['fep'] %}
+    server {
+        listen 443 ssl;
+        ssl_certificate /etc/pki/tls/certs/codeshelfcom.crt;
+        ssl_certificate_key /etc/pki/tls/private/codeshelfcom.key;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+     
+        server_name {{ apphost }}.codeshelf.com;
+        root /var/www/{{ apphost }}/;
+        index codeshelf.html;
+
+        location /ws/ {
+            proxy_pass http://{{ apphost }}:8181/ws/;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+
+        location /api/ {
+            proxy_pass http://{{ apphost }}:8181/api/;
+            auth_basic "API access";
+            auth_basic_user_file htpasswd;
+        }
+
+        location /productivity/ {
+            index index.html;
+        }
+    }
+{% endfor %}
 }
 
