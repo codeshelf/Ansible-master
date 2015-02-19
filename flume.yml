@@ -1,0 +1,7 @@
+---
+- hosts: flume
+  sudo: yes
+  roles:
+    - centos
+    - tcollector
+    - flume

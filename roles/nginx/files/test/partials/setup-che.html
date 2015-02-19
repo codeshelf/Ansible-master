@@ -1,0 +1,23 @@
+<!-- setup-che.html file
+-->
+<form name="che-form">
+	<div class="modal-header">
+		<h3>Setup {{che.domainId}}</h3>
+	</div>
+	<div class="modal-body">
+		<div id='instructions'>
+			<!-- forcing separate lines on these instructions-->
+			<p>You would normally scan the container ID, then scan a slot on the CHE. And repeat for each container in its slot.</p>
+			<p>For this, will enter the container Ids to simulate scan onto the cart.</p>
+			<p>Example: "25,16,3" means you scanned container 25 into slot 1, container 16 into slot 2, and container 3 into slot 3.</p>
+		</div>
+		<!-- web examples show adding ng-controller="thisLinkCtrl", but that kills the ok,cancel button action -->
+
+		<p>Containers: <input type="text" name="input" ng-model="che.containersOnChe"></p>
+	</div>
+
+	<div class="modal-footer">
+		<button class="btn " ng-click="controller.cancel()">Cancel</button>
+		<button class="btn btn-primary" ng-click="controller.ok()">Save</button>
+	</div>
+</form>

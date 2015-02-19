@@ -16,8 +16,18 @@
   copy: src=msgpack.rb dest=/opt/logstash/lib/logstash/codecs/ owner=logstash group=logstash mode=0664
   notify: restart logstash
 
+- name: log4j2 plugin
+  copy: src=lib dest=/opt/logstash/ owner=logstash group=logstash mode=0644
+
+- name: log4j2 libs
+  copy: src=vendor dest=/opt/logstash/ owner=logstash group=logstash mode=0644
+
 - name: Patch service startup for HOSTNAME
   lineinfile: dest=/etc/init.d/logstash regexp="^export HOSTNAME" line="export HOSTNAME=`hostname`" state=present insertafter="END INIT INFO"
+  notify: restart logstash
+
+#- name: Patch service startup for plugin
+#  lineinfile: dest=/etc/init.d/logstash regexp="^LS_OPTS" line='LS_OPTS=" --pluginpath /opt/logstash/plugins/ "' state=present insertafter="LS_NICE"
 
 - name: Logstash config files
   copy: src=conf.d dest=/etc/logstash/ owner=root group=root mode=0644

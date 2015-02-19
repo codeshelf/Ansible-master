@@ -91,7 +91,7 @@ http {
 {% endfor %}
 {% for apphost in groups['fep'] %}
         location /{{ apphost }}/ {
-{% if apphost == 'test' or apphost == 'stage' %}
+{% if apphost == 'test' or apphost == 'stage' or apphost == 'aldebaran' or apphost == 'betelgeuse' %}
             proxy_pass http://{{ apphost }}:8181/;
 {% else %}
             proxy_pass http://{{ apphost }}:8088/;

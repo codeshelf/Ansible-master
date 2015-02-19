@@ -51,7 +51,7 @@
   when: ansible_hostname != 'test' and ansible_hostname != 'stage'
 
 - name: Configuration file from template
-  template: src=server.config.properties.codeshelf.j2 dest=/etc/codeshelf/server.config.properties.codeshelf owner=codeshelf group=codeshelf mode=0600
+  template: src=server.config.properties.codeshelf.j2 dest=/etc/codeshelf/server.config.properties owner=codeshelf group=codeshelf mode=0600
   register: config
 
 - name: Stop service

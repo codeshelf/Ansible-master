@@ -7,3 +7,10 @@
 - name: start logstash
   service: name=logstash state=restarted
 
+- name: restart elasticsearch
+  service: name=elasticsearch state=stopped
+  changed_when: True
+  notify: start elasticsearch
+
+- name: start elasticsearch
+  service: name=elasticsearch state=restarted

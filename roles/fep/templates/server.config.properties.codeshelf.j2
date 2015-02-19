@@ -1,6 +1,10 @@
 codeshelf.remotelog.ipaddress=elastic1
 codeshelf.remotelog.port=56445
 api.port=8181
+log.socket.enable=true
+log.socket.host=elastic1
+log.socket.port=56446
+log.console.enable=false
 
 # Misc global settings
 com.gadgetworks.memorydebug=false 
@@ -11,14 +15,28 @@ javax.net.debug=none
 websocket.debug=false
 console.appender=org.apache.log4j.varia.NullAppender
 websocket.idle.kill=true
-db.schemaname={{ inventory_hostname }}
-db.userid=codeshelf
+
+# manager db
+manager.db.schema=manager_{{ inventory_hostname }}
+manager.db.username=codeshelf
+# default shard db
+shard.default.db.admin_username=codeshelf
+# default tenant
+tenant.default.schema={{ inventory_hostname }}
+tenant.default.username=codeshelf
+
 {% if inventory_hostname == 'stage' or inventory_hostname == 'test' %}
-db.password=golbwomgkneomqi
-db.connectionurl=jdbc:postgresql://pgtest:5432/database
+manager.db.url=jdbc:postgresql://pgtest:5432/database
+manager.db.password=golbwomgkneomqi
+shard.default.db.url=jdbc:postgresql://pgtest:5432/database
+shard.default.db.admin_password=golbwomgkneomqi
+tenant.default.password=golbwomgkneomqi
 {% else %}
-db.password=medrogarkinagife
-db.connectionurl=jdbc:postgresql://dbmaster:5432/database
+manager.db.url=jdbc:postgresql://dbmaster:5432/database
+manager.db.password=medrogarkinagife
+shard.default.db.url=jdbc:postgresql://dbmaster:5432/database
+shard.default.db.admin_password=medrogarkinagife
+tenant.default.password=medrogarkinagife
 {% endif %}
 metrics.adminserver=true
 metrics.reporter.enabled=true

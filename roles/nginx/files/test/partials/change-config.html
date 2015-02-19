@@ -1,0 +1,25 @@
+<!-- change-config.html file
+-->
+<form name="config-form">
+	<div class="modal-header">
+		<h3>Change Config Parameter</h3>
+	</div>
+	<div class="modal-body">
+		<div class="alert alert-danger" ng-repeat="globalError in response.errors.globalErrors">{{globalError.message}}</div>
+		<div class="alert alert-danger" ng-repeat="(field, fieldErrors) in response.errors.fieldErrors">
+			<div ng-repeat="fieldError in fieldErrors">{{fieldError.message}}</div>
+		</div>
+		<div id='instructions'>
+			<h5>Parameter Name: {{domainobjectproperty.name}}</h5>
+			<h5>   Description: {{domainobjectproperty.description}}</h5>
+			<!-- forcing separate lines on these instructions-->
+			<h5>Enter new value</h5>
+		</div>
+
+		<p>Value: <input type="text" name="value" ng-model="domainobjectproperty.value"></p>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" ng-click="controller.cancel()">Cancel</button>
+		<button class="btn btn-primary" ng-click="controller.ok()">Save</button>
+	</div>
+</form>

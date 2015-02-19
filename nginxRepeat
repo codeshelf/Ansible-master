@@ -1,0 +1,8 @@
+while :
+do
+   ap nginx.yml
+   ap sitecon.yml --limit=sc10001,sc10003
+   date
+   echo SLEEPING...
+   sleep 930
+done

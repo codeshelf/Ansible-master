@@ -1,0 +1,3 @@
+# begin flume role accept port
+-A INPUT -i eth3 -p tcp -m tcp --dport 4200 -j ACCEPT
+# end flume role accept port

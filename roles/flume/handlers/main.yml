@@ -1,0 +1,10 @@
+---
+- name: restart flume
+  command: stop flume
+  changed_when: True
+  notify: start flume
+  ignore_errors: yes
+
+- name: start flume
+  command: start flume
+

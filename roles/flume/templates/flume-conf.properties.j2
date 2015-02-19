@@ -1,0 +1,21 @@
+# Codeshelf 
+# Config generated from template, do not edit
+
+{{ inventory_hostname }}.sources = {{ inventory_hostname }}AvroSource
+{{ inventory_hostname }}.channels = {{ inventory_hostname }}DiskChannel
+{{ inventory_hostname }}.sinks = {{ inventory_hostname }}ElasticSink
+
+{{ inventory_hostname }}.sources.{{ inventory_hostname }}AvroSource.type = avro
+{{ inventory_hostname }}.sources.{{ inventory_hostname }}AvroSource.bind = 0.0.0.0
+{{ inventory_hostname }}.sources.{{ inventory_hostname }}AvroSource.port = 4200
+{{ inventory_hostname }}.sources.{{ inventory_hostname }}AvroSource.channels = {{ inventory_hostname }}DiskChannel
+
+{{ inventory_hostname }}.channels.{{ inventory_hostname }}DiskChannel.type = file
+{{ inventory_hostname }}.channels.{{ inventory_hostname }}DiskChannel.checkpointDir = /var/flume/{{ inventory_hostname }}_checkpoint
+{{ inventory_hostname }}.channels.{{ inventory_hostname }}DiskChannel.dataDirs = /var/flume/{{ inventory_hostname }}_data
+
+{{ inventory_hostname }}.sinks.{{ inventory_hostname }}ElasticSink.type = org.apache.flume.sink.elasticsearch.ElasticSearchSink
+{{ inventory_hostname }}.sinks.{{ inventory_hostname }}ElasticSink.channel = {{ inventory_hostname }}DiskChannel
+{{ inventory_hostname }}.sinks.{{ inventory_hostname }}ElasticSink.indexName = logstash-engine
+{{ inventory_hostname }}.sinks.{{ inventory_hostname }}ElasticSink.hostNames = elastic1,elastic2,elastic3,elastic4
+

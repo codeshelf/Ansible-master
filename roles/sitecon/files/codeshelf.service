@@ -8,6 +8,7 @@ WorkingDirectory=/opt/codeshelf/
 ExecStart=/usr/bin/bash /opt/codeshelf/start.netcontroller
 User=codeshelf
 Group=codeshelf
+Restart=always
 
 [Install]
 WantedBy=multi-user.target

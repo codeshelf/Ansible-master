@@ -1,11 +1,12 @@
 ---
 # file: site.yml
 - include: db.yml
-- include: csapp.yml
+- include: fep.yml
 - include: nagios.yml
 - include: elastic.yml
 - include: home.yml
 - include: tc.yml
+- include: flume.yml
 - include: nginx.yml
 - include: build.yml
 - include: other.yml
