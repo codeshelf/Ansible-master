@@ -7,6 +7,12 @@ env ROOT_DIR=/opt/codeshelf/engine
 env USER=codeshelf
 env LOGFILE=/home/codeshelf/.Codeshelf/logs/daemon.log
 
+{% if ansible_hostname == 'capella' %}
+env JAVA_MEM_OPTS=-Xmx7168M
+{% else %}
+env JAVA_MEM_OPTS=-Xmx1536M
+{% endif %}
+
 respawn
 respawn limit 10 5
 
@@ -16,7 +22,7 @@ script
     then
       export JAVA_DEBUG_OPTS=" -agentlib:jdwp=transport=dt_socket,address=localhost:9009,server=y,suspend=n -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false "
   fi
-  su -c "java -Xmx1536M -XX:+HeapDumpOnOutOfMemoryError $JAVA_DEBUG_OPTS -Dconfig.properties=/etc/codeshelf/server.config.properties -Dcs.logfile.name=codeshelf.server.log -Dcodeshelf.remotelog.ipaddress=elastic1 -Dcodeshelf.remotelog.port=56445 -jar server.codeshelf.jar" $USER > $LOGFILE 2>&1
+  su -c "java $JAVA_MEM_OPTS -XX:+HeapDumpOnOutOfMemoryError $JAVA_DEBUG_OPTS -Dconfig.properties=/etc/codeshelf/server.config.properties -Dcs.logfile.name=codeshelf.server.log -Dcodeshelf.remotelog.ipaddress=elastic1 -Dcodeshelf.remotelog.port=56445 -jar server.codeshelf.jar" $USER > $LOGFILE 2>&1
   
 end script
 

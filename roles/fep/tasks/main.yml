@@ -30,7 +30,7 @@
   copy: src=etc_codeshelf/codeshelfcom.signed.keystore.jks dest=/etc/codeshelf/codeshelfcom.signed.keystore.jks owner=codeshelf group=codeshelf mode=0600
 
 - name: codeshelf init script
-  copy: src=init/codeshelf.conf dest=/etc/init/codeshelf.conf owner=root group=root mode=0644
+  template: src=codeshelf.conf.j2 dest=/etc/init/codeshelf.conf owner=root group=root mode=0644
   register: initscript
 
 - name: deploy user
@@ -46,7 +46,7 @@
   cron: name="autodeploy" job="/opt/codeshelf/autodeploy.sh"
 
 - name: App engine version
-  copy: src=/home/ansible/release/Codeshelf/latest/build.txt dest=/opt/codeshelf/ owner=codeshelf group=codeshelf mode=0644
+  copy: src=/home/ansible/release/Codeshelf/{{ ansible_hostname }}/build.txt dest=/opt/codeshelf/ owner=codeshelf group=codeshelf mode=0644
   register: engine
   when: ansible_hostname != 'test' and ansible_hostname != 'stage'
 
@@ -60,11 +60,11 @@
   ignore_errors: yes
 
 - name: Install app libraries
-  unarchive: src=/home/ansible/release/Codeshelf/latest/lib.tgz dest=/opt/codeshelf/engine/ owner=codeshelf group=codeshelf
+  unarchive: src=/home/ansible/release/Codeshelf/{{ ansible_hostname }}/lib.tgz dest=/opt/codeshelf/engine/ owner=codeshelf group=codeshelf
   when: engine.changed
 
 - name: Install app JAR
-  copy: src=/home/ansible/release/Codeshelf/latest/server.codeshelf.jar dest=/opt/codeshelf/engine/ owner=codeshelf group=codeshelf mode=0644
+  copy: src=/home/ansible/release/Codeshelf/{{ ansible_hostname }}/server.codeshelf.jar dest=/opt/codeshelf/engine/ owner=codeshelf group=codeshelf mode=0644
   when: engine.changed
 
 #- name: Web app version

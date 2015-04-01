@@ -65,7 +65,7 @@
       when: phonehome.changed
 
     - name: Reset MAC address
-      file: path=/etc/smsc_95xx_addr state=absent
+      file: path=/etc/smsc95xx_mac_addr state=absent
 
     - name: Reboot (wait 1 minute)
       command: shutdown -r

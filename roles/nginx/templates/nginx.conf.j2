@@ -1,4 +1,3 @@
-
 user  nginx;
 worker_processes  1;
 
@@ -14,11 +13,10 @@ events {
 
 http {
     ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK';
+    ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4';
     ssl_prefer_server_ciphers on;
     ssl_session_cache shared:SSL:50m;
     ssl_session_timeout 5m;
-    #ssl_ciphers "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EDH+aRSA+AESGCM:EDH+aRSA+SHA256:EDH+aRSA:EECDH:!aNULL:!eNULL:!MEDIUM:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED";
 
     include       /etc/nginx/mime.types;
     default_type  application/octet-stream;
@@ -77,6 +75,8 @@ http {
         ssl_certificate /etc/pki/tls/certs/admin.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/admin.codeshelf.com.key;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+        add_header Cache-Control no-cache;
+        etag off;
 
         ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
         ssl_verify_client on;
@@ -87,20 +87,22 @@ http {
 {% for elastichost in groups['elastic'] %}
         location /{{ elastichost }}/ {
             proxy_pass http://{{ elastichost }}:9200/;
+            add_header Cache-Control no-cache;
+            etag off;
         }
 {% endfor %}
 {% for apphost in groups['fep'] %}
         location /{{ apphost }}/ {
-{% if apphost == 'test' or apphost == 'stage' or apphost == 'aldebaran' or apphost == 'betelgeuse' %}
             proxy_pass http://{{ apphost }}:8181/;
-{% else %}
-            proxy_pass http://{{ apphost }}:8088/;
-{% endif %}
+            add_header Cache-Control no-cache;
+            etag off;
         }
 {% endfor %}
 {% for sitecon in groups['sitecon'] %}
         location /{{ sitecon }}/ {
             proxy_pass http://home1:{{ hostvars[sitecon].diag_port }}/;
+            add_header Cache-Control no-cache;
+            etag off;
         }
 {% endfor %}
     }
@@ -119,6 +121,8 @@ http {
 
         location /elastic/ {
             proxy_pass http://elastic/;
+            add_header Cache-Control no-cache;
+            etag off;
         }
     }   
 
@@ -126,19 +130,23 @@ http {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/grafana.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/grafana.codeshelf.com.key;
-        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
 
         ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
         ssl_verify_client on;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
 
         server_name grafana.codeshelf.com;
         root /var/www/static/grafana-1.8.1/;
 
         location /elastic/ {
             proxy_pass http://elastic/;
+            add_header Cache-Control no-cache;
+            etag off;
         }
         location /tsdb/ {
             proxy_pass http://hadoop1:4242/;
+            add_header Cache-Control no-cache;
+            etag off;
         }
     }
 
@@ -147,6 +155,8 @@ http {
         ssl_certificate /etc/pki/tls/certs/tsdb.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/tsdb.codeshelf.com.key;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+        add_header Cache-Control no-cache;
+        etag off;
 
         ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
         ssl_verify_client on;
@@ -163,6 +173,7 @@ http {
         ssl_certificate /etc/pki/tls/certs/tc.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/tc.codeshelf.com.key;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+        add_header Cache-Control no-cache;
 
         ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
         ssl_verify_client on;
@@ -179,6 +190,7 @@ http {
         ssl_certificate /etc/pki/tls/certs/dev.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/dev.codeshelf.com.key;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+        add_header Cache-Control no-cache;
 
         ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
         ssl_verify_client on;
@@ -187,24 +199,14 @@ http {
         root /var/www/static/dev/;
     }
 
-    server {
-        listen 443 ssl;
-        ssl_certificate /etc/pki/tls/certs/productivity.codeshelf.com.crt;
-        ssl_certificate_key /etc/pki/tls/private/productivity.codeshelf.com.key;
-        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
-
-        ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
-        ssl_verify_client on;
-
-        server_name productivity.codeshelf.com;
-        root /var/www/static/productivity/;
-    }
 {% for apphost in groups['fep'] %}
     server {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/codeshelfcom.crt;
         ssl_certificate_key /etc/pki/tls/private/codeshelfcom.key;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+        add_header Cache-Control no-cache;
+        etag off;
      
         server_name {{ apphost }}.codeshelf.com;
         root /var/www/{{ apphost }}/;
@@ -217,14 +219,26 @@ http {
             proxy_set_header Connection "upgrade";
         }
 
+	location /auth/ {
+	    proxy_pass http://{{ apphost }}:8181/auth/;
+            add_header Cache-Control no-cache;
+            etag off;
+	}
+
         location /api/ {
             proxy_pass http://{{ apphost }}:8181/api/;
+            add_header Cache-Control no-cache;
+            etag off;
+{% if apphost != 'test' %}
             auth_basic "API access";
             auth_basic_user_file htpasswd;
+{% endif %}
         }
 
         location /productivity/ {
             index index.html;
+            add_header Cache-Control no-cache;
+            etag off;
         }
     }
 {% endfor %}

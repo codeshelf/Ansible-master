@@ -68,6 +68,7 @@ authors:
   - Jesse Keating <jesse.keating@rackspace.com>
   - Paul Durivage <paul.durivage@rackspace.com>
   - Matt Martz <matt@sivel.net>
+  - Ivan Cooper <ivan.cooper@codeshelf.com>
 notes:
   - RAX_CREDS_FILE is an optional environment variable that points to a
     pyrax-compatible credentials file.
@@ -182,6 +183,10 @@ def _list(regions):
             # Do not add specified hosts to inventory
             if server.name in os.getenv('RAX_EXCLUDE_HOSTS','').split(','):
                 continue
+
+            # other arbitrary filter on raw rax data
+            #if to_dict(server).get('rax_tenant_id') == '871205':
+            #    continue
 
             # Create a group on region
             groups[region].append(server.name)

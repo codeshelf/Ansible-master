@@ -26,6 +26,10 @@
   lineinfile: dest=/etc/init.d/logstash regexp="^export HOSTNAME" line="export HOSTNAME=`hostname`" state=present insertafter="END INIT INFO"
   notify: restart logstash
 
+- name: Patch service startup for JAVA_HOME
+  lineinfile: dest=/etc/init.d/logstash regexp="^\. /etc/profile.d/java\.sh" line=". /etc/profile.d/java.sh" state=present insertafter="export HOSTNAME"
+  notify: restart logstash
+
 #- name: Patch service startup for plugin
 #  lineinfile: dest=/etc/init.d/logstash regexp="^LS_OPTS" line='LS_OPTS=" --pluginpath /opt/logstash/plugins/ "' state=present insertafter="LS_NICE"
 

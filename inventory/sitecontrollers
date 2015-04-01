@@ -4,6 +4,9 @@ sc10001 ansible_ssh_port=10001 diag_port=30001 codeshelf_server=test.codeshelf.c
 sc10002 ansible_ssh_port=10002 diag_port=30002 codeshelf_server=test.codeshelf.com customer=__LOST__ codeshelf_version=test alert=no
 sc10003 ansible_ssh_port=10003 diag_port=30003 codeshelf_server=stage.codeshelf.com customer=STAGING codeshelf_version=stage alert=no
 sc10004 ansible_ssh_port=10004 diag_port=30004 codeshelf_server=betelgeuse.codeshelf.com customer=Accu-Logistics codeshelf_version=latest alert=yes
+sc10005 ansible_ssh_port=10005 diag_port=30005 codeshelf_server=capella.codeshelf.com customer=PFSWeb codeshelf_version=v13.86 alert=no
+sc10006 ansible_ssh_port=10006 diag_port=30006 codeshelf_server=10.0.0.1 customer=MobileDemo_was_capella codeshelf_version=stage alert=no
+sc10007 ansible_ssh_port=10007 diag_port=30007 codeshelf_server=10.0.0.1 customer=none_was_capella codeshelf_version=stage alert=no
 
 [provisioning]
 provision0 ansible_ssh_port=9999
