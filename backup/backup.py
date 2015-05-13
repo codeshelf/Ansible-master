@@ -27,10 +27,10 @@ reportEmailRecipient = 'ivan.cooper@codeshelf.com'
 
 logLevel = logging.DEBUG # only used for console log
 
-remoteHost = 'bu.codeshelf.com'
-remotePort = 22
+remoteHost = 'oak.codeshelf.com'
+remotePort = 13011
 remoteUsername = 'backup'
-remoteFolder = '/home/backup'
+remoteFolder = '/incoming'
 # paramiko will use keys in ~/.ssh by default
 
 # logging setup -----------------------------

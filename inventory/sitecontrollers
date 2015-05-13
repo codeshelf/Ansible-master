@@ -1,12 +1,15 @@
 [sitecon]
-sc10000 ansible_ssh_port=10000 diag_port=30000 codeshelf_server=aldebaran.codeshelf.com customer=Demo codeshelf_version=latest alert=yes
-sc10001 ansible_ssh_port=10001 diag_port=30001 codeshelf_server=test.codeshelf.com customer=TEST codeshelf_version=test alert=no
-sc10002 ansible_ssh_port=10002 diag_port=30002 codeshelf_server=test.codeshelf.com customer=__LOST__ codeshelf_version=test alert=no
-sc10003 ansible_ssh_port=10003 diag_port=30003 codeshelf_server=stage.codeshelf.com customer=STAGING codeshelf_version=stage alert=no
+sc10000 ansible_ssh_port=10000 diag_port=30000 codeshelf_server=aldebaran.codeshelf.com customer=Demo codeshelf_version=stage alert=yes
+#sc10001 ansible_ssh_port=10001 diag_port=30001 codeshelf_server=test.codeshelf.com customer=TEST codeshelf_version=test alert=no
+#sc10002 ansible_ssh_port=10002 diag_port=30002 codeshelf_server=test.codeshelf.com customer=__LOST__ codeshelf_version=test alert=no
+#sc10003 ansible_ssh_port=10003 diag_port=30003 codeshelf_server=stage.codeshelf.com customer=STAGING codeshelf_version=stage alert=no
 sc10004 ansible_ssh_port=10004 diag_port=30004 codeshelf_server=betelgeuse.codeshelf.com customer=Accu-Logistics codeshelf_version=latest alert=yes
 sc10005 ansible_ssh_port=10005 diag_port=30005 codeshelf_server=capella.codeshelf.com customer=PFSWeb codeshelf_version=v13.86 alert=no
-sc10006 ansible_ssh_port=10006 diag_port=30006 codeshelf_server=10.0.0.1 customer=MobileDemo_was_capella codeshelf_version=stage alert=no
-sc10007 ansible_ssh_port=10007 diag_port=30007 codeshelf_server=10.0.0.1 customer=none_was_capella codeshelf_version=stage alert=no
+#sc10006 ansible_ssh_port=10006 diag_port=30006 codeshelf_server=10.0.0.1 customer=MobileDemo_was_capella codeshelf_version=stage alert=no
+#sc10007 ansible_ssh_port=10007 diag_port=30007 codeshelf_server=10.0.0.1 customer=none_was_capella codeshelf_version=stage alert=no
+#sc10008 ansible_ssh_port=10008 diag_port=30008 codeshelf_server=test.codeshelf.com customer=TEST2 codeshelf_version=test alert=no
+#sc10009 ansible_ssh_port=10009 diag_port=30009 codeshelf_server=stage.codeshelf.com customer=STAGING2 codeshelf_version=stage alert=no
+#sc10010 ansible_ssh_port=10010 diag_port=30010 codeshelf_server=test.codeshelf.com customer=TEST codeshelf_version=test alert=no
 
 [provisioning]
 provision0 ansible_ssh_port=9999
@@ -16,6 +19,7 @@ codeshelf_networknumber=1
 codeshelf_channel=5
 ansible_ssh_host=home1
 exclude_from_hosts=yes
+cred="0.6910096026612129"
 
 [provisioning:vars]
 ansible_ssh_host=home1

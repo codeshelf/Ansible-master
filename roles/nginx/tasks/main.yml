@@ -23,7 +23,6 @@
     - admin.codeshelf.com.key
     - tc.codeshelf.com.key
     - teamcity.codeshelf.com.key
-    - productivity.codeshelf.com.key
     - codeshelfcom.key
 
 - name: static sites
@@ -44,6 +43,10 @@
   file: path=/var/www/{{ item }}/ state=directory
   with_items: groups['fep']
 
+- name: UX folders
+  file: path=/var/www/{{ item }}/ux/ state=directory
+  with_items: groups['fep']
+
 - name: UX versions
   copy: src=/home/ansible/release/CodeshelfUX/{{ item }}/buildweb.txt dest=/var/www/{{ item }}/
   with_items: groups['fep']
@@ -56,6 +59,10 @@
 
 - name: app browser config files
   template: src=websocket.addr.json.j2 dest=/var/www/{{ item }}/websocket.addr.json
+  with_items: groups['fep']
+
+- name: app browser config files
+  template: src=websocket.addr.json.j2 dest=/var/www/{{ item }}/ux/websocket.addr.json
   with_items: groups['fep']
 
 - name: nginx configuration

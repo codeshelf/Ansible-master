@@ -1,9 +1,9 @@
 while :
 do
    ap nginx.yml
-   ap sitecon.yml --limit=sc10001,sc10003
+   ap sitecon.yml --limit=sc10003,sc10000,sc10009,sc10008,sc10010
      #,sc10005,sc10006
-   #ap fep.yml --limit=capella
+   ap fep.yml --limit=aldebaran
    date
    echo SLEEPING...
    sleep 930

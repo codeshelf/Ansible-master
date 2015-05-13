@@ -1,4 +1,12 @@
 ---
+- name: Packages
+  yum: name={{ item }} state=present
+  with_items:
+    - ntp
+
+- name: Ensure ntpd is running and enabled
+  service: name=ntpd state=started enabled=yes
+
 - name: Ansible files directory
   file: path=/home/ansible/files/ state=directory owner=ansible group=ansible
 

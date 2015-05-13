@@ -46,6 +46,9 @@
       - vim
       - joe
       - nano
+      - wget
+      - libselinux-python
+      - ntp
       - nagios-plugins-procs
       - nagios-plugins-pgsql
       - nagios-plugins-disk
@@ -59,6 +62,9 @@
 
     - name: iptables configuration assembly folder
       file: path=/etc/sysconfig/iptables.d state=directory owner=root group=root mode=0700
+
+    - name: Ensure ntpd is running and enabled
+      service: name=ntpd state=started enabled=yes
 
     - name: Setup sudoers
       copy: src=/home/ansible/spinup/sudoers

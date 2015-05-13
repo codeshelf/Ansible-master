@@ -1,7 +1,11 @@
 websocket.uri=wss://{{ codeshelf_server }}/ws/
 websocket.idle.kill=true
+{% if codeshelf_server == 'test.codeshelf.com' or codeshelf_server == 'stage.codeshelf.com' %}
+websocket.username={{ ansible_ssh_port }}
+{% else %}
 websocket.username=5000
-websocket.password=0.6910096026612129
+{% endif %}
+websocket.password={{ cred }}
 
 sitecontroller.port=8089
 
