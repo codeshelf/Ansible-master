@@ -44,17 +44,7 @@ metrics.reporter.interval=10
 metrics.reporter.backoff=60
 metrics.reporter.serverurl=http://hadoop1:4242/
 
-{% if inventory_hostname == 'betelgeuse' %}
-# facility.sequencer=BayDistanceTopLast
 facility.sequencer=BayDistance
-{% else %}
-facility.sequencer=BayDistance
-{% endif %}
-
-{% if inventory_hostname == 'aldebaran' or inventory_hostname == 'stage' %}
-facility.housekeeping.baychange=None
-facility.housekeeping.repeatposition=ContainerAndCount
-{% endif %}
 
 {% if inventory_hostname == 'test' or inventory_hostname == 'stage' or inventory_hostname == 'aldebaran' %}
 adminserver.schemamanagement=true
@@ -63,4 +53,25 @@ adminserver.schemamanagement=false
 {% endif %}
 
 auth.cookie.secure=true
+auth.cookie.domain=
+auth.baseurl=https://{{ inventory_hostname }}.codeshelf.com
+# authentication
+auth.token.secret={{ appserver_hmac_secret }}
+auth.token.xor={{ appserver_hmac_xor }}
+auth.cookie.domain=
+auth.cookie.secure=false
+auth.cookie.maxagehours=24
+auth.session.maxfutureseconds=30
+auth.session.maxidleminutes=10
+auth.session.minidleminutes=5
+
+edi.sftp.password_key={{ appserver_sftp_password_key }}
+
+{% if inventory_hostname == 'test' or inventory_hostname == 'stage' %}
+mail.username=qatest@codeshelf.com
+mail.password={{ notify_pw_testappserver }}
+{% else %}
+mail.username=notifications@codeshelf.com
+mail.password={{ notify_pw_appserver }}
+{% endif %}
 

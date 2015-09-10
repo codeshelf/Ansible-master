@@ -26,3 +26,5 @@
 .joerc
 .pgpass
 /.vim/
+/group_vars/all
+

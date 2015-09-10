@@ -20,7 +20,9 @@ echo -n Starting $prog, $SSHUSERNAME:
 su et -c "$autossh -f -M 0 \
 	-TNn -i ~et/.ssh/id_rsa -p 8022 -o StrictHostKeyChecking=no \
 	-o ConnectTimeout=20 -o ServerAliveInterval=20 \
-        -L 56440:elastic1:56440 \
+	-L 4200:flume1:4200 \
+	-L 4201:flume2:4200 \
+	-L 56440:elastic1:56440 \
 	-L 4242:hadoop1:4242 \
 	-R {{ ansible_ssh_port }}:127.0.0.1:22 \
 	-R {{ diag_port }}:127.0.0.1:8089 \

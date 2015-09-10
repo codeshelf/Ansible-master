@@ -1,13 +1,13 @@
 ---
 - name: apache flume installer
-  unarchive: src=apache-flume-1.5.2-bin.tar.gz dest=/opt/ creates=/opt/apache-flume-1.5.2-bin
+  unarchive: src=apache-flume-1.6.0-bin.tar.gz dest=/opt/ creates=/opt/apache-flume-1.6.0-bin
   register: flume_installer
 
 - name: flume user
   user: name=flume
 
 - name: flume symlink
-  file: state=link src=apache-flume-1.5.2-bin dest=/opt/flume owner=root group=root
+  file: state=link src=apache-flume-1.6.0-bin dest=/opt/flume owner=root group=root
   notify: restart flume
 
 - name: flume config folder

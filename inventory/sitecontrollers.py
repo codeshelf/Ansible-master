@@ -26,13 +26,14 @@ def get_sitecons(db,manager_schema):
 			customer = server
 		version = server
 
-		if version == "aldebaran":
-			version = "stage" # temporary!
+		#if version == "aldebaran":
+		#	version = "stage" # temporary!
 
 		alert = "yes"
 		if version == "stage" or version == "test":
 			alert = "no"
 		hostname = "sc"+serial
+		#print "debug: "+hostname+","+version+","+customer+","+server
 		dport = int(serial)+20000
 		uvars = {"ansible_hostname":hostname,"ansible_ssh_host":"home1","ansible_ssh_port":serial,"diag_port":dport,"codeshelf_server":server+".codeshelf.com","customer":customer,"codeshelf_version":version,"alert":alert,"exclude_from_hosts":"yes","cred":"0.6910096026612129"}
 		users[hostname] = uvars;
@@ -41,7 +42,7 @@ def get_sitecons(db,manager_schema):
 
 sitecons = []
 hostvars = {}
-mgr_schemas = {"pgtest":["manager_test","manager_stage"],"dbmaster":["manager_aldebaran","manager_betelgeuse","manager_capella"]}
+mgr_schemas = {"pgtest":["manager_test","manager_stage"],"dbmaster":["manager_aldebaran","manager_betelgeuse","manager_capella","manager_deneb"]}
 for db in mgr_schemas:
 	for schema in mgr_schemas[db]:
 		results = get_sitecons(db,schema)

@@ -57,6 +57,10 @@
 #  with_items: groups['DFW']
   notify: restart nagios
 
+- name: nagios commands
+  template: src=commands.cfg.j2 dest=/opt/nagios/etc/objects/commands.cfg
+  notify: restart nagios
+
 - name: nagios enable service
   service: name=nagios enabled=yes state=started
   when: install.changed
