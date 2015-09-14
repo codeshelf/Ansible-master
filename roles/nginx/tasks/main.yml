@@ -25,6 +25,9 @@
     - teamcity.codeshelf.com.key
     - codeshelfcom.key
 
+- name: dhparams file
+  copy: src=dhparams.pem dest=/etc/pki/tls/dhparams.pem owner=root group=root mode=0600
+
 - name: static sites
   synchronize: src=static dest=/var/www
 
