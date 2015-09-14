@@ -11,10 +11,6 @@
       prompt: "serial number"
       private: no
 
-    - name: "fep"
-      prompt: "FEP assigment domain name (e.g. test.codeshelf.com)"
-      private: no
-
     - name: "new_root_password"
       prompt: "root password (paste from password manager)"
       private: yes

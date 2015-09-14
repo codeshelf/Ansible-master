@@ -1,10 +1,6 @@
 websocket.uri=wss://{{ codeshelf_server }}/ws/
 websocket.idle.kill=true
-{% if codeshelf_server == 'test.codeshelf.com' or codeshelf_server == 'stage.codeshelf.com' %}
 websocket.username={{ ansible_ssh_port }}
-{% else %}
-websocket.username=5000
-{% endif %}
 websocket.password={{ cred }}
 
 sitecontroller.port=8089
@@ -18,9 +14,7 @@ metrics.reporter.interval=60
 metrics.reporter.backoff=300
 metrics.reporter.serverurl=http://127.0.0.1:4242/
 
-console.appender=org.apache.log4j.varia.NullAppender
-
-log.socket.enable=true
-log.socket.host=127.0.0.1
-log.socket.port=56446
 log.console.enable=false
+# log.flume.enable=true
+log.socket.enable=true
+log.socket.port=56446
