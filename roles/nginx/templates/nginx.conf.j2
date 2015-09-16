@@ -56,6 +56,7 @@ http {
         listen 443 default_server ssl;
         ssl_certificate /etc/pki/tls/certs/codeshelfcom.crt;
         ssl_certificate_key /etc/pki/tls/private/codeshelfcom.key;
+        ssl_dhparam /etc/pki/tls/dhparams.pem;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
 
         root /var/www/static/default/;
@@ -65,6 +66,7 @@ http {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/codeshelfcom.crt;
         ssl_certificate_key /etc/pki/tls/private/codeshelfcom.key;
+        ssl_dhparam /etc/pki/tls/dhparams.pem;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
 
         server_name {{ staticsite }}.codeshelf.com;
@@ -75,6 +77,7 @@ http {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/admin.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/admin.codeshelf.com.key;
+        ssl_dhparam /etc/pki/tls/dhparams.pem;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
         add_header Cache-Control no-cache;
         etag off;
@@ -112,6 +115,7 @@ http {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/kibana.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/kibana.codeshelf.com.key;
+        ssl_dhparam /etc/pki/tls/dhparams.pem;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
 
         ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
@@ -131,6 +135,7 @@ http {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/grafana.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/grafana.codeshelf.com.key;
+        ssl_dhparam /etc/pki/tls/dhparams.pem;
 
         ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
         ssl_verify_client on;
@@ -155,6 +160,7 @@ http {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/tsdb.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/tsdb.codeshelf.com.key;
+        ssl_dhparam /etc/pki/tls/dhparams.pem;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
         add_header Cache-Control no-cache;
         etag off;
@@ -173,6 +179,7 @@ http {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/tc.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/tc.codeshelf.com.key;
+        ssl_dhparam /etc/pki/tls/dhparams.pem;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
         add_header Cache-Control no-cache;
 
@@ -190,6 +197,7 @@ http {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/dev.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/dev.codeshelf.com.key;
+        ssl_dhparam /etc/pki/tls/dhparams.pem;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
         add_header Cache-Control no-cache;
 
@@ -205,6 +213,7 @@ http {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/codeshelfcom.crt;
         ssl_certificate_key /etc/pki/tls/private/codeshelfcom.key;
+        ssl_dhparam /etc/pki/tls/dhparams.pem;
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
         add_header Cache-Control no-cache;
         etag off;
