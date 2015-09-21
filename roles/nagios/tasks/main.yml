@@ -52,10 +52,10 @@
   copy: src=nagios dest=/opt/ owner=nagios group=nagios
   notify: restart nagios
 
-- name: nagios DFW hosts
-  template: src=host.j2 dest=/opt/nagios/etc/hosts/hostlist.cfg
+#- name: nagios DFW hosts
+#  template: src=host.j2 dest=/opt/nagios/etc/hosts/hostlist.cfg
 #  with_items: groups['DFW']
-  notify: restart nagios
+#  notify: restart nagios
 
 - name: nagios commands
   template: src=commands.cfg.j2 dest=/opt/nagios/etc/objects/commands.cfg
