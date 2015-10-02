@@ -8,9 +8,9 @@ env USER=codeshelf
 env LOGFILE=/home/codeshelf/.Codeshelf/logs/daemon.log
 
 {% if ansible_hostname == 'capella' %}
-env JAVA_MEM_OPTS=-Xmx7168M
+env JAVA_MEM_OPTS="-Xmx7168M -XX:PermSize=128M -XX:MaxPermSize=256M"
 {% else %}
-env JAVA_MEM_OPTS=-Xmx1536M
+env JAVA_MEM_OPTS="-Xmx1536M -XX:PermSize=128M -XX:MaxPermSize=256M"
 {% endif %}
 
 respawn
