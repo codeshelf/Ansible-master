@@ -6,7 +6,7 @@ my $port = "0";
 my $curl = "";
 
 # if we are called with two arguments, we're checking a site controller
-if (scalar($ARGV) == 2)
+if (@ARGV == 2) {
 	my $port = $ARGV[1];
 	$curl = `curl http://home1:$port/adm/healthchecks 2>/dev/null`;
 } else {
