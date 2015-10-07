@@ -5,7 +5,9 @@ cat <<EOF
 
     </div>
 
-    <footer>Generated at: `date`</footer>
+    <div class="panel-group">
+      <center><footer>Generated at: `date`</footer></center>
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

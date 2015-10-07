@@ -88,3 +88,6 @@
 
 - include: assemble_iptables.yml
 
+- name: dashboard cron
+  cron: minute="*/2" job="/var/www/static/dashboard/generate.html 2>/dev/null >/dev/null" user=nginx
+

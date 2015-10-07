@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# ensure we are in the correct place
+cd /var/www/static/dashboard
+ret=$?
+if [[ $ret != 0 ]]
+then
+	exit 1
+fi
+
 # generate index.html
 cat header.html > index.new
 echo '<div class="col-xs-6">' >> index.new
@@ -17,32 +25,32 @@ do
 done
 echo "</div>" >> index.new
 ./footer.sh >> index.new
-mv index.new index.html
+mv -f index.new index.html
 
 # generate capella.html
 cat header.html > capella.new
 ./get_status.pl capella >> capella.new
 ./get_status.pl sc10022 30022 >> capella.new
-./footer.sh >> index.new
-mv capella.new capella.html
+./footer.sh >> capella.new
+mv -f capella.new capella.html
 
 # generate betelgeuse.html
 cat header.html > betelgeuse.new
 ./get_status.pl betelgeuse >> betelgeuse.new
 ./get_status.pl sc10025 30025 >> betelgeuse.new
-./footer.sh >> index.new
-mv betelgeuse.new betelgeuse.html
+./footer.sh >> betelgeuse.new
+mv -f betelgeuse.new betelgeuse.html
 
 # generate deneb.html
 cat header.html > deneb.new
 ./get_status.pl deneb >> deneb.new
-./footer.sh >> index.new
-mv deneb.new deneb.html
+./footer.sh >> deneb.new
+mv -f deneb.new deneb.html
 
 # generate aldebaran.html
 cat header.html > aldebaran.new
 ./get_status.pl aldebaran >> aldebaran.new
-./footer.sh >> index.new
-mv aldebaran.new aldebaran.html
+./footer.sh >> aldebaran.new
+mv -f aldebaran.new aldebaran.html
 
 exit 0
