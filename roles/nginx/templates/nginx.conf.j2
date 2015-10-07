@@ -113,6 +113,22 @@ http {
 
     server {
         listen 443 ssl;
+        ssl_certificate /etc/pki/tls/certs/dashboard.codeshelf.com.crt;
+        ssl_certificate_key /etc/pki/tls/private/dashboard.codeshelf.com.key;
+        ssl_dhparam /etc/pki/tls/dhparams.pem;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+        add_header Cache-Control no-cache;
+        etag off;
+
+        ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
+        ssl_verify_client on;
+
+        server_name dashboard.codeshelf.com;
+        root /var/www/static/dashboard/;
+    }
+
+    server {
+        listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/kibana.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/kibana.codeshelf.com.key;
         ssl_dhparam /etc/pki/tls/dhparams.pem;
