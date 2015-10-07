@@ -33,9 +33,6 @@
   synchronize: src=static dest=/var/www
   notify: dashboard directory permissions
 
-- name: dashboard directory permissions
-  file: path=/var/www/static/dashboard owner=nginx group=nginx recurse=yes
-
 - name: admin host list
   template: src=hosts.json.j2 dest=/var/www/static/admin/resources/hosts.json owner=root group=root mode=0644
 

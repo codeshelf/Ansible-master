@@ -2,3 +2,6 @@
 - name: reload nginx config
   command: nginx -s reload
 
+- name: dashboard directory permissions
+  file: path=/var/www/static/dashboard owner=nginx group=nginx recurse=yes
+
