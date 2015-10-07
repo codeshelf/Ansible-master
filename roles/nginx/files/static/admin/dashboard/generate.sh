@@ -3,13 +3,15 @@
 # generate index.html
 cat header.html > index.new
 echo '<div class="col-xs-6">' >> index.new
-for server in aldebaran betelgeuse
+echo '<h3>Production</h3>' >> index.new
+for server in betelgeuse capella
 do
 	./get_status.pl $server >> index.new
 done
 echo "</div>" >> index.new
 echo '<div class="col-xs-6">' >> index.new
-for server in capella deneb
+echo '<h3>Testing</h3>' >> index.new
+for server in aldebaran deneb
 do
 	./get_status.pl $server >> index.new
 done
@@ -27,7 +29,7 @@ mv capella.new capella.html
 # generate betelgeuse.html
 cat header.html > betelgeuse.new
 ./get_status.pl betelgeuse >> betelgeuse.new
-./get_status.pl sc10004 30004 >> betelgeuse.new
+./get_status.pl sc10025 30025 >> betelgeuse.new
 cat footer.html >> betelgeuse.new
 mv betelgeuse.new betelgeuse.html
 

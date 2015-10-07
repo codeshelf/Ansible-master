@@ -63,7 +63,15 @@ sub print_status {
 	<h4 class="panel-title">
 		<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'.$server.'" aria-expanded="false" aria-controls="collapse'.$server.'">
 	';
-	print $server . ": " . $status;
+
+	if ($server eq "betelgeuse") {
+		print $server . " (Accu-Logistics) : " . $status;
+	} elsif ($server eq "capella") {
+		print $server . " (PFSweb) : " . $status;
+	} else {
+		print $server . ": " . $status;
+	}
+
 	print '
 		</a>
 			</h4>
@@ -87,7 +95,12 @@ sub print_status {
 	foreach my $item (keys %$json_stuff){
 		print "<tr>";
 		print "<td>" . $item . "</td>";
-		print "<td>" . $json_stuff->{$item}->{'healthy'} . "</td>";
+		# The app servers return booleans, turn them into something more pleasing
+                if ($json_stuff->{$item}->{'healthy'} eq "true") {
+                        print "<td style=\"color:green\">OK</td>";
+                } else {
+                        print "<td style=\"color:red\">Failed</td>";
+                }
 		print "<td>" . $json_stuff->{$item}->{'message'} . "</td>";
 		print "</tr>";
 		print "\n";
