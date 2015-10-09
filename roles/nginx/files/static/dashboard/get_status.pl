@@ -32,7 +32,17 @@ sub print_status {
 
 	# Figure out if the device is up, down, or unhealthy
 	my $status = "Online";
-	foreach my $item (keys %$json_stuff){
+	foreach my $item (keys %$json_stuff) {
+                # Do not take into account the IsProduction "check"
+                if ($item eq "IsProduction") {
+                        next;
+                }
+
+                # Do not take into account the PicksActivity "check"
+                if ($item eq "PicksActivity") {
+                        next;
+                }
+
 		if ($json_stuff->{$item}->{'healthy'} eq "false") {
 			# We only fail a server at this stage if the database is offline
 			if (index($json_stuff->{$item}->{'message'}, 'Database') != -1) {
@@ -64,21 +74,26 @@ sub print_status {
 		<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'.$server.'" aria-expanded="false" aria-controls="collapse'.$server.'">
 	';
 
-	if ($server eq "betelgeuse") {
-		print $server . " (Accu-Logistics) : " . $status;
-	} elsif ($server eq "capella") {
-		print $server . " (PFSweb) : " . $status;
-	} else {
-		print $server . ": " . $status;
-	}
+        my $title = "Default Title";
+        if ($server eq "betelgeuse") {
+                $title = $server . " (Accu-Logistics) : " . $status;
+        } elsif ($server eq "capella") {
+                $title =  $server . " (PFSweb) : " . $status;
+        } else {
+                $title = $server . ": " . $status;
+        }
+        print $title;
 
-	print '
-		</a>
-			</h4>
-		</div>
-	<div id="collapse'.$server.'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-	<div class="panel-body">
-	';
+        print '</a></h4>';
+
+        if ($json_stuff->{"PicksActivity"}) {
+                print "<p>" . $json_stuff->{"PicksActivity"}->{"message"} . "</p>";
+        }
+
+        print '</div>
+<div id="collapse'.$server.'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+<div class="panel-body">
+        ';
 
 	print '
 <table class="table">

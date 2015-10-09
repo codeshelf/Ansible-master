@@ -31,6 +31,7 @@ mv -f index.new index.html
 cat header.html > capella.new
 ./get_status.pl capella >> capella.new
 ./get_status.pl sc10022 30022 >> capella.new
+./get_status.pl sc10024 30024 >> betelgeuse.new
 ./footer.sh >> capella.new
 mv -f capella.new capella.html
 
@@ -50,6 +51,7 @@ mv -f deneb.new deneb.html
 # generate aldebaran.html
 cat header.html > aldebaran.new
 ./get_status.pl aldebaran >> aldebaran.new
+./get_status.pl sc10000 30000 >> betelgeuse.new
 ./footer.sh >> aldebaran.new
 mv -f aldebaran.new aldebaran.html
 
