@@ -45,6 +45,8 @@ mv -f betelgeuse.new betelgeuse.html
 # generate deneb.html
 cat header.html > deneb.new
 ./get_status.pl deneb >> deneb.new
+./get_status.pl sc10021 30021 >> betelgeuse.new
+./get_status.pl sc10023 30023 >> betelgeuse.new
 ./footer.sh >> deneb.new
 mv -f deneb.new deneb.html
 
