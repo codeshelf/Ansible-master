@@ -31,7 +31,7 @@ mv -f index.new index.html
 cat header.html > capella.new
 ./get_status.pl capella >> capella.new
 ./get_status.pl sc10022 30022 >> capella.new
-./get_status.pl sc10024 30024 >> betelgeuse.new
+./get_status.pl sc10024 30024 >> capella.new
 ./footer.sh >> capella.new
 mv -f capella.new capella.html
 
@@ -45,15 +45,15 @@ mv -f betelgeuse.new betelgeuse.html
 # generate deneb.html
 cat header.html > deneb.new
 ./get_status.pl deneb >> deneb.new
-./get_status.pl sc10021 30021 >> betelgeuse.new
-./get_status.pl sc10023 30023 >> betelgeuse.new
+./get_status.pl sc10021 30021 >> deneb.new
+./get_status.pl sc10023 30023 >> deneb.new
 ./footer.sh >> deneb.new
 mv -f deneb.new deneb.html
 
 # generate aldebaran.html
 cat header.html > aldebaran.new
 ./get_status.pl aldebaran >> aldebaran.new
-./get_status.pl sc10000 30000 >> betelgeuse.new
+./get_status.pl sc10000 30000 >> aldebaran.new
 ./footer.sh >> aldebaran.new
 mv -f aldebaran.new aldebaran.html
 
