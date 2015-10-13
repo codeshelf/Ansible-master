@@ -1,7 +1,7 @@
-env JAVA_MEM_OPTS="-Xmx512M"
+JAVA_MEM_OPTS="-Xmx512M"
 
 {% if ansible_hostname == 'sc10025' %}
-env JAVA_MEM_OPTS="-Xmx512M -XX:-UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled"
+JAVA_MEM_OPTS="-Xmx512M -XX:-UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled"
 {% endif %}
 
 /usr/local/java/jdk1.7.0_55/bin/java  $JAVA_MEM_OPTS  -Dconfig.properties=/etc/codeshelf/sitecontroller.config.properties -Djava.library.path=/opt/codeshelf/lib/native/arm-hf -Dcs.logfile.name=codeshelf.sitecontroller.log -Dcodeshelf.remotelog.ipaddress=127.0.0.1 -Dcodeshelf.remotelog.port=56445 -Dfile.encoding=UTF-8 -jar /opt/codeshelf/sitecontroller.codeshelf.jar &
