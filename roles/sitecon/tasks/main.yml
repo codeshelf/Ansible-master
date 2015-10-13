@@ -28,7 +28,7 @@
   register: configfile
 
 - name: Startup script installed
-  copy: src=/home/ansible/roles/sitecon/files/start.netcontroller
+  template: src=start.netcontroller.j2
          dest=/opt/codeshelf/start.netcontroller
          owner=codeshelf group=codeshelf mode=0755
   register: servicescript
