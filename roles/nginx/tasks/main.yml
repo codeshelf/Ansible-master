@@ -29,6 +29,9 @@
 - name: dhparams file
   copy: src=dhparams.pem dest=/etc/pki/tls/dhparams.pem owner=root group=root mode=0600
 
+- name: crl file
+  copy: src=crl.pem dest=/etc/pki/tls/crl.pem owner=root group=root mode=0444
+
 - name: static sites
   synchronize: src=static dest=/var/www
   notify: dashboard directory permissions
