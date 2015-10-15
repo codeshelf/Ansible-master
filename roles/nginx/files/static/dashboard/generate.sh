@@ -57,4 +57,36 @@ cat header.html > aldebaran.new
 ./footer.sh >> aldebaran.new
 mv -f aldebaran.new aldebaran.html
 
+# generate sc.html with all site cons in it
+cat header.html > sc.new
+./get_status.pl sc10000 30000 >> sc.new
+./get_status.pl sc10001 30001 >> sc.new
+./get_status.pl sc10002 30002 >> sc.new
+./get_status.pl sc10003 30003 >> sc.new
+./get_status.pl sc10004 30004 >> sc.new
+./get_status.pl sc10005 30005 >> sc.new
+./get_status.pl sc10006 30006 >> sc.new
+./get_status.pl sc10007 30007 >> sc.new
+./get_status.pl sc10008 30008 >> sc.new
+./get_status.pl sc10009 30009 >> sc.new
+./get_status.pl sc10010 30010 >> sc.new
+./get_status.pl sc10011 30011 >> sc.new
+./get_status.pl sc10012 30012 >> sc.new
+./get_status.pl sc10013 30013 >> sc.new
+./get_status.pl sc10014 30014 >> sc.new
+./get_status.pl sc10015 30015 >> sc.new
+./get_status.pl sc10016 30016 >> sc.new
+./get_status.pl sc10017 30017 >> sc.new
+./get_status.pl sc10018 30018 >> sc.new
+./get_status.pl sc10019 30019 >> sc.new
+./get_status.pl sc10020 30020 >> sc.new
+./get_status.pl sc10021 30021 >> sc.new
+./get_status.pl sc10022 30022 >> sc.new
+./get_status.pl sc10023 30023 >> sc.new
+./get_status.pl sc10024 30024 >> sc.new
+./get_status.pl sc10025 30025 >> sc.new
+./get_status.pl sc10026 30026 >> sc.new
+./footer.sh >> sc.new
+mv -f sc.new sc.html
+
 exit 0
