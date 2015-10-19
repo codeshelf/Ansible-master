@@ -63,6 +63,9 @@ $IPT6 -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 # Allow icmp traffic
 $IPT6 -A INPUT -p ipv6-icmp -j ACCEPT
 
+# SSH
+$IPT6 -A INPUT -s 2001:4800:7818:104:be76:4eff:fe05:d495 -p tcp --dport 22 -j ACCEPT # master.codeshelf.com
+
 # DNS
 $IPT6 -A INPUT -s 2607:f0d0:1005:72::100 -p tcp --dport 53 -j ACCEPT # BuddyNS
 $IPT6 -A INPUT -s 2607:f0d0:1005:72::100 -p udp --dport 53 -j ACCEPT
