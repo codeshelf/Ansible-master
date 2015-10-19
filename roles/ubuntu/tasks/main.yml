@@ -1,0 +1,50 @@
+---
+# ubuntu (base role)
+
+# install some default packages
+- name: default packages
+  apt: name={{ item }} state=present
+  with_items:
+    - sudo
+    - ethtool
+    - pwgen
+    - vim
+    - lsof
+    - tmux
+    - ntp
+
+# remove annoying packages
+- name: blacklist packages
+  apt: name={{ item }} state=absent
+  with_items:
+    - nano
+
+# manage ntp
+- name: Ensure ntp is started and enabled
+  service: name=ntp state=started enabled=yes
+
+- name: Configure ntp
+  copy: src=ntp.conf dest=/etc/ntp.conf owner=root group=root mode=0444
+  notify:
+    - restart ntp
+
+# manage ansible user
+- name: Create ansible user
+  user: name=ansible
+
+- name: Ansible authorized ssh keys
+  authorized_key: key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDc4mcehc00Id14sAe0H1HvRD2jh6DMVRXzrAF4Svu4QLZVvT5U43DNCCxfFZJcU9VYsWkME3L7Yd/Mjsml1nOCvlMWUvN57F2rqcY1/vDHO+5kVhsddD4gx1MH+uVtt8koT0LlH56Agv8nwMRorR2Del6Ec9mNTRQBQJ3q1Ga7zqqybvJiqPy0WdXh2BtQEwbVnET7Q9kJgH/RMlhDEPscycVktOwV48UMJdNye+4TGjkWFkh3G314p04X/drGr17iqYvXFatczjCJLhgoHEHShEdJTEvL4DPiROZ01XGrBHwvIUNdUFVm/SnqO1VdGjzjqa+ArgY1XVCEr9FVYih/ ansible" user=ansible
+
+- name: ansible files temporary directory
+  file: path=/home/ansible/files/ state=directory
+
+# manage sudoers
+- name: sudoers configuration file
+  copy: src=sudoers dest=/etc/sudoers owner=root group=root mode=0444
+
+# manage sshd
+- name: sshd configuration file
+  copy: src=sshd_config dest=/etc/ssh/sshd_config owner=root group=root mode=0444
+  notify:
+    - restart ssh
+
