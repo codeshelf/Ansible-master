@@ -1,0 +1,33 @@
+---
+# bind9 primary tasks
+
+# install necessary packages
+- name: bind packages
+  apt: name={{ item }} state=present
+  with_items:
+    - bind9
+    - bind9utils
+    - bind9-host
+    - dnsutils
+
+# manage bind9 service
+- name: Ensure bind9 is started and enabled
+  service: name=bind9 state=started enabled=yes
+
+# copy configurations
+- name: Copy bind9 configuration files
+  copy: src={{ item }} dest=/etc/bind/{{ item }} owner=root group=root mode=0444
+  with_items:
+    - named.conf
+    - named.conf.default-zones
+    - named.conf.local
+    - named.conf.options
+  notify:
+    - restart bind9
+
+# copy zones
+- name: Copy dns zone files
+  copy: src=zones dest=/etc/bind/ owner=root group=root mode=0444 directory_mode=0555
+  notify:
+    - reload bind9
+

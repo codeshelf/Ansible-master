@@ -1,0 +1,16 @@
+options {
+	# list working directory
+        directory "/var/cache/bind";
+
+	# allow no one to do lookups
+	allow-recursion {
+		none;
+	};
+
+	# conform to RFC1035
+        auth-nxdomain no;
+
+	# listen on all interfaces and protocols
+        listen-on-v6 { any; };
+};
+
