@@ -61,6 +61,5 @@ $IPT6 -A INPUT -p tcp --dport 53 -j ACCEPT
 $IPT6 -A INPUT -p udp --dport 53 -j ACCEPT
 
 # Default Reject
-$IPT6 -A INPUT -j REJECT --reject-with icmp-host-prohibited
+$IPT6 -A INPUT -j REJECT --reject-with icmp6-adm-prohibited
 
-exit 0
