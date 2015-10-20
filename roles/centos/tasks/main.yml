@@ -49,6 +49,14 @@
   notify:
     - restart nrpe
 
+- name: ip6tables service
+  service: name=ip6tables enabled=yes started=yes
+
+- name: ip6tables configuration
+  copy: src=ip6tables dest=/etc/sysconfig/ip6tables owner=root group=root mode=0400
+  notify:
+    - restart ip6tables
+
 - name: iptables configuration assembly folder
   file: path=/etc/sysconfig/iptables.d state=directory owner=root group=root mode=0700
 
