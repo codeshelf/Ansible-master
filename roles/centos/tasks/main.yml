@@ -50,7 +50,7 @@
     - restart nrpe
 
 - name: ip6tables service
-  service: name=ip6tables enabled=yes started=yes
+  service: name=ip6tables enabled=yes state=started
 
 - name: ip6tables configuration
   copy: src=ip6tables dest=/etc/sysconfig/ip6tables owner=root group=root mode=0400
