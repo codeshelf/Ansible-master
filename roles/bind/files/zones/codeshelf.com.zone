@@ -5,7 +5,7 @@ $TTL 1h
 
 ; SOA Record
 CODESHELF.COM.	3600	IN	SOA	ns.codeshelf.com.	devops.codeshelf.com. (
-				2015101903 ; serial
+				2015102001 ; serial
 				2h         ; refresh
 				30M        ; update retry
 				4W         ; expiry
@@ -31,6 +31,9 @@ mail		IN	A	104.130.139.106
 master		IN	A	104.130.125.194
 nagios		IN	A	64.49.237.227
 ns		IN	A	198.61.170.212
+ns1		IN	A	107.181.178.180 ; i.ns.buddyns.com
+ns2		IN	A	173.244.206.25  ; b.ns.buddyns.com
+ns3		IN	A	107.191.99.111  ; d.ns.buddyns.com
 ns-master	IN	A	166.78.156.244
 oak		IN	A	70.36.226.20
 productivity	IN	A	104.130.139.106
@@ -49,6 +52,8 @@ www2		IN	A	104.130.139.106
 
 ; AAAA Records
 ns		IN	AAAA	2001:4801:7817:72:be76:4eff:fe10:db08
+ns1		IN	AAAA	2607:f7a0:a:23::3  ; i.ns.buddyns.com
+ns3		IN	AAAA	2604:180:2:4cf::3  ; d.ns.buddyns.com
 ns-master	IN	AAAA	2001:4800:7812:514:be76:4eff:fe05:9cc4
 
 ; CNAME Records
@@ -69,3 +74,7 @@ promo					IN	CNAME	unbouncepages.com
 
 ; NS Records
 @	IN	NS	ns.codeshelf.com.
+@	IN	NS	ns1.codeshelf.com.
+@	IN	NS	ns2.codeshelf.com.
+@	IN	NS	ns3.codeshelf.com.
+
