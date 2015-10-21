@@ -1,34 +1,31 @@
 ---
 # centos (base role) 
-#- name: Make sure that the ansible/files directory exsists
-#  file: path=/home/ansible/files/ state=directory
-#
+- name: Make sure that the ansible/files directory exsists
+  file: path=/home/ansible/files/ state=directory
+
 - name: Packages
   yum: name={{ item }} state=present
   with_items:
-     - ntp
-     - unzip
+      - lsof
+      - telnet
+      - elinks
+      - tmux
+      - nrpe
+      - vim
+      - joe
+      - nano
+      - wget
+      - libselinux-python
+      - ntp
+      - sudo
+      - nagios-plugins-procs
+      - nagios-plugins-pgsql
+      - nagios-plugins-disk
+      - nagios-plugins-users
+      - nagios-plugins-log
+      - nagios-plugins-swap
+      - nagios-plugins-load
 
-#    - vim
-#    - lsof
-#    - telnet
-#    - elinks
-#    - tmux
-#
-#- name: latest nrpe
-#  yum: name={{ item }} state=latest
-#  with_items:
-#    - nrpe  
-#    - nagios-plugins-procs
-#    - nagios-plugins-pgsql
-#    - nagios-plugins-disk
-#    - nagios-plugins-users
-#    - nagios-plugins-log
-#    - nagios-plugins-swap
-#    - nagios-plugins-load
-#  notify:
-#    - restart nrpe
-#
 - name: Ensure ntpd is running and enabled
   service: name=ntpd state=started enabled=yes
 
@@ -96,6 +93,9 @@
   template: src=hosts.j2 dest=/etc/hosts
   with_items:
   - "{{ inventory_hostname }}"
+
+- name: Setup sudoers
+  copy: src=sudoers dest=/etc/sudoers owner=root group=root mode=0440 validate='visudo -cf %s'
 
 - name: rsyslog configuration
   copy: src=rsyslog.conf dest=/etc/ owner=root group=root mode=0644 
