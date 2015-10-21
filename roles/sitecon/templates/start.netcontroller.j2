@@ -1,5 +1,25 @@
 JAVA_MEM_OPTS="-Xmx512M"
 
+{% if ansible_hostname == 'sc10001' %}
+JAVA_MEM_OPTS="-Xmx512M -XX:-UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled"
+{% endif %}
+
+{% if ansible_hostname == 'sc10005' %}
+JAVA_MEM_OPTS="-Xmx512M -XX:-UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled"
+{% endif %}
+
+{% if ansible_hostname == 'sc10008' %}
+JAVA_MEM_OPTS="-Xmx512M -XX:-UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled"
+{% endif %}
+
+{% if ansible_hostname == 'sc10009' %}
+JAVA_MEM_OPTS="-Xmx512M -XX:-UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled"
+{% endif %}
+
+{% if ansible_hostname == 'sc10010' %}
+JAVA_MEM_OPTS="-Xmx512M -XX:-UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled"
+{% endif %}
+
 {% if ansible_hostname == 'sc10025' %}
 JAVA_MEM_OPTS="-Xmx512M -XX:-UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled"
 {% endif %}
