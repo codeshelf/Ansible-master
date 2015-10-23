@@ -26,9 +26,9 @@ tenant.default.schema={{ inventory_hostname }}
 tenant.default.username=codeshelf
 
 {% if inventory_hostname == 'stage' or inventory_hostname == 'test' %}
-manager.db.url=jdbc:postgresql://pgtest:5432/database
+manager.db.url=jdbc:postgresql://pgtest2:5432/database
 manager.db.password=golbwomgkneomqi
-shard.default.db.url=jdbc:postgresql://pgtest:5432/database
+shard.default.db.url=jdbc:postgresql://pgtest2:5432/database
 shard.default.db.admin_password=golbwomgkneomqi
 tenant.default.password=golbwomgkneomqi
 {% else %}
