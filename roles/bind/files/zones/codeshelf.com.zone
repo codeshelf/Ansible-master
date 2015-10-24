@@ -5,10 +5,10 @@ $TTL 1h
 
 ; SOA Record
 CODESHELF.COM.	3600	IN	SOA	ns.codeshelf.com.	devops.codeshelf.com. (
-				2015102001 ; serial
+				2015102301 ; serial
 				2h         ; refresh
 				30M        ; update retry
-				4W         ; expiry
+				2W         ; expiry
 				10M        ; nxdomain ttl
 				)
 
@@ -61,11 +61,11 @@ a8461bfa1e4fc093b0f28c31e511eea1	IN	CNAME	verify.bing.com
 promo					IN	CNAME	unbouncepages.com
 
 ; MX Records
-@	IN	MX	5	alt1.aspmx.l.google.com
-@	IN	MX	5	alt2.aspmx.l.google.com
-@	IN	MX	30	ALT3.ASPMX.L.GOOGLE.COM
-@	IN	MX	30	ALT4.ASPMX.L.GOOGLE.COM
-@	IN	MX	1	aspmx.l.google.com
+@	IN	MX	5	alt1.aspmx.l.google.com.
+@	IN	MX	5	alt2.aspmx.l.google.com.
+@	IN	MX	30	ALT3.ASPMX.L.GOOGLE.COM.
+@	IN	MX	30	ALT4.ASPMX.L.GOOGLE.COM.
+@	IN	MX	1	aspmx.l.google.com.
 
 ; TXT Records
 @	IN	TXT	"google-site-verification=3li_c8eX_nhi3MjfnpW1l34Z4T9gYXX_4kl20vOC2uw"

@@ -2,6 +2,9 @@ options {
 	# list working directory
         directory "/var/cache/bind";
 
+	# hide bind version
+	version "unknown";
+
 	# allow no one to do lookups
 	allow-recursion {
 		none;
