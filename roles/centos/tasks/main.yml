@@ -18,6 +18,7 @@
       - libselinux-python
       - ntp
       - sudo
+      - dstat
       - nagios-plugins-procs
       - nagios-plugins-pgsql
       - nagios-plugins-disk
