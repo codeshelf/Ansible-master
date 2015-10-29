@@ -49,7 +49,7 @@ main_menu () {
                 'status')
                         remote_command status
                 ;;
-                'status')
+                'uptime')
                         remote_command uptime
                 ;;
                 'pstree')

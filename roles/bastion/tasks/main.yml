@@ -1,7 +1,9 @@
 ---
+# copy restricted shell into place
 - name: copy shell
   copy: src=restricted_shell dest=/bin/restricted_shell owner=root group=root mode=0555
 
+# user accounts
 - name: ayounts account
   user: name=ayounts shell=/bin/restricted_shell group=staff generate_ssh_key=yes
 

@@ -42,7 +42,7 @@ case $COMMAND in
 			# get the site controller number
                         SITECON=`echo $HOST | cut -d\c -f 2`
 			# define a valid site controller range, 10000 < x < 20000
-			if [ ! ( "$SITECON" -gt "9999" && "$SITECON" -lt "19999" ) ]
+			if [[ ! ( "$SITECON" -ge "10000" && "$SITECON" -le "20000" ) ]]
 			then
 				echo "Invalid site controller number"
 				exit
@@ -51,17 +51,17 @@ case $COMMAND in
 			# compute the site controller monitor port
                         PORT=$((SITECON+20000))
 
-                        echo "curl http://home1:${PORT}/adm/healthchecks"
+                        curl http://home1:${PORT}/adm/healthchecks
                 else
 			# we are talking to an app server
-                        echo "curl http://${HOST}:8181/adm/healthchecks"
+                        curl http://${HOST}:8181/adm/healthchecks
                 fi
         ;;
         'uptime')
- 		echo "ssh $HOST uptime"
+ 		ssh $HOST uptime
         ;;
         'pstree')
- 		echo "ssh $HOST pstree"
+ 		ssh $HOST pstree
         ;;
         'start-daemon')
                 if [[ $HOST =~ ^sc[0-9]{5} ]]
