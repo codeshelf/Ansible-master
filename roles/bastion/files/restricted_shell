@@ -96,6 +96,7 @@ remote_command () {
         # ssh -i /home/foobar/.ssh/id_rsa ansible@ansiblehost status sc10000 | less
         #echo "$REMOTE_COMMAND -i ${USER_KEY} ${REMOTE_USER}@${REMOTE_HOST} $RUNCMD $HOST | $PAGER"
         $REMOTE_COMMAND -i ${USER_KEY} ${REMOTE_USER}@${REMOTE_HOST} $RUNCMD $HOST | $PAGER
+	clear
 }
 
 # print out some help
@@ -126,7 +127,6 @@ EOF
 # start of shell
 while true
 do
-	clear
         main_menu
 done
 # end of shell

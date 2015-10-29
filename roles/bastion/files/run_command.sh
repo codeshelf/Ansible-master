@@ -58,39 +58,96 @@ case $COMMAND in
                 fi
         ;;
         'uptime')
- 		ssh $HOST uptime
+		# are we talking to a site controller?
+                if [[ $HOST =~ ^sc[0-9]{5} ]]
+                then
+			# get the site controller number
+                        SITECON=`echo $HOST | cut -d\c -f 2`
+			# define a valid site controller range, 10000 < x < 20000
+			if [[ ! ( "$SITECON" -ge "10000" && "$SITECON" -le "20000" ) ]]
+			then
+				echo "Invalid site controller number"
+				exit
+			fi
+
+                        ssh -p $SITECON home1 uptime
+                else
+			# we are talking to an app server
+                        ssh $HOST uptime
+                fi
         ;;
         'pstree')
- 		ssh $HOST pstree
+                if [[ $HOST =~ ^sc[0-9]{5} ]]
+                then
+                        SITECON=`echo $HOST | cut -d\c -f 2`
+			if [[ ! ( "$SITECON" -ge "10000" && "$SITECON" -le "20000" ) ]]
+			then
+				echo "Invalid site controller number"
+				exit
+			fi
+
+                        ssh -p $SITECON home1 pstree
+                else
+                        ssh $HOST pstree
+                fi
         ;;
         'start-daemon')
                 if [[ $HOST =~ ^sc[0-9]{5} ]]
                 then
-                        echo "ssh $HOST sudo start codeshelf"
+                        SITECON=`echo $HOST | cut -d\c -f 2`
+			if [[ ! ( "$SITECON" -ge "10000" && "$SITECON" -le "20000" ) ]]
+			then
+				echo "Invalid site controller number"
+				exit
+			fi
+
+                        ssh -p $SITECON home1 sudo start codeshelf
                 else
-                        echo "ssh $HOST sudo service start codeshelf"
+                        ssh $HOST sudo service start codeshelf
                 fi
         ;;
         'stop-daemon')
                 if [[ $HOST =~ ^sc[0-9]{5} ]]
                 then
-                        echo "ssh $HOST sudo stop codeshelf"
+                        SITECON=`echo $HOST | cut -d\c -f 2`
+			if [[ ! ( "$SITECON" -ge "10000" && "$SITECON" -le "20000" ) ]]
+			then
+				echo "Invalid site controller number"
+				exit
+			fi
+
+                        ssh -p $SITECON home1 sudo stop codeshelf
                 else
-                        echo "ssh $HOST sudo service stop codeshelf"
+                        ssh $HOST sudo service stop codeshelf
                 fi
         ;;
         'restart-daemon')
                 if [[ $HOST =~ ^sc[0-9]{5} ]]
                 then
-                        echo "ssh $HOST sudo restart codeshelf"
+                        SITECON=`echo $HOST | cut -d\c -f 2`
+			if [[ ! ( "$SITECON" -ge "10000" && "$SITECON" -le "20000" ) ]]
+			then
+				echo "Invalid site controller number"
+				exit
+			fi
+
+                        ssh -p $SITECON home1 sudo restart codeshelf
                 else
-                        echo "ssh $HOST sudo service restart codeshelf"
+                        ssh $HOST sudo service restart codeshelf
                 fi
         ;;
         'reset-daemon')
                 if [[ $HOST =~ ^sc[0-9]{5} ]]
                 then
-                        echo "ssh $HOST 'sudo rm -rf /opt/codeshelf/*' ; ap sitecons.yml --limit $HOST"
+                        SITECON=`echo $HOST | cut -d\c -f 2`
+			if [[ ! ( "$SITECON" -ge "10000" && "$SITECON" -le "20000" ) ]]
+			then
+				echo "Invalid site controller number"
+				exit
+			fi
+
+                        ssh -p $SITECON home1 'sudo rm -rf /opt/codeshelf/*'
+			ap sitecons.yml --limit $HOST
                 else
                         echo "not implemented for app servers"
                 fi
@@ -106,7 +163,14 @@ case $COMMAND in
         'reboot-host')
                 if [[ $HOST =~ ^sc[0-9]{5} ]]
                 then
-                        echo "ssh $HOST sudo reboot"
+                        SITECON=`echo $HOST | cut -d\c -f 2`
+			if [[ ! ( "$SITECON" -ge "10000" && "$SITECON" -le "20000" ) ]]
+			then
+				echo "Invalid site controller number"
+				exit
+			fi
+
+                        ssh -p $SITECON home1 sudo reboot
                 else
                         echo "not implemented for app servers"
                 fi
