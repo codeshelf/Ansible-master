@@ -2,6 +2,8 @@
 
 #SSH_ORIGINAL_COMMAND
 
+source /home/ansible/setup_env.sh
+
 COMMAND=`echo $SSH_ORIGINAL_COMMAND | cut -d\  -f 1`
 HOST=`echo $SSH_ORIGINAL_COMMAND | cut -d\  -f 2`
 
@@ -147,7 +149,7 @@ case $COMMAND in
 			fi
 
                         ssh -p $SITECON home1 'sudo rm -rf /opt/codeshelf/*'
-			ap sitecons.yml --limit $HOST
+			ansible-playbook sitecon.yml --limit $HOST
                 else
                         echo "not implemented for app servers"
                 fi
@@ -155,9 +157,9 @@ case $COMMAND in
         'ansible-host')
                 if [[ $HOST =~ ^sc[0-9]{5} ]]
                 then
-                        echo "ap sitecons.yml --limit $HOST"
+                        ansible-playbook sitecons.yml --limit $HOST
                 else
-                        echo "ap fep.yml --limit $HOST"
+                        ansible-playbook fep.yml --limit $HOST
                 fi
         ;;
         'reboot-host')
