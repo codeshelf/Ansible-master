@@ -23,8 +23,9 @@ $IPTABLES -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 $IPTABLES -A INPUT -p icmp -j ACCEPT 
 
 # SSH
-$IPTABLES -I INPUT 1 -p tcp --dport 22 -m state --state NEW -m recent --name ssh --update --seconds 60 --hitcount 6 -j REJECT
-$IPTABLES -I INPUT 2 -p tcp --dport 22 -m state --state NEW -m recent --name ssh --set
+$IPTABLES -A INPUT -p tcp --dport 22 -s 104.130.125.194 -j ACCEPT
+$IPTABLES -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --name ssh --update --seconds 60 --hitcount 6 -j REJECT
+$IPTABLES -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --name ssh --set
 $IPTABLES -A INPUT -p tcp --dport 22 -j ACCEPT
 
 # Default Reject
@@ -50,8 +51,9 @@ $IPT6 -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 $IPT6 -A INPUT -p ipv6-icmp -j ACCEPT
 
 # SSH
-$IPT6 -I INPUT 1 -p tcp --dport 22 -m state --state NEW -m recent --name ssh --update --seconds 60 --hitcount 6 -j REJECT
-$IPT6 -I INPUT 2 -p tcp --dport 22 -m state --state NEW -m recent --name ssh --set
+$IPT6 -A INPUT -p tcp --dport 22 -s 2001:4800:7818:104:be76:4eff:fe05:d495 -j ACCEPT
+$IPT6 -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --name ssh --update --seconds 60 --hitcount 6 -j REJECT
+$IPT6 -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --name ssh --set
 $IPT6 -A INPUT -p tcp --dport 22 -j ACCEPT
 
 # Default Reject
