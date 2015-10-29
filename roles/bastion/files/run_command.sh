@@ -103,9 +103,9 @@ case $COMMAND in
 				exit
 			fi
 
-                        ssh -p $SITECON home1 sudo start codeshelf
+                        ssh -p $SITECON home1 sudo service codeshelf start
                 else
-                        ssh $HOST sudo service start codeshelf
+                        ssh $HOST sudo start codeshelf
                 fi
         ;;
         'stop-daemon')
@@ -118,9 +118,9 @@ case $COMMAND in
 				exit
 			fi
 
-                        ssh -p $SITECON home1 sudo stop codeshelf
+                        ssh -p $SITECON home1 sudo service codeshelf stop
                 else
-                        ssh $HOST sudo service stop codeshelf
+                        ssh $HOST sudo stop codeshelf
                 fi
         ;;
         'restart-daemon')
@@ -133,9 +133,9 @@ case $COMMAND in
 				exit
 			fi
 
-                        ssh -p $SITECON home1 sudo restart codeshelf
+                        ssh -p $SITECON home1 sudo service codeshelf restart
                 else
-                        ssh $HOST sudo service restart codeshelf
+                        ssh $HOST sudo restart codeshelf
                 fi
         ;;
         'reset-daemon')
