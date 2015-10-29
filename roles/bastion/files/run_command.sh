@@ -12,6 +12,8 @@ if [[ ! ($HOST == "aldebaran" ||
        $HOST == "betelgeuse" ||
        $HOST == "capella" ||
        $HOST == "deneb"  ||
+       $HOST == "test"  ||
+       $HOST == "stage"  ||
        $HOST =~ ^sc[0-9]{5} ) ]]
 then
        echo "Invalid host"
