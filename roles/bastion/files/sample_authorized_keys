@@ -1,0 +1,2 @@
+# this is what needs to be added to the ansible user on master:
+from="192.168.0.1" command=/home/ansible/.ssh/run_command.sh" ssh-rsa adflkajsdfaklsdfj ayounts@foobar.com
