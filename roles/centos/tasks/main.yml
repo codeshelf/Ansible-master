@@ -27,6 +27,9 @@
       - nagios-plugins-swap
       - nagios-plugins-load
 
+- name: ansible user authorized_keys
+  copy: src=ansible_authorized_keys dest=/home/ansible/.ssh/authorized_keys owner=ansible mode=0444
+
 - name: Ensure ntpd is running and enabled
   service: name=ntpd state=started enabled=yes
 

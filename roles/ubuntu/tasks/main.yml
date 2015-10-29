@@ -28,12 +28,23 @@
   notify:
     - restart ntp
 
+# manage issue and motd
+- name: copy issue
+  copy: src=issue dest=/etc/issue owner=root group=root mode=0444
+
+- name: remove default motd
+  file: path=/etc/update.motd.d/{{ item }} state=absent
+  with_items:
+    - 00-header
+    - 10-help-text
+    - 91-release-upgrade
+
 # manage ansible user
 - name: Create ansible user
   user: name=ansible
 
-- name: Ansible authorized ssh keys
-  authorized_key: key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDc4mcehc00Id14sAe0H1HvRD2jh6DMVRXzrAF4Svu4QLZVvT5U43DNCCxfFZJcU9VYsWkME3L7Yd/Mjsml1nOCvlMWUvN57F2rqcY1/vDHO+5kVhsddD4gx1MH+uVtt8koT0LlH56Agv8nwMRorR2Del6Ec9mNTRQBQJ3q1Ga7zqqybvJiqPy0WdXh2BtQEwbVnET7Q9kJgH/RMlhDEPscycVktOwV48UMJdNye+4TGjkWFkh3G314p04X/drGr17iqYvXFatczjCJLhgoHEHShEdJTEvL4DPiROZ01XGrBHwvIUNdUFVm/SnqO1VdGjzjqa+ArgY1XVCEr9FVYih/ ansible" user=ansible
+- name: ansible authorized ssh keys
+  copy: src=ansible_authorized_keys dest=/home/ansible/.ssh/authorized_keys owner=ansible mode=0444
 
 - name: ansible files temporary directory
   file: path=/home/ansible/files/ state=directory
