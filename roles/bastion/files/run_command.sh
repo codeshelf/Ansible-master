@@ -4,7 +4,7 @@
 source /home/ansible/setup_env.sh
 
 # turn this varriable into an array: SSH_ORIGINAL_COMMAND
-INPUTARRAY=($SSH_ORIGINALCOMMAND)
+INPUTARRAY=($SSH_ORIGINAL_COMMAND)
 # parse out first and second elements
 COMMAND=${INPUTARRAY[0]}
 HOST=${INPUTARRAY[1]}

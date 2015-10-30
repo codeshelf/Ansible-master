@@ -24,13 +24,14 @@ main_menu () {
         echo "ansible-host <hostname> - run Ansible"
         echo "readme - print manual"
         echo " "
-        echo "exit - logout"
-        echo " "
         echo "Command:"
+
+	# read input and use readline for line editing
         read -e INPUT_TEXT
 
-        COMMAND=`echo $INPUT_TEXT | cut -d\  -f 1`
-        HOST=`echo $INPUT_TEXT | cut -d\  -f 2`
+	INPUTARRAY=($INPUT_TEXT)
+        COMMAND=${INPUTARRAY[0]}
+        HOST=${INPUTARRAY[1]}
 
         case $COMMAND in
                 'status')
@@ -61,10 +62,10 @@ main_menu () {
                         remote_command reboot-host
                 ;;
                 'readme')
-                        print_readme
+                        print_readme | less
                 ;;
                 'help')
-                        print_readme
+                        print_readme | less
                 ;;
                 'exit')
                         logout
@@ -106,6 +107,8 @@ remote_command () {
 # print out some help
 print_readme () {
 	cat <<EOF
+Available commands:
+
 status
 start-daemon
 stop-daemon
