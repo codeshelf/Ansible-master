@@ -56,6 +56,7 @@
 # manage sshd
 - name: sshd configuration file
   copy: src=sshd_config dest=/etc/ssh/sshd_config owner=root group=root mode=0444
+  when: ansible_hostname != 'console'
   notify:
     - restart ssh
 
