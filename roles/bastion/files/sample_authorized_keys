@@ -1,2 +1,2 @@
 # this is what needs to be added to the ansible user on master:
-from="192.168.0.1" command=/home/ansible/.ssh/run_command.sh" ssh-rsa adflkajsdfaklsdfj ayounts@foobar.com
+from="192.168.0.1"command=/home/ansible/.ssh/run_command.sh",no-X11-forwarding,no-agent-forwarding,no-port-forwarding ssh-rsa adflkajsdfaklsdfj ayounts@foobar.com
