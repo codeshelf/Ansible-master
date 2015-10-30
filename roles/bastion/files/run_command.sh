@@ -3,6 +3,9 @@
 # set up environment for ansible
 source /home/ansible/setup_env.sh
 
+# set up variables
+LOGGER=/usr/bin/logger
+
 # turn this varriable into an array: SSH_ORIGINAL_COMMAND
 INPUTARRAY=($SSH_ORIGINAL_COMMAND)
 # parse out first and second elements
@@ -40,6 +43,9 @@ then
 	echo "Invalid command"
 	exit
 fi
+
+# log input
+echo "ControlPanel: Got input cmd: $COMMAND host: $HOST" | $LOGGER
 
 # perform the called action
 case $COMMAND in

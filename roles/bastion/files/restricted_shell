@@ -6,6 +6,10 @@ REMOTE_HOST=master.codeshelf.com
 REMOTE_USER=ansible
 USER_KEY=/home/$USER/.ssh/id_rsa
 PAGER=less
+LOGGER=/usr/bin/logger
+
+# log session start
+echo "ControlPanel User $USER Started Session" | $LOGGER
 
 # main menu
 main_menu () {
@@ -32,6 +36,9 @@ main_menu () {
 	INPUTARRAY=($INPUT_TEXT)
         COMMAND=${INPUTARRAY[0]}
         HOST=${INPUTARRAY[1]}
+
+	# Log Input
+	echo 'ControlPanel User $USER entered $COMMAND $HOST' | $LOGGER
 
         case $COMMAND in
                 'status')
