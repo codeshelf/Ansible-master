@@ -16,14 +16,12 @@ main_menu () {
 	echo "!!! Please be very careful !!!"
 	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	echo " "
-        echo "status <hostname> - retrieve host status, live"
-        echo "uptime <hostname> - retrieve output of uptime"
+        echo "status <hostname> - retrieve host healthcheck"
         echo "start-daemon <hostname> - start Codeshelf daemon"
         echo "stop-daemon <hostname> - stop Codeshelf daemon"
         echo "restart-daemon <hostname> - restart Codeshelf daemon"
         echo "reset-daemon <hostname> - wipe daemon and re-download"
-        echo "ansible-host <hostname> - run fep or sitecons ansible playbook"
-        echo "reboot-host <hostname> - reboot Codeshelf server"
+        echo "ansible-host <hostname> - run Ansible"
         echo "readme - print manual"
         echo " "
         echo "exit - logout"
@@ -33,19 +31,6 @@ main_menu () {
 
         COMMAND=`echo $INPUT_TEXT | cut -d\  -f 1`
         HOST=`echo $INPUT_TEXT | cut -d\  -f 2`
-
-        # do input checking on hostname..
-       if [[ ! ($HOST == "aldebaran" ||
-               $HOST == "betelgeuse" ||
-               $HOST == "capella" ||
-               $HOST == "deneb"  ||
-               $HOST == "test"  ||
-               $HOST == "stage"  ||
-               $HOST =~ ^sc[0-9]{5} ) ]]
-       then
-               echo "Invalid host"
-               return
-       fi
 
         case $COMMAND in
                 'status')
@@ -82,7 +67,10 @@ main_menu () {
                         print_readme
                 ;;
                 'exit')
-                        exit
+                        logout
+                ;;
+                'logout')
+                        logout
                 ;;
                 *)
                         echo "Unknown command, try again"
@@ -92,37 +80,47 @@ main_menu () {
 
 # run the secure remote command
 remote_command () {
-        # input is first argument
-        RUNCMD=$1
-        # something like:
-        # ssh -i /home/foobar/.ssh/id_rsa ansible@ansiblehost status sc10000 | less
-        #echo "$REMOTE_COMMAND -i ${USER_KEY} ${REMOTE_USER}@${REMOTE_HOST} $RUNCMD $HOST | $PAGER"
-        $REMOTE_COMMAND -i ${USER_KEY} ${REMOTE_USER}@${REMOTE_HOST} $RUNCMD $HOST | $PAGER
+	# input is first argument
+	RUNCMD=$1
+
+	# do input checking on hostname..
+	if [[ ! ($HOST == "aldebaran" ||
+		$HOST == "betelgeuse" ||
+		$HOST == "capella" ||
+		$HOST == "deneb"  ||
+		$HOST == "test"  ||
+		$HOST == "stage"  ||
+		$HOST =~ ^sc[0-9]{5} ) ]]
+	then
+		echo "Invalid host"
+		return
+	fi
+
+	# something like:
+	# ssh -i /home/foobar/.ssh/id_rsa ansible@ansiblehost status sc10000 | less
+	$REMOTE_COMMAND -i ${USER_KEY} ${REMOTE_USER}@${REMOTE_HOST} $RUNCMD $HOST | $PAGER
+
 	clear
 }
 
 # print out some help
 print_readme () {
 	cat <<EOF
-These commands do the obvious:
 status
 start-daemon
 stop-daemon
 restart-daemon
 reboot-host
-
-This command deletes broken software and puts it back fresh:
-* Deletes everything in /opt/codeshelf
-* Runs ansible
+ * Power cycle host
+uptime
+ * Prints output from Linux command "uptime"
+pstree
+ * Prints output from Linux command "pstree"
 reset-daemon
-
-This command runs ansible:
-* Pushes new configurations
-* Upgrades software
+ * Deletes everything in /opt/codeshelf and runs Ansible
 ansible-host
+ * Runs Ansible to enforce configuration
 
-Additional commands:
-pstree - show process tree
 EOF
 }
 
