@@ -80,6 +80,12 @@ main_menu () {
                 'logout')
                         logout
                 ;;
+                'passwd')
+                        passwd
+                ;;
+                'google-authenticator')
+                        google-authenticator
+                ;;
                 *)
                         echo "Unknown command, try again"
                 ;;
@@ -115,7 +121,6 @@ remote_command () {
 print_readme () {
 	cat <<EOF
 Available commands:
-
 status
 start-daemon
 stop-daemon
@@ -130,6 +135,12 @@ reset-daemon
  * Deletes everything in /opt/codeshelf and runs Ansible
 ansible-host
  * Runs Ansible to enforce configuration
+passwd
+ * Change password
+google-authenticator
+ * Reset your security token
+
+Most command output is displayed in a pager, like less.
 
 EOF
 }
