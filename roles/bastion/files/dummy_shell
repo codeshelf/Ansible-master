@@ -1,0 +1,92 @@
+#!/bin/bash
+
+# variables
+REMOTE_COMMAND=ssh
+REMOTE_HOST=master.codeshelf.com
+REMOTE_USER=ansible
+USER_KEY=/home/$USER/.ssh/id_rsa
+PAGER=less
+LOGGER=/usr/bin/logger
+
+# log session start
+echo "ControlPanel User $USER Started Session" | $LOGGER
+
+# main menu
+main_menu () {
+	echo " "
+	echo "1. Print test and stage status"
+	echo "2. Restart test app server and site controller"
+	echo "3. Restart stage app server and site controller"
+	echo "4. Wipe and refresh test sitecontroller"
+	echo "5. Wipe and refresh stage sitecontroller"
+	echo "6. Clear screen"
+	echo " "
+        echo "Command:"
+
+	# read input and use readline for line editing
+        read -e INPUT_TEXT
+
+	INPUTARRAY=($INPUT_TEXT)
+        COMMAND=${INPUTARRAY[0]}
+
+	# Log Input
+	echo 'ControlPanel Dummy User $USER entered $COMMAND' | $LOGGER
+
+        case $COMMAND in
+                '1')
+			echo "Test: "
+                        remote_command status test
+			echo "Stage: "
+                        remote_command status stage
+                ;;
+                '2')
+                        remote_command restart-daemon test
+                        remote_command restart-daemon sc10010
+                ;;
+                '3')
+                        remote_command restart-daemon stage
+                        remote_command restart-daemon sc10009
+                ;;
+                '4')
+                        remote_command reset-daemon sc10010
+                ;;
+                '5')
+                        remote_command reset-daemon sc10009
+                ;;
+                '6')
+                        clear
+                ;;
+                *)
+                        echo "Unknown command, try again"
+                ;;
+        esac
+}
+
+# run the secure remote command
+remote_command () {
+	# input is first argument
+	RUNCMD=$1
+	HOST=$2
+
+	# something like:
+	# ssh -i /home/foobar/.ssh/id_rsa ansible@ansiblehost status sc10000 | less
+	$REMOTE_COMMAND -i ${USER_KEY} ${REMOTE_USER}@${REMOTE_HOST} $RUNCMD $HOST 
+
+	clear
+}
+
+# start of shell
+echo " "
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "!!!          Authorized use only          !!!"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "!!! Current test sitecontroller: sc10010  !!!"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "!!! Current stage sitecontroller: sc10009 !!!"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+while true
+do
+        main_menu
+done
+# end of shell
+
