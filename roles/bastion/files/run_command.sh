@@ -11,6 +11,7 @@ INPUTARRAY=($SSH_ORIGINAL_COMMAND)
 # parse out first and second elements
 COMMAND=${INPUTARRAY[0]}
 HOST=${INPUTARRAY[1]}
+ARGUMENT=${INPUTARRAY[2]}
 
 # if we got a hostname, check it
 if [[ $HOST ]]
@@ -29,6 +30,16 @@ then
 	fi
 fi
 
+# if we have an argument, check it
+if [[ $ARGUMENT ]]
+then
+	if [[ ! ($ARGUMENT =~ ^v[0-9][0-9]\.[0-9]+) ]]
+	then
+		echo "Invalid argument"
+		exit
+	fi
+fi
+
 # do input checking on command
 if [[ ! ($COMMAND == "status" ||
 	$COMMAND == "uptime"  ||
@@ -40,6 +51,8 @@ if [[ ! ($COMMAND == "status" ||
 	$COMMAND == "ansible-host"  ||
 	$COMMAND == "codeshelf-versions"  ||
 	$COMMAND == "promote-stage"  ||
+	$COMMAND == "upgrade-codeshelf"  ||
+	$COMMAND == "upgrade-codeshelfux"  ||
 	$COMMAND == "reboot-host")  ]]
 then
 	echo "Invalid command"
@@ -265,6 +278,66 @@ case $COMMAND in
 			exit
 		fi
 		echo "Successful!"
+	;;
+	'upgrade-codeshelf')
+		echo "Upgrading $HOST to Codeshelf $ARGUMENT .."
+		echo " "
+		echo "Entering /home/ansible/release/Codeshelf .."
+		echo " "
+		cd /home/ansible/release/Codeshelf
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Removing /home/ansible/release/Codeshelf/${HOST} .."
+		echo " "
+		rm /home/ansible/release/Codeshelf/${HOST}
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Creating /home/ansible/release/Codeshelf/${HOST} -> $ARGUMENT .."
+		echo " "
+		ln -s ${ARGUMENT} ${HOST}
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Success!"
+		exit
+	;;
+	'upgrade-codeshelfux')
+		echo "Upgrading $HOST to CodeshelfUX $ARGUMENT .."
+		echo " "
+		echo "Entering /home/ansible/release/CodeshelfUX .."
+		echo " "
+		cd /home/ansible/release/CodeshelfUX
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Removing /home/ansible/release/CodeshelfUX/${HOST} .."
+		echo " "
+		rm /home/ansible/release/CodeshelfUX/${HOST}
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Creating /home/ansible/release/CodeshelfUX/${HOST} -> $ARGUMENT .."
+		echo " "
+		ln -s ${ARGUMENT} ${HOST}
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Success!"
+		exit
 	;;
 	'reboot-host')
 		if [[ $HOST =~ ^sc[0-9]{5} ]]
