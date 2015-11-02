@@ -39,6 +39,7 @@ if [[ ! ($COMMAND == "status" ||
 	$COMMAND == "reset-daemon"  ||
 	$COMMAND == "ansible-host"  ||
 	$COMMAND == "codeshelf-versions"  ||
+	$COMMAND == "promote-stage"  ||
 	$COMMAND == "reboot-host")  ]]
 then
 	echo "Invalid command"
@@ -205,6 +206,65 @@ case $COMMAND in
 		echo "CodeshelfUX: "
 		cat /home/ansible/release/CodeshelfUX/stage/buildweb.txt | egrep '(major|revision)'
 		echo " "
+	;;
+	'promote-stage')
+		CODESHELF_MAJOR=`grep version.major /home/ansible/release/Codeshelf/stage/build.txt | cut -d\= -f 2`
+		CODESHELF_REV=`grep version.revision /home/ansible/release/Codeshelf/stage/build.txt | cut -d\= -f 2`
+		CODESHELF_UX_MAJOR=`cat /home/ansible/release/CodeshelfUX/stage/buildweb.txt | tr '{' '\n' | tr ',' '\n' | grep major | cut -d\: -f 2 | tr '"' ' '`
+		CODESHELF_UX_REV=`cat /home/ansible/release/CodeshelfUX/stage/buildweb.txt | tr '{' '\n' | tr ',' '\n' | grep revision | cut -d\: -f 2 | tr '"' ' '`
+
+		if [[ $CODESHELF_MAJOR -lt 20 || $CODESHELF_MAJOR -gt 50 ]]
+		then
+			echo "Parse error!"
+			exit
+		fi
+		if [[ $CODESHELF_REV -lt 1 || $CODESHELF_REV -gt 200 ]]
+		then
+			echo "Parse error!"
+			exit
+		fi
+		if [[ $CODESHELF_UX_MAJOR -lt 20 || $CODESHELF_UX_MAJOR -gt 50 ]]
+		then
+			echo "Parse error!"
+			exit
+		fi
+		if [[ $CODESHELF_REV -lt 1 || $CODESHELF_REV -gt 200 ]]
+		then
+			echo "Parse error!"
+			exit
+		fi
+
+		echo "Promoting stage.."
+		echo " "
+		echo "Entering /home/ansible/release/Codeshelf"
+		cd /home/ansible/release/Codeshelf
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Copying Codeshelf to v${CODESHELF_MAJOR}.${CODESHELF_REV}"
+		cp -ra stage "v${CODESHELF_MAJOR}.${CODESHELF_REV}"
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Entering /home/ansible/release/CodeshelfUX"
+		cd /home/ansible/release/CodeshelfUX
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Copying CodeshelfUX to v${CODESHELF_UX_MAJOR}.${CODESHELF_UX_REV}"
+		cp -ra stage "v${CODESHELF_UX_MAJOR}.${CODESHELF_UX_REV}"
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Successful!"
 	;;
 	'reboot-host')
 		if [[ $HOST =~ ^sc[0-9]{5} ]]
