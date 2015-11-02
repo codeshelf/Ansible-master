@@ -38,6 +38,7 @@ if [[ ! ($COMMAND == "status" ||
 	$COMMAND == "restart-daemon"  ||
 	$COMMAND == "reset-daemon"  ||
 	$COMMAND == "ansible-host"  ||
+	$COMMAND == "codeshelf-versions"  ||
 	$COMMAND == "reboot-host")  ]]
 then
 	echo "Invalid command"
@@ -175,6 +176,35 @@ case $COMMAND in
 		else
 			ansible-playbook fep.yml --limit $HOST
 		fi
+	;;
+	'codeshelf-versions')
+		echo "Available Versions"
+		echo " "
+		echo -n "Codeshelf: "
+		ls /home/ansible/release/Codeshelf | grep ^v | tr '\n' ' '
+		echo " "
+		echo " "
+		echo -n "CodeshelfUX: "
+		ls /home/ansible/release/CodeshelfUX | grep ^v | tr '\n' ' '
+		echo " "
+		for host in aldebaran betelgeuse capella deneb
+		do
+			echo " "
+			echo "${host}"
+			echo -n "	Codeshelf: "
+			readlink /home/ansible/release/Codeshelf/${host} | tr '\n' ' '
+			echo -n "CodeshelfUX: "
+			readlink /home/ansible/release/CodeshelfUX/${host} | tr '\n' ' '
+		done
+		echo " "
+		echo " "
+		echo "Next available versions"
+		echo "Codeshelf:"
+		cat /home/ansible/release/Codeshelf/stage/build.txt | egrep '(version.major|version.revision)'
+		echo " "
+		echo "CodeshelfUX: "
+		cat /home/ansible/release/CodeshelfUX/stage/buildweb.txt | egrep '(major|revision)'
+		echo " "
 	;;
 	'reboot-host')
 		if [[ $HOST =~ ^sc[0-9]{5} ]]
