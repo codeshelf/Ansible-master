@@ -111,16 +111,19 @@ remote_command () {
 	RUNCMD=$1
 
 	# do input checking on hostname..
-	if [[ ! ($HOST == "aldebaran" ||
-		$HOST == "betelgeuse" ||
-		$HOST == "capella" ||
-		$HOST == "deneb"  ||
-		$HOST == "test"  ||
-		$HOST == "stage"  ||
-		$HOST =~ ^sc[0-9]{5} ) ]]
+	if [[ $HOST ]]
 	then
-		echo "Invalid host"
-		return
+		if [[ ! ($HOST == "aldebaran" ||
+			$HOST == "betelgeuse" ||
+			$HOST == "capella" ||
+			$HOST == "deneb"  ||
+			$HOST == "test"  ||
+			$HOST == "stage"  ||
+			$HOST =~ ^sc[0-9]{5} ) ]]
+		then
+			echo "Invalid host"
+			return
+		fi
 	fi
 
 	# something like:
