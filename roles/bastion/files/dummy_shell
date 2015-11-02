@@ -71,8 +71,6 @@ remote_command () {
 	# something like:
 	# ssh -i /home/foobar/.ssh/id_rsa ansible@ansiblehost status sc10000 | less
 	$REMOTE_COMMAND -i ${USER_KEY} ${REMOTE_USER}@${REMOTE_HOST} $RUNCMD $HOST 
-
-	clear
 }
 
 # start of shell
