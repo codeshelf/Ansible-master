@@ -3,12 +3,21 @@
 - name: copy shell
   copy: src=restricted_shell dest=/bin/restricted_shell owner=root group=root mode=0555
 
+- name: copy dummy shell
+  copy: src=dummy_shell dest=/bin/dummy_shell owner=root group=root mode=0555
+
 # user accounts
 - name: set user accounts
   user: name={{ item }} shell=/bin/restricted_shell group=staff generate_ssh_key=yes
   with_items:
     - ayounts
     - reedwaller
+
+# service accounts
+- name: set service accounts
+  user: name={{ item }} shell=/bin/dummy_shell group=staff generate_ssh_key=yes
+  with_items:
+    - matarea
 
 # set up google-authenticator
 - name: install google authenticator packages
