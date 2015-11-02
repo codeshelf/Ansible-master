@@ -36,9 +36,10 @@ main_menu () {
 	INPUTARRAY=($INPUT_TEXT)
         COMMAND=${INPUTARRAY[0]}
         HOST=${INPUTARRAY[1]}
+        ARGUMENT=${INPUTARRAY[2]}
 
 	# Log Input
-	echo 'ControlPanel User $USER entered $COMMAND $HOST' | $LOGGER
+	echo 'ControlPanel User $USER entered $COMMAND $HOST $ARGUMENT' | $LOGGER
 
         case $COMMAND in
                 'status')
@@ -67,6 +68,18 @@ main_menu () {
                 ;;
                 'reboot-host')
                         remote_command reboot-host
+                ;;
+                'codeshelf-versions')
+                        remote_command codeshelf-versions
+                ;;
+                'promote-stage')
+                        remote_command promote-stage
+                ;;
+                'upgrade-codeshelf')
+                        remote_command upgrade-codeshelf
+                ;;
+                'upgrade-codeshelfux')
+                        remote_command upgrade-codeshelfux
                 ;;
                 'readme')
                         print_readme | less
@@ -112,7 +125,7 @@ remote_command () {
 
 	# something like:
 	# ssh -i /home/foobar/.ssh/id_rsa ansible@ansiblehost status sc10000 | less
-	$REMOTE_COMMAND -i ${USER_KEY} ${REMOTE_USER}@${REMOTE_HOST} $RUNCMD $HOST | $PAGER
+	$REMOTE_COMMAND -i ${USER_KEY} ${REMOTE_USER}@${REMOTE_HOST} $RUNCMD $HOST $ARGUMENT | $PAGER
 
 	clear
 }
@@ -135,6 +148,14 @@ reset-daemon
  * Deletes everything in /opt/codeshelf and runs Ansible
 ansible-host
  * Runs Ansible to enforce configuration
+codeshelf-versions
+ * Prints deployed version information
+promote-stage
+ * Makes release out of code in stage
+upgrade-codeshelf
+ * Takes arugment and fixes symlinks
+upgrade-codeshelfux
+ * Takes arugment and fixes symlinks
 passwd
  * Change password
 google-authenticator
