@@ -186,7 +186,7 @@ case $COMMAND in
 	'ansible-host')
 		if [[ $HOST =~ ^sc[0-9]{5} ]]
 		then
-			ansible-playbook sitecons.yml --limit $HOST
+			ansible-playbook sitecon.yml --limit $HOST
 		else
 			ansible-playbook fep.yml --limit $HOST
 		fi
@@ -223,8 +223,8 @@ case $COMMAND in
 	'promote-stage')
 		CODESHELF_MAJOR=`grep version.major /home/ansible/release/Codeshelf/stage/build.txt | cut -d\= -f 2`
 		CODESHELF_REV=`grep version.revision /home/ansible/release/Codeshelf/stage/build.txt | cut -d\= -f 2`
-		CODESHELF_UX_MAJOR=`cat /home/ansible/release/CodeshelfUX/stage/buildweb.txt | tr '{' '\n' | tr ',' '\n' | grep major | cut -d\: -f 2 | tr '"' ' '`
-		CODESHELF_UX_REV=`cat /home/ansible/release/CodeshelfUX/stage/buildweb.txt | tr '{' '\n' | tr ',' '\n' | grep revision | cut -d\: -f 2 | tr '"' ' '`
+		CODESHELF_UX_MAJOR=`cat /home/ansible/release/CodeshelfUX/stage/buildweb.txt | tr '{' '\n' | tr ',' '\n' | grep major | cut -d\: -f 2 | tr -d '"' | tr -d ' '`
+		CODESHELF_UX_REV=`cat /home/ansible/release/CodeshelfUX/stage/buildweb.txt | tr '{' '\n' | tr ',' '\n' | grep revision | cut -d\: -f 2 | tr -d '"' | tr -d ' '`
 
 		if [[ $CODESHELF_MAJOR -lt 20 || $CODESHELF_MAJOR -gt 50 ]]
 		then
