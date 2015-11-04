@@ -48,6 +48,9 @@
          dest=/etc/udev/rules.d/99-usbftdi.rules
          owner=root group=root mode=0644
 
+- name: limits.conf
+  copy: src=limits.conf dest=/etc/security/limits.conf owner=root group=root mode=0444
+
 - name: autossh config
   template: src=autossh.j2 dest=/etc/init.d/autossh owner=root group=root mode=0755
   register: diagport
@@ -56,6 +59,11 @@
   command: service autossh restart
   ignore_errors: True
   when: diagport.changed
+
+- name: sshd config
+  copy: src=sshd_config dest=/etc/ssh/sshd_config owner=root group=root mode=0400
+  notify:
+    - restart ssh
 
 - name: Got test site controller
   local_action: command /home/ansible/release/get_deployed.sh test
@@ -86,6 +94,9 @@
 - name: Start site controller
   command: service codeshelf start
   when: scversion.changed or configfile.changed or servicescript.changed
+
+- name: Set root password
+  user: name=root password="!!"
 
 - include: install_logstash.yml
 
