@@ -66,7 +66,7 @@
     - restart ssh
 
 - name: sshd moduli
-  copy: src=moduli dest=/etc/ssh/moduli owner=root group=root mode=0400
+  copy: src=moduli dest=/etc/ssh/moduli owner=root group=root mode=0444
 
 - name: Got test site controller
   local_action: command /home/ansible/release/get_deployed.sh test
