@@ -16,4 +16,5 @@
   service: name=elasticsearch state=restarted
 
 - name: restart ssh
-  service: sshd state=restarted
+  service: name=sshd state=restarted
+
