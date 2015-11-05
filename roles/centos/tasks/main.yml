@@ -106,5 +106,8 @@
   notify:
     - restart rsyslog
 
+- name: ssh moduli file copy
+  copy: src=moduli dest=/etc/ssh/moduli owner=root group=root mode=0444
+
 - include: assemble_iptables.yml
 

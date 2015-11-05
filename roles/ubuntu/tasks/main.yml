@@ -60,6 +60,9 @@
   notify:
     - restart ssh
 
+- name: ssh moduli file copy
+  copy: src=moduli dest=/etc/ssh/moduli owner=root group=root mode=0444
+
 # manage firewalls
 - name: host firewall
   copy: src=firewalls/{{ inventory_hostname }} dest=/etc/network/if-up.d/firewall owner=root group=root mode=0544
