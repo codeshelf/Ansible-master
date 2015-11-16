@@ -79,6 +79,8 @@ sub print_status {
                 $title = $server . " (Accu-Logistics) : " . $status;
         } elsif ($server eq "capella") {
                 $title =  $server . " (PFSweb) : " . $status;
+        } elsif ($server eq "deneb") {
+                $title =  $server . " (L\'Oreal) : " . $status;
         } else {
                 $title = $server . ": " . $status;
         }
