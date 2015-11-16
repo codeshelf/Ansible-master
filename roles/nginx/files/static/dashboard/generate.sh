@@ -12,14 +12,14 @@ fi
 cat header.html > index.new
 echo '<div class="col-xs-6">' >> index.new
 echo '<h3>Production</h3>' >> index.new
-for server in betelgeuse capella
+for server in betelgeuse capella deneb
 do
 	./get_status.pl $server >> index.new
 done
 echo "</div>" >> index.new
 echo '<div class="col-xs-6">' >> index.new
 echo '<h3>Testing</h3>' >> index.new
-for server in aldebaran deneb test stage
+for server in aldebaran test stage
 do
 	./get_status.pl $server >> index.new
 done
@@ -45,8 +45,8 @@ mv -f betelgeuse.new betelgeuse.html
 # generate deneb.html
 cat header.html > deneb.new
 ./get_status.pl deneb >> deneb.new
-./get_status.pl sc10021 30021 >> deneb.new
-./get_status.pl sc10023 30023 >> deneb.new
+./get_status.pl sc10017 30017 >> deneb.new
+./get_status.pl sc10019 30019 >> deneb.new
 ./footer.sh >> deneb.new
 mv -f deneb.new deneb.html
 
