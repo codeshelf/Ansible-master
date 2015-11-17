@@ -3,17 +3,31 @@ Ansible-master user home directory
 Requirements:
 Machines must use either Centos 7 or Debian 8
 Machines must have a dedicated swap partition
-Place java into roles/java/files and edit roles/java/tasks/main.yml
+Place java rpm/dpkg into roles/java/files and edit roles/java/tasks/main.yml
 Place Codeshelf and CodeshelfUX distributions into releases/*
 Craft a real group_vars/all file
-Hosts file must be correct roles/hosts/files/hosts
+Host addresses must be correct in roles/hosts/files/hosts
+
+Base roles: (probably want all)
+firewall
+hosts
+java
+unbound
+
+OS roles: (must only have 1)
+centos
+ubuntu
+
+Primary roles: (must only have 1)
+db
+fep
+nginx
 
 TODO's:
-nginx: fix config, annote key requirements (plus custom ca)
-nginx: how does it get a copy of CodeshelfUX?
+nginx: fix config
 nginx: dashboard, admin access, etc site functions
+nginx: document and figure out SSL keys
 
-fep: inventory variables
 fep: convert upstart to systemd init script
 
 java: make debian safe
