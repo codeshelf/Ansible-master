@@ -1,5 +1,5 @@
 ---
-# ubuntu (base role)
+# debian (base role)
 
 # install some default packages
 - name: default packages
@@ -28,10 +28,7 @@
   notify:
     - restart ntp
 
-# manage issue and motd
-- name: copy issue
-  copy: src=issue dest=/etc/issue owner=root group=root mode=0444
-
+# manage motd
 - name: remove default motd
   file: path=/etc/update.motd.d/{{ item }} state=absent
   with_items:
@@ -56,14 +53,9 @@
 # manage sshd
 - name: sshd configuration file
   copy: src=sshd_config dest=/etc/ssh/sshd_config owner=root group=root mode=0444
-  when: ansible_hostname != 'console'
   notify:
     - restart ssh
 
 - name: ssh moduli file copy
   copy: src=moduli dest=/etc/ssh/moduli owner=root group=root mode=0444
-
-# manage firewalls
-- name: host firewall
-  copy: src=firewalls/{{ inventory_hostname }} dest=/etc/network/if-up.d/firewall owner=root group=root mode=0544
 

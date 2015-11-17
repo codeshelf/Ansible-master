@@ -1,5 +1,5 @@
 ---
-# ubuntu handlers
+# debian handlers
 
 - name: restart ntp
   service: name=ntp state=restarted
