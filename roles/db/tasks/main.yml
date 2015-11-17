@@ -1,35 +1,20 @@
 ---
-- name: Check for Postgresql repo installation
-  copy: src=pgdg-centos93-9.3-1.noarch.rpm dest=/home/ansible/files/ mode=0644
-  register: pgrepo
-
-- name: install postgres931 repo
-  yum: name=/home/ansible/files/pgdg-centos93-9.3-1.noarch.rpm state=installed
-  when: pgrepo.changed
-
-- name: update yum cache
-  command: yum makecache
-  changed_when: False
-  when: pgrepo.changed
-
-- name: install postgresql server
-  yum: name=postgresql93-server state=installed
+- name: install postgresql redhat
+  yum: name=postgresql-server state=installed
+  when: ansible_os_family == "RedHat"
   register: pg
 
 - name: run initdb
-  command: service postgresql-9.3 initdb
+  command: /usr/bin/postgresql-setup initdb
   when: pg.changed
 
-# todo: create appropriate config files
+- name: install postgresql debian
+  apt: name=postgresql state=installed
+  when: ansible_os_family == "Debian"
 
 - name: enable postgresql service
-  command: chkconfig postgresql-9.3 on
-  when: pg.changed
+  service: name=postgresql state=started enabled=yes
 
-- name: start postgresql
-  command: service postgresql-9.3 start
-  when: pg.changed
-
+# todo: create appropriate config files
 # todo: create codeshelf + replicator users
 
-- include: assemble_iptables.yml

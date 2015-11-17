@@ -1,0 +1,4 @@
+create database database;
+create user codeshelf with password "{{ codeshelf_database_master_password }}";
+grant all privileges on database database to codeshelf;
+CREATE USER replicator REPLICATION LOGIN ENCRYPTED PASSWORD "{{ codeshelf_database_replication_password }}";

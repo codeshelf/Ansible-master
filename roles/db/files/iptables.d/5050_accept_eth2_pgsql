@@ -1,3 +1,0 @@
-# accept postgres on private network
--A INPUT -i eth2 -p tcp -m state --state NEW -m tcp --dport 5432 -j ACCEPT
-# end db specific rules
