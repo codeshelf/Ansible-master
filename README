@@ -5,4 +5,4 @@ Machines must have a dedicated swap partition
 
 TODO's:
 fix java role
-create firewall rules
+collect and create group_vars used
