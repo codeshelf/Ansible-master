@@ -1,0 +1,17 @@
+[db]
+database-00
+database-01
+[db:vars]
+cluster_node_type=db
+
+[fep]
+fep-00
+[fep:vars]
+cluster_node_type=fep
+
+[nginx]
+nginx-00
+nginx-01
+[nginx:vars]
+cluster_node_type=nginx
+
