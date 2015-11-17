@@ -6,15 +6,29 @@
 
 - name: run initdb
   command: /usr/bin/postgresql-setup initdb
-  when: pg.changed
+  when: (pg.changed and ansible_os_family == "RedHat")
 
 - name: install postgresql debian
   apt: name=postgresql state=installed
   when: ansible_os_family == "Debian"
+  register: pg
 
 - name: enable postgresql service
   service: name=postgresql state=started enabled=yes
 
+- name: create default database template
+  template: src=createusers.sql.j2 dest=/tmp/createusers.sql owner=postgres group=postgres mode=0400
+  when: pg.changed
+
+- name: create default database
+  sudo: true
+  sudo_user: postgres
+  shell: /usr/bin/psql -f /tmp/createusers.sql
+  when: pg.changed
+
+- name: remove default database template
+  file: path=/tmp/createusers.sql state=absent
+  when: pg.changed
+
 # todo: create appropriate config files
-# todo: create codeshelf + replicator users
 

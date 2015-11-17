@@ -1,0 +1,9 @@
+Postgres database role
+
+OS Support:
+	Centos 7
+	Debian 8
+
+Safe to add to any machine.
+
+Requires codeshelf_database_master_password, codeshelf_database_replication_password
