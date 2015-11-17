@@ -34,7 +34,7 @@
   register: initscript
 
 - name: App engine version
-  copy: src=/home/ansible/release/Codeshelf/{{ ansible_hostname }}/build.txt dest=/opt/codeshelf/ owner=codeshelf group=codeshelf mode=0644
+  copy: src=/home/ansible/release/Codeshelf/build.txt dest=/opt/codeshelf/ owner=codeshelf group=codeshelf mode=0644
   register: engine
 
 - name: Configuration file from template
@@ -47,11 +47,11 @@
   ignore_errors: yes
 
 - name: Install app libraries
-  unarchive: src=/home/ansible/release/Codeshelf/{{ ansible_hostname }}/lib.tgz dest=/opt/codeshelf/engine/ owner=codeshelf group=codeshelf
+  unarchive: src=/home/ansible/release/Codeshelf/lib.tgz dest=/opt/codeshelf/engine/ owner=codeshelf group=codeshelf
   when: engine.changed
 
 - name: Install app JAR
-  copy: src=/home/ansible/release/Codeshelf/{{ ansible_hostname }}/server.codeshelf.jar dest=/opt/codeshelf/engine/ owner=codeshelf group=codeshelf mode=0644
+  copy: src=/home/ansible/release/Codeshelf/server.codeshelf.jar dest=/opt/codeshelf/engine/ owner=codeshelf group=codeshelf mode=0644
   when: engine.changed
 
 - name: Start service

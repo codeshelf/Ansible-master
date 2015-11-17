@@ -10,7 +10,10 @@ nginx: fix config, annote key requirements (plus custom ca)
 nginx: how does it get a copy of CodeshelfUX?
 nginx: dashboard, admin access, etc site functions
 
-fep: inventory variables, figure out code distribution
+fep: inventory variables
+fep: convert upstart to systemd init script
+
+java: make debian safe
 
 sitecon: ???
 
