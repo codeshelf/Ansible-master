@@ -7,3 +7,4 @@
 
 - name: install resolv.conf
   copy: src=resolv.conf dest=/etc/resolv.conf owner=root group=root mode=0444
+  when: ansible_os_family == "RedHat" # Debian automatically knows about unbound thanks to resolvconf
