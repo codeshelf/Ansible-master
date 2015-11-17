@@ -22,7 +22,7 @@ websocket.idle.kill=true
 db.name=database
 db.schemaname=codeshelf
 db.userid=codeshelf
-db.password=medrogarkinagife
+db.password=
 db.address=db1
 db.portnum=5432
 #db.ssl=true
@@ -32,5 +32,5 @@ db.ssl=false
 #
 keystore.type=JKS
 keystore.path=/etc/codeshelf/codeshelfcom.signed.keystore.jks
-keystore.store.password=vplortonikatwiqpfrin
-keystore.key.password=vplortonikatwiqpfrin
+keystore.store.password=
+keystore.key.password=

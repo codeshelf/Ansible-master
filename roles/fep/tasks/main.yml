@@ -5,9 +5,6 @@
 - name: Codeshelf home directory readable
   file: path=/home/codeshelf state=directory mode=0755
 
-- name: Codeshelf ssh login authorization (legacy)
-  authorized_key: user=codeshelf key="{{ lookup('file','codeshelf_id_rsa.pub') }}"
-
 - name: Codeshelf local log file folder
   file: path=/home/codeshelf/.Codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
 
@@ -36,28 +33,9 @@
   template: src=codeshelf.conf.j2 dest=/etc/init/codeshelf.conf owner=root group=root mode=0644
   register: initscript
 
-- name: deploy user
-  user: name=deploy state=present
-
-- name: deploy ssh key
-  authorized_key: user=deploy key="{{ lookup('file','deploy_id_rsa.pub') }}"
-
-- name: deploy script
-  copy: src=autodeploy.sh dest=/opt/codeshelf/autodeploy.sh owner=root group=root mode=0700
-
-- name: deploy cron job
-  cron: name="autodeploy" job="/opt/codeshelf/autodeploy.sh"
-
-- name: Configure SSHD (test server)
-  copy: src=sshd_config_test
-        dest=/etc/ssh/sshd_config
-        owner=root group=root mode=0600
-  when: ansible_hostname == 'test'
-
 - name: App engine version
   copy: src=/home/ansible/release/Codeshelf/{{ ansible_hostname }}/build.txt dest=/opt/codeshelf/ owner=codeshelf group=codeshelf mode=0644
   register: engine
-  when: ansible_hostname != 'test' and ansible_hostname != 'stage'
 
 - name: Configuration file from template
   template: src=server.config.properties.codeshelf.j2 dest=/etc/codeshelf/server.config.properties owner=codeshelf group=codeshelf mode=0600
@@ -75,19 +53,6 @@
 - name: Install app JAR
   copy: src=/home/ansible/release/Codeshelf/{{ ansible_hostname }}/server.codeshelf.jar dest=/opt/codeshelf/engine/ owner=codeshelf group=codeshelf mode=0644
   when: engine.changed
-
-#- name: Web app version
-#  copy: src=/home/ansible/release/CodeshelfUX/latest/buildweb.txt dest=/opt/codeshelf/ owner=codeshelf group=codeshelf mode=0644
-#  register: webapp
-#  when: ansible_hostname != 'test' and ansible_hostname != 'stage'
-#
-#- name: Web app installation
-#  unarchive: src=/home/ansible/release/CodeshelfUX/latest/web_app.tgz dest=/opt/codeshelf/web/app/ owner=codeshelf group=codeshelf
-#  when: webapp.changed
-#
-#- name: Websocket browser config from template
-#  template: src=websocket.addr.json.j2 dest=/opt/codeshelf/web/app/websocket.addr.json owner=codeshelf group=codeshelf mode=0644
-#  when: webapp.changed
 
 - name: Start service
   command: start codeshelf
