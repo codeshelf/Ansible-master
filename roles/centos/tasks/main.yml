@@ -57,29 +57,6 @@
 - name: iptables configuration assembly folder
   file: path=/etc/sysconfig/iptables.d state=directory owner=root group=root mode=0700
 
-- name: Create swap space
-  command: dd if=/dev/zero of=/xswap bs=1M count=2048
-  when: ansible_swaptotal_mb < 500
-
-- name: Make swap
-  command: mkswap /xswap
-  when: ansible_swaptotal_mb < 500
-
-- name: swap in fstab
-  lineinfile: dest=/etc/fstab regexp="^\/xswap" line="/xswap none swap sw 0 0" state=present
-
-- name: configure swappiness in sysctl
-  lineinfile: dest=/etc/sysctl.conf regexp="^vm.swappiness" line="vm.swappiness = 25" state=present
-  register: config_swappiness
-
-- name: change swappiness
-  shell: "echo 25 > /proc/sys/vm/swappiness"
-  when: config_swappiness.changed
-
-- name: swap on
-  command: swapon -a
-  changed_when: False
-
 - name: /etc/hosts
   template: src=hosts.j2 dest=/etc/hosts
   with_items:
