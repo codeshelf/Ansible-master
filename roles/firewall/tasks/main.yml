@@ -1,0 +1,10 @@
+---
+- name: iptables rules
+  template: src={{ cluster_node_type }}-ipv4.j2 dest=/etc/sysconfig/iptables owner=root group=root mode=0400
+  notify:
+    - reload iptables
+
+- name: ip6tables rules
+  template: src={{ cluster_node_type }}-ipv6.j2 dest=/etc/sysconfig/ip6tables owner=root group=root mode=0400
+  notify:
+    - reload ip6tables
