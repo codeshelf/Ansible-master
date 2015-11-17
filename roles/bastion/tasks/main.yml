@@ -12,6 +12,7 @@
   with_items:
     - ayounts
     - reedwaller
+    - pmonteiro
 
 # service accounts
 - name: set service accounts
