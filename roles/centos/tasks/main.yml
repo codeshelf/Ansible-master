@@ -1,5 +1,5 @@
 ---
-- name: Make sure that the ansible/files directory exsists
+- name: Make sure that the ansible/files directory exists
   file: path=/home/ansible/files/ state=directory
 
 - name: Packages
