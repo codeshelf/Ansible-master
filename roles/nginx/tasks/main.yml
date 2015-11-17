@@ -1,14 +1,6 @@
 ---
-- name: nginx repo
-  copy: src=nginx.repo dest=/etc/yum.repos.d/ owner=root group=root
-  register: nginxrepo
-
-- name: refresh yum cache
-  command: yum makecache
-  when: nginxrepo.changed
-
 - name: nginx installed
-  yum: name=nginx state=installed
+  yum: name=nginx state=latest
 
 - name: signed certs
   synchronize: src=certs/ dest=/etc/pki/tls/certs/ copy_links=yes
@@ -16,13 +8,7 @@
 - name: private keys
   copy: src=keys/{{ item }} dest=/etc/pki/tls/private/ owner=root group=root mode=0600
   with_items:
-    - kibana.codeshelf.com.key
-    - tsdb.codeshelf.com.key
-    - grafana.codeshelf.com.key
-    - dev.codeshelf.com.key
     - admin.codeshelf.com.key
-    - tc.codeshelf.com.key
-    - teamcity.codeshelf.com.key
     - dashboard.codeshelf.com.key
     - codeshelfcom.key
 
@@ -35,17 +21,6 @@
 - name: static sites
   synchronize: src=static dest=/var/www
   notify: dashboard directory permissions
-
-- name: admin host list
-  template: src=hosts.json.j2 dest=/var/www/static/admin/resources/hosts.json owner=root group=root mode=0644
-
-- name: Got test site
-  local_action: command /home/ansible/release/get_deployed.sh test
-  sudo: False
-
-- name: Got stage site
-  local_action: command /home/ansible/release/get_deployed.sh stage
-  sudo: False
 
 - name: UX folders
   file: path=/var/www/{{ item }}/ state=directory
@@ -81,15 +56,7 @@
   copy: src=htpasswd dest=/etc/nginx/htpasswd owner=root group=root mode=0644 
 
 - name: nginx service
-  service: name=nginx state=started
-
-- name: deploybot user
-  user: name=deploybot generate_ssh_key=yes
-
-- name: deploybot ssh key
-  copy: src=id_deploybot dest=/home/deploybot/.ssh/id_rsa owner=deploybot group=deploybot mode=0600
-
-- include: assemble_iptables.yml
+  service: name=nginx state=started enabled=yes
 
 - name: dashboard cron
   cron: name="dashboard" minute="*/2" job="/var/www/static/dashboard/generate.sh 2>/dev/null >/dev/null" user=nginx

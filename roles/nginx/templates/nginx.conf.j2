@@ -42,12 +42,6 @@ http {
 
     keepalive_timeout  65;
     
-    upstream elastic {
-{% for elastichost in groups['elastic'] %}
-        server {{ elastichost }}:9200;
-{% endfor %}
-    }
-
     server {
         listen 80 default_server;
 
@@ -63,19 +57,6 @@ http {
 
         root /var/www/static/default/;
     }
-{% for staticsite in ['calendar','drive','mail','sites','support','teamcity'] %}
-    server {
-        listen 443 ssl;
-        ssl_certificate /etc/pki/tls/certs/codeshelfcom.crt;
-        ssl_certificate_key /etc/pki/tls/private/codeshelfcom.key;
-        ssl_dhparam /etc/pki/tls/dhparams.pem;
-	ssl_crl /etc/pki/tls/crl.pem;
-        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
-
-        server_name {{ staticsite }}.codeshelf.com;
-        root /var/www/static/{{ staticsite }}/;
-    }
-{% endfor %}
     server {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/admin.codeshelf.com.crt;
@@ -92,13 +73,6 @@ http {
         server_name admin.codeshelf.com;
         root /var/www/static/admin/;
 
-{% for elastichost in groups['elastic'] %}
-        location /{{ elastichost }}/ {
-            proxy_pass http://{{ elastichost }}:9200/;
-            add_header Cache-Control no-cache;
-            etag off;
-        }
-{% endfor %}
 {% for apphost in groups['fep'] %}
         location /{{ apphost }}/ {
             proxy_pass http://{{ apphost }}:8181/;
@@ -130,108 +104,6 @@ http {
 
         server_name dashboard.codeshelf.com;
         root /var/www/static/dashboard/;
-    }
-
-    server {
-        listen 443 ssl;
-        ssl_certificate /etc/pki/tls/certs/kibana.codeshelf.com.crt;
-        ssl_certificate_key /etc/pki/tls/private/kibana.codeshelf.com.key;
-        ssl_dhparam /etc/pki/tls/dhparams.pem;
-	ssl_crl /etc/pki/tls/crl.pem;
-        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
-
-        ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
-        ssl_verify_client on;
-
-        server_name kibana.codeshelf.com;
-        root /var/www/static/kibana-3.1.0/;
-
-        location /elastic/ {
-            proxy_pass http://elastic/;
-            add_header Cache-Control no-cache;
-            etag off;
-        }
-    }   
-
-    server {
-        listen 443 ssl;
-        ssl_certificate /etc/pki/tls/certs/grafana.codeshelf.com.crt;
-        ssl_certificate_key /etc/pki/tls/private/grafana.codeshelf.com.key;
-        ssl_dhparam /etc/pki/tls/dhparams.pem;
-	ssl_crl /etc/pki/tls/crl.pem;
-
-        ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
-        ssl_verify_client on;
-        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
-
-        server_name grafana.codeshelf.com;
-        root /var/www/static/grafana-1.8.1/;
-
-        location /elastic/ {
-            proxy_pass http://elastic/;
-            add_header Cache-Control no-cache;
-            etag off;
-        }
-        location /tsdb/ {
-            proxy_pass http://hadoop1:4242/;
-            add_header Cache-Control no-cache;
-            etag off;
-        }
-    }
-
-    server {
-        listen 443 ssl;
-        ssl_certificate /etc/pki/tls/certs/tsdb.codeshelf.com.crt;
-        ssl_certificate_key /etc/pki/tls/private/tsdb.codeshelf.com.key;
-        ssl_dhparam /etc/pki/tls/dhparams.pem;
-	ssl_crl /etc/pki/tls/crl.pem;
-        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
-        add_header Cache-Control no-cache;
-        etag off;
-
-        ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
-        ssl_verify_client on;
-
-        server_name tsdb.codeshelf.com;
-
-        location / {
-            proxy_pass http://hadoop1:4242/;
-        }
-    }
-
-    server {
-        listen 443 ssl;
-        ssl_certificate /etc/pki/tls/certs/tc.codeshelf.com.crt;
-        ssl_certificate_key /etc/pki/tls/private/tc.codeshelf.com.key;
-        ssl_dhparam /etc/pki/tls/dhparams.pem;
-	ssl_crl /etc/pki/tls/crl.pem;
-        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
-        add_header Cache-Control no-cache;
-
-        ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
-        ssl_verify_client on;
-
-        server_name tc.codeshelf.com;
-
-        location / {
-            proxy_pass http://tc1:8111/;
-        }
-    }
-
-    server {
-        listen 443 ssl;
-        ssl_certificate /etc/pki/tls/certs/dev.codeshelf.com.crt;
-        ssl_certificate_key /etc/pki/tls/private/dev.codeshelf.com.key;
-        ssl_dhparam /etc/pki/tls/dhparams.pem;
-	ssl_crl /etc/pki/tls/crl.pem;
-        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
-        add_header Cache-Control no-cache;
-
-        ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
-        ssl_verify_client on;
-
-        server_name dev.codeshelf.com;
-        root /var/www/static/dev/;
     }
 
 {% for apphost in groups['fep'] %}
@@ -274,5 +146,5 @@ http {
 	}
     }
 {% endfor %}
-}
 
+}

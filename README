@@ -6,3 +6,7 @@ Machines must have a dedicated swap partition
 TODO's:
 fix java role
 collect and create group_vars used
+
+nginx: fix config, annote key requirements (plus custom ca)
+
+logging+monitoring???
