@@ -1,9 +1,0 @@
----
-# bind management
-
-- name: restart bind9
-  service: name=bind9 state=restarted
-
-- name: reload bind9
-  service: name=bind9 state=reloaded
-

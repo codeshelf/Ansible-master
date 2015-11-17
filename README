@@ -1,4 +1,8 @@
 Ansible-master user home directory
 
+Requirements:
+Machines must have a dedicated swap partition
+
 TODO's:
 fix java role
+convert bind role to unbound
