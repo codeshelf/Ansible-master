@@ -1,0 +1,7 @@
+Firewall role
+
+OS Support:
+	Centos 7
+	Debian 8
+
+Requires cluster_master_ip, cluster_private_subnet, and cluster_node_type
