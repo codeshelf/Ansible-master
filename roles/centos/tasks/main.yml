@@ -1,5 +1,4 @@
 ---
-# centos (base role) 
 - name: Make sure that the ansible/files directory exsists
   file: path=/home/ansible/files/ state=directory
 
@@ -8,12 +7,9 @@
   with_items:
       - lsof
       - telnet
-      - elinks
       - tmux
       - nrpe
       - vim
-      - joe
-      - nano
       - wget
       - libselinux-python
       - ntp
@@ -60,15 +56,6 @@
 
 - name: iptables configuration assembly folder
   file: path=/etc/sysconfig/iptables.d state=directory owner=root group=root mode=0700
-
-- name: JDK installation file
-  copy: src=jdk-7u75-linux-x64.rpm dest=/home/ansible/files/ mode=0644
-
-- name: JDK installed 
-  yum: name=/home/ansible/files/jdk-7u75-linux-x64.rpm state=installed
-
-- name: JAVA_HOME in profile
-  copy: src=java.sh dest=/etc/profile.d/ owner=root group=root mode=0644
 
 - name: Create swap space
   command: dd if=/dev/zero of=/xswap bs=1M count=2048
