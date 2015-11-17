@@ -1,10 +1,10 @@
 ---
 - name: JDK installation file
-  copy: src=jdk-7u75-linux-x64.rpm dest=/home/ansible/files/ mode=0644
+  copy: src=jdk-7u75-linux-x64.rpm dest=/home/ansible/files/ mode=0444
 
 - name: JDK installed
   yum: name=/home/ansible/files/jdk-7u75-linux-x64.rpm state=installed
 
 - name: JAVA_HOME in profile
-  copy: src=java.sh dest=/etc/profile.d/ owner=root group=root mode=0644
+  copy: src=java.sh dest=/etc/profile.d/ owner=root group=root mode=0444
 
