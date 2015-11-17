@@ -1,5 +1,0 @@
----
-- hosts: DFW
-  sudo: yes
-  roles:
-    - centos

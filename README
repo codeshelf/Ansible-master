@@ -1,9 +1,11 @@
 Ansible-master user home directory
 
 Requirements:
+Machines must use either Centos 7 or Debian 8
 Machines must have a dedicated swap partition
 Place java into roles/java/files and edit roles/java/tasks/main.yml
 Place Codeshelf and CodeshelfUX distributions into releases/*
+Craft a real group_vars/all file
 
 TODO's:
 nginx: fix config, annote key requirements (plus custom ca)
