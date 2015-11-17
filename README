@@ -9,4 +9,12 @@ collect and create group_vars used
 nginx: fix config, annote key requirements (plus custom ca)
 nginx: uses a lot of variables from inventory
 
+db: make debian safe
+
+fep: make debian safe, inventory variables, figure out code distribution
+
+sitecon: ???
+
 logging+monitoring???
+    central syslog/metric/monitoring host?
+    nagios + graylog2??
