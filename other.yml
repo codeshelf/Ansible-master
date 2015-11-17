@@ -1,5 +1,0 @@
----
-- hosts: other
-  sudo: yes
-  roles:
-    - centos

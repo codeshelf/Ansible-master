@@ -1,8 +1,0 @@
----
-- name: JDK 7 installer
-  copy: src=jdk-7u60-linux-x64.rpm dest=/home/ansible/files/ owner=ansible group=ansible mode=0644
-
-- name: JDK 7 installed
-  yum: name=/home/ansible/files/jdk-7u60-linux-x64.rpm state=installed
-
-- include: assemble_iptables.yml

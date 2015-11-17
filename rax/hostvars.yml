@@ -1,8 +1,0 @@
----
-- name: show host vars
-  hosts: localhost
-  tasks:
-  - name: json
-    debug: msg="{{hostvars[item]|to_json}}"
-    with_items: groups['all']
-

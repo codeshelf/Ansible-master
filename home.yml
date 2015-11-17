@@ -1,6 +1,0 @@
----
-- hosts: home
-  sudo: yes
-  roles:
-    - centos
-    - home

@@ -1,6 +1,0 @@
----
-- hosts: tc
-  sudo: yes
-  roles:
-    - centos
-    - tc

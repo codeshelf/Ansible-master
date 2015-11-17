@@ -1,6 +1,0 @@
----
-- hosts: build
-  sudo: yes
-  roles:
-    - centos
-    - build

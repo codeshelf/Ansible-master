@@ -1,6 +1,0 @@
----
-- name: restart hbase
-  service: name=hbase state=restarted
-
-- name: restart opentsdb
-  service: name=opentsdb state=restarted

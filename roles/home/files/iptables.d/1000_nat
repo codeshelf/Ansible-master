@@ -1,8 +1,0 @@
-# home role forwarding
-*nat
-:PREROUTING ACCEPT [93097:5336505]
-:POSTROUTING ACCEPT [364222:22040220]
-:OUTPUT ACCEPT [364222:22040220]
--A PREROUTING -i eth2 -p tcp -m tcp --dport 22 -j REDIRECT --to-ports 8022
-COMMIT
-# end of home role forwarding

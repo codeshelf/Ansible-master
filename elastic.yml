@@ -1,7 +1,0 @@
----
-- hosts: elastic
-  sudo: yes
-  roles:
-    - centos
-    - elastic
-    - tcollector

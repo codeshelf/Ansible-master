@@ -1,6 +1,0 @@
----
-- hosts: bastion
-  sudo: yes
-  roles:
-    - ubuntu
-    - bastion
