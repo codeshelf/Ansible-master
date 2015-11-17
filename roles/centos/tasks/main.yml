@@ -3,8 +3,9 @@
   file: path=/home/ansible/files/ state=directory
 
 - name: Packages
-  yum: name={{ item }} state=present
+  yum: name={{ item }} state=latest
   with_items:
+      - epel-release
       - lsof
       - telnet
       - tmux
@@ -22,6 +23,9 @@
       - nagios-plugins-log
       - nagios-plugins-swap
       - nagios-plugins-load
+
+- name: upgrade operating system
+  yum: name=* state=latest
 
 - name: ansible user authorized_keys
   copy: src=ansible_authorized_keys dest=/home/ansible/.ssh/authorized_keys owner=ansible mode=0444
