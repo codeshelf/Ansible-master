@@ -106,7 +106,6 @@ http {
         root /var/www/static/dashboard/;
     }
 
-{% for apphost in groups['fep'] %}
     server {
         listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/codeshelfcom.crt;
@@ -117,24 +116,24 @@ http {
         add_header Cache-Control no-cache;
         etag off;
      
-        server_name {{ apphost }}.codeshelf.com;
-        root /var/www/{{ apphost }}/;
+        server_name {{ codeshelf_base_hostname }};
+        root /var/www/cluster/;
         index index.html;
         location /ws/ {
-            proxy_pass http://{{ apphost }}:8181/ws/;
+            proxy_pass http://{{ cluster_schema_management_host }}:8181/ws/;
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
         }
 
 	location /auth/ {
-	    proxy_pass http://{{ apphost }}:8181/auth/;
+	    proxy_pass http://{{ cluster_schema_management_host }}:8181/auth/;
             add_header Cache-Control no-cache;
             etag off;
 	}
 
         location /api/ {
-            proxy_pass http://{{ apphost }}:8181/api/;
+            proxy_pass http://{{ cluster_schema_management_host }}:8181/api/;
             add_header Cache-Control no-cache;
             etag off;
         }
@@ -145,6 +144,5 @@ http {
             etag off;
 	}
     }
-{% endfor %}
 
 }

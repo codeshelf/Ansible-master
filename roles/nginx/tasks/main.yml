@@ -23,30 +23,24 @@
   notify: dashboard directory permissions
 
 - name: UX folders
-  file: path=/var/www/{{ item }}/ state=directory
-  with_items: groups['fep']
+  file: path=/var/www/cluster/ state=directory
 
 - name: UX folders
-  file: path=/var/www/{{ item }}/ux/ state=directory
-  with_items: groups['fep']
+  file: path=/var/www/cluster/ux/ state=directory
 
 - name: UX versions
-  copy: src=/home/ansible/release/CodeshelfUX/{{ item }}/buildweb.txt dest=/var/www/{{ item }}/
-  with_items: groups['fep']
+  copy: src=/home/ansible/release/CodeshelfUX/buildweb.txt dest=/var/www/cluster/
   register: ux
 
 - name: UX HTML
-  unarchive: src=/home/ansible/release/CodeshelfUX/{{ item.item }}/web_app.tgz dest=/var/www/{{ item.item }}/
-  when: item.changed
-  with_items: ux.results
+  unarchive: src=/home/ansible/release/CodeshelfUX/web_app.tgz dest=/var/www/cluster/
+  when: ux.changed
 
 - name: app browser config files
-  template: src=websocket.addr.json.j2 dest=/var/www/{{ item }}/websocket.addr.json
-  with_items: groups['fep']
+  template: src=websocket.addr.json.j2 dest=/var/www/cluster/websocket.addr.json
 
 - name: app browser config files
-  template: src=websocket.addr.json.j2 dest=/var/www/{{ item }}/ux/websocket.addr.json
-  with_items: groups['fep']
+  template: src=websocket.addr.json.j2 dest=/var/www/cluster/ux/websocket.addr.json
 
 - name: nginx configuration
   template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf owner=root group=root mode=0644
@@ -58,6 +52,6 @@
 - name: nginx service
   service: name=nginx state=started enabled=yes
 
-- name: dashboard cron
-  cron: name="dashboard" minute="*/2" job="/var/www/static/dashboard/generate.sh 2>/dev/null >/dev/null" user=nginx
+#- name: dashboard cron
+#  cron: name="dashboard" minute="*/2" job="/var/www/static/dashboard/generate.sh 2>/dev/null >/dev/null" user=nginx
 
