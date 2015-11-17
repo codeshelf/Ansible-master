@@ -3,5 +3,7 @@
   sudo: yes
   roles:
     - centos
-    - tcollector
+    - firewall
+    - unbound
+    - hosts
     - db

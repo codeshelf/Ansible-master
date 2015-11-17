@@ -1,6 +1,0 @@
----
-- hosts: dns
-  sudo: yes
-  roles:
-    - ubuntu
-    - bind

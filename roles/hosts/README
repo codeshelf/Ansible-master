@@ -1,0 +1,7 @@
+Hosts file role
+
+OS Support:
+	Centos 7
+	Debian 8
+
+Safe to add to any machine.
