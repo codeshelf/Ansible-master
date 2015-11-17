@@ -1,0 +1,9 @@
+---
+- name: unbound packages
+  apt: name=unbound state=latest
+
+- name: start and enable unbound
+  service: name=unbound state=started enabled=yes
+
+- name: install resolv.conf
+  copy: src=resolv.conf dest=/etc/resolv.conf owner=root group=root mode=0444
