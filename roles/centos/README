@@ -1,0 +1,6 @@
+Centos base role
+
+OS Support:
+        Centos 7
+
+Only run on Centos machines.

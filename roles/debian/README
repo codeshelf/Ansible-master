@@ -1,0 +1,7 @@
+Debian base role
+
+OS Support:
+        Debian 8
+
+Only run on Debian machines.
+
