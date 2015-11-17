@@ -1,3 +1,0 @@
-# begin FEP role accept ports
--A INPUT -i eth2 -p tcp -m tcp --dport 8181 -j ACCEPT
-# end FEP role accept ports

@@ -93,5 +93,3 @@
   command: start codeshelf
   when: engine.changed or config.changed or initscript.changed
 
-- include: assemble_iptables.yml
-
