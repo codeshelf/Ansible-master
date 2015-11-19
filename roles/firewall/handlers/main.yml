@@ -1,13 +1,10 @@
 ---
 - name: restart iptables
   service: name=iptables state=restarted
-  when: ansible_os_family == "RedHat"
 
 - name: restart ip6tables
   service: name=ip6tables state=restarted
-  when: ansible_os_family == "RedHat"
 
 - name: enforce firewall
   command: /etc/network/if-up.d/firewall
-  when: ansible_os_family == "Debian"
 
