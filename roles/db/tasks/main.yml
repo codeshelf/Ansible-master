@@ -2,33 +2,34 @@
 - name: install postgresql redhat
   yum: name=postgresql-server state=installed
   when: ansible_os_family == "RedHat"
-  register: pg
-
-- name: run initdb
-  command: /usr/bin/postgresql-setup initdb
-  when: (pg.changed and ansible_os_family == "RedHat")
+  register: pgredhat
 
 - name: install postgresql debian
   apt: name=postgresql state=installed
   when: ansible_os_family == "Debian"
-  register: pg
+  register: pgdebian
 
-- name: enable postgresql service
-  service: name=postgresql state=started enabled=yes
+- name: run initdb
+  command: /usr/bin/postgresql-setup initdb
+  when: ((pgredhat.changed or pgdebian.changed) and ansible_os_family == "RedHat")
 
 - name: create default database template
   template: src=createusers.sql.j2 dest=/tmp/createusers.sql owner=postgres group=postgres mode=0400
-  when: pg.changed
+  when: (pgredhat.changed or pgdebian.changed)
+
+# will always run but must come before "create default database" so that pgsql is running but after "initdb"
+- name: enable postgresql service
+  service: name=postgresql state=started enabled=yes
 
 - name: create default database
   sudo: true
   sudo_user: postgres
   shell: /usr/bin/psql -f /tmp/createusers.sql
-  when: pg.changed
+  when: (pgredhat.changed or pgdebian.changed)
 
 - name: remove default database template
   file: path=/tmp/createusers.sql state=absent
-  when: pg.changed
+  when: (pgredhat.changed or pgdebian.changed)
 
 # todo: create appropriate config files
 
