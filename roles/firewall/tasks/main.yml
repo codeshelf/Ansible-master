@@ -1,4 +1,21 @@
 ---
+- name: install iptables services
+  yum: name=iptables-services state=installed
+  register: installed-redhat
+  when: ansible_os_family == "RedHat"
+
+- name: enable iptables
+  service: name=iptables enabled=yes
+  when: installed-redhat.changed
+
+- name: enable ip6tables
+  service: name=ip6tables enabled=yes
+  when: installed-redhat.changed
+
+- name: disable firewalld
+  service: name=firewalld enabled=no state=stopped
+  when: installed-redhat.changed
+
 - name: iptables rules
   template: src=redhat/{{ cluster_node_type }}-ipv4.j2 dest=/etc/sysconfig/iptables owner=root group=root mode=0400
   notify:
