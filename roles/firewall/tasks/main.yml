@@ -1,34 +1,36 @@
 ---
 - name: install iptables services
   yum: name=iptables-services state=installed
-  register: installed-redhat
+  register: installiptables
   when: ansible_os_family == "RedHat"
 
 - name: enable iptables
   service: name=iptables enabled=yes
-  when: installed-redhat.changed
+  when: installiptables
 
 - name: enable ip6tables
   service: name=ip6tables enabled=yes
-  when: installed-redhat.changed
+  when: installiptables
 
 - name: disable firewalld
   service: name=firewalld enabled=no state=stopped
-  when: installed-redhat.changed
+  when: installiptables
 
 - name: iptables rules
   template: src=redhat/{{ cluster_node_type }}-ipv4.j2 dest=/etc/sysconfig/iptables owner=root group=root mode=0400
   notify:
-    - reload iptables
+    - restart iptables
   when: ansible_os_family == "RedHat"
 
 - name: ip6tables rules
   template: src=redhat/{{ cluster_node_type }}-ipv6.j2 dest=/etc/sysconfig/ip6tables owner=root group=root mode=0400
   notify:
-    - reload ip6tables
+    - restart ip6tables
   when: ansible_os_family == "RedHat"
 
 - name: host firewall
   copy: src=debian/{{ cluster_node_type }}.j2 dest=/etc/network/if-up.d/firewall owner=root group=root mode=0555
+  notify:
+    - enforce firewall
   when: ansible_os_family == "Debian"
 
