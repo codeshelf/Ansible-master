@@ -16,13 +16,6 @@
       - ntp
       - sudo
       - dstat
-      - nagios-plugins-procs
-      - nagios-plugins-pgsql
-      - nagios-plugins-disk
-      - nagios-plugins-users
-      - nagios-plugins-log
-      - nagios-plugins-swap
-      - nagios-plugins-load
 
 - name: upgrade operating system
   yum: name=* state=latest
