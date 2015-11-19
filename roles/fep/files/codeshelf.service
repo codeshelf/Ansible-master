@@ -4,8 +4,8 @@ After=syslog.target
 
 [Service]
 Type=forking
-WorkingDirectory=/opt/codeshelf/
-ExecStart=/usr/bin/bash /opt/codeshelf/start.engine
+WorkingDirectory=/opt/codeshelf/engine
+ExecStart=/usr/bin/bash /opt/codeshelf/codeshelf.engine
 User=codeshelf
 Group=codeshelf
 Restart=always
