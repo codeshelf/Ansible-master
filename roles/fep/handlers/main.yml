@@ -1,2 +1,3 @@
 ---
-
+- name: Restart Fep
+  service: name=codeshelf state=restarted

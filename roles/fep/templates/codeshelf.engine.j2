@@ -1,0 +1,5 @@
+env JAVA_MEM_OPTS="-Xmx1536M -XX:PermSize=128M -XX:MaxPermSize=256M -XX:-UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled"
+
+env LOGFILE="/home/codeshelf/.Codeshelf/logs/daemon.log"
+
+/usr/bin/java $JAVA_MEM_OPTS -XX:+HeapDumpOnOutOfMemoryError $JAVA_DEBUG_OPTS -Dconfig.properties=/etc/codeshelf/server.config.properties -Dcs.logfile.name=codeshelf.server.log -Dcodeshelf.remotelog.ipaddress=elastic1 -Dcodeshelf.remotelog.port=56445 -jar server.codeshelf.jar > $LOGFILE 2>&1

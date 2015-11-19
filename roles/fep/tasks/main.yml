@@ -30,8 +30,16 @@
   copy: src=etc_codeshelf/codeshelfcom.signed.keystore.jks dest=/etc/codeshelf/codeshelfcom.signed.keystore.jks owner=codeshelf group=codeshelf mode=0600
 
 - name: codeshelf init script
-  template: src=codeshelf.conf.j2 dest=/etc/init/codeshelf.conf owner=root group=root mode=0644
+  copy: src=codeshelf.service dest=/usr/lib/systemd/system/codeshelf.service owner=root group=root mode=0644
   register: initscript
+
+- name: Enable service
+  service: name=codeshelf enabled=yes
+  when: initscript.changed
+
+- name: codeshelf init helper
+  template: src=codeshelf.engine.j2 dest=/opt/codeshelf/codeshelf.engine owner=root group=root mode=0755
+  notify: Restart Fep
 
 - name: App engine version
   copy: src=/home/ansible/release/Codeshelf/build.txt dest=/opt/codeshelf/ owner=codeshelf group=codeshelf mode=0644
@@ -42,7 +50,7 @@
   register: config
 
 - name: Stop service
-  command: stop codeshelf
+  service: name=codeshelf state=stopped
   when: engine.changed or config.changed or initscript.changed
   ignore_errors: yes
 
@@ -55,6 +63,6 @@
   when: engine.changed
 
 - name: Start service
-  command: start codeshelf
+  service: name=codeshelf state=started
   when: engine.changed or config.changed or initscript.changed
 

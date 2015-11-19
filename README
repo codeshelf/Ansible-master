@@ -31,8 +31,6 @@ nginx: fix config
 nginx: dashboard, admin access, etc site functions
 nginx: document and figure out SSL keys
 
-fep: convert upstart to systemd init script
-
 java: make debian safe
 
 db: set up replica server
