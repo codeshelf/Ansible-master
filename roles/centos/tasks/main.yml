@@ -32,32 +32,6 @@
 - name: Userlimit files
   lineinfile: dest=/etc/security/limits.conf line="* - nofile 64000" insertafter=EOF
 
-- name: nrpe.cfg
-  copy: src=nrpe.cfg dest=/etc/nagios/nrpe.cfg owner=root group=root mode=0644
-  notify:
-    - restart nrpe
-
-- name: nrpe enabled
-  service: name=nrpe enabled=yes
-  notify:
-    - restart nrpe
-
-- name: ip6tables service
-  service: name=ip6tables enabled=yes state=started
-
-- name: ip6tables configuration
-  copy: src=ip6tables dest=/etc/sysconfig/ip6tables owner=root group=root mode=0400
-  notify:
-    - restart ip6tables
-
-- name: iptables configuration assembly folder
-  file: path=/etc/sysconfig/iptables.d state=directory owner=root group=root mode=0700
-
-- name: /etc/hosts
-  template: src=hosts.j2 dest=/etc/hosts
-  with_items:
-  - "{{ inventory_hostname }}"
-
 - name: Setup sudoers
   copy: src=sudoers dest=/etc/sudoers owner=root group=root mode=0440 validate='visudo -cf %s'
 
