@@ -7,7 +7,6 @@
 /tmp/
 /.viminfo
 /log/
-/ssl/
 /.novaclient/
 /.profile
 *.retry
