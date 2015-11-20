@@ -36,6 +36,7 @@ groupvars: fix all.sample to remove schema management host
 
 java: make debian safe
 
+db: fix pg_hba.conf and postgresql.conf
 db: set up replica server
 
 sitecon: ???

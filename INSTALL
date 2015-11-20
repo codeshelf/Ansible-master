@@ -1,0 +1,21 @@
+Steps needed to reconstitute this repository as a real Codeshelf Cluster Master:
+
+1. Find a set of machines (physical, virtual, cloud, whatever)
+2. Set up master
+	a. Create 'ansible' user (adduser ansible)
+	b. Generate 'ansible' SSH keys (su ansible - ssh-keygen -t rsa -b 4096)
+	c. Clone repository (cd /home/ansible; git clone git@github.com:codeshelf/Ansible-master.git master)
+	d. Populate /home/ansible/.ssh/id_rsa.pub to root on the slave servers (manually, api's, whatever)
+3. Fix roles/hosts/files/hosts if necessary
+4. Fix inventory/site if necessary
+5. Create group_vars/all from group_vars/all.sample
+6. Run "spinup/configure.sh <slave_server>" for each slave
+7. Create log directory (mkdir /home/ansible/master/log)
+8. Fix key in roles/centos/files/ansible_authorized_keys
+9. Put Java RPM into roles/java/files/java.rpm (cp jre-7u80-linux-x64.rpm /home/ansible/master/roles/java/files/java.rpm)
+10. Add java key store to roles/fep/files/etc_codeshelf/codeshelfcom.signed.keystore.jks
+11. Rsync into place Codeshelf code (rsync -avPt Codeshelf* /home/ansible/master/releases)
+12. Create key repository (mkdir /home/ansible/ssl)
+13. Make symlinks from roles/nginx/files/[certs,keys] to files in /home/ansible/ssl
+14. Run Ansible (ansible-playbook site.yml) and get coffee
+
