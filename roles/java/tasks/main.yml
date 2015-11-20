@@ -1,9 +1,9 @@
 ---
 - name: JRE installation file
-  copy: src=jre-7u80-linux-x64.rpm dest=/home/ansible/files/ mode=0444
+  copy: src=java.rpm dest=/home/ansible/files/ mode=0444
 
 - name: JRE installed
-  yum: name=/home/ansible/files/jre-7u80-linux-x64.rpm state=installed
+  yum: name=/home/ansible/files/java.rpm state=installed
 
 - name: JAVA_HOME in profile
   copy: src=java.sh dest=/etc/profile.d/ owner=root group=root mode=0444
