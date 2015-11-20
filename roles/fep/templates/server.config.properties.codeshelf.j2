@@ -26,7 +26,7 @@ tenant.default.schema={{ codeshelf_default_schema }}
 tenant.default.username=codeshelf
 
 manager.db.url=jdbc:postgresql://{{ codeshelf_database_host }}:5432/database
-manager.db.password=medrogarkinagife
+manager.db.password={{ codeshelf_database_master_password }}
 shard.default.db.url=jdbc:postgresql://{{ codeshelf_database_host }}:5432/database
 shard.default.db.admin_password={{ codeshelf_database_master_password }}
 tenant.default.password={{ codeshelf_database_master_password }}
