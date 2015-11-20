@@ -57,37 +57,6 @@ http {
 
         root /var/www/static/default/;
     }
-    server {
-        listen 443 ssl;
-        ssl_certificate /etc/pki/tls/certs/admin.codeshelf.com.crt;
-        ssl_certificate_key /etc/pki/tls/private/admin.codeshelf.com.key;
-        ssl_dhparam /etc/pki/tls/dhparams.pem;
-	ssl_crl /etc/pki/tls/crl.pem;
-        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
-        add_header Cache-Control no-cache;
-        etag off;
-
-        ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
-        ssl_verify_client on;
-
-        server_name admin.codeshelf.com;
-        root /var/www/static/admin/;
-
-{% for apphost in groups['fep'] %}
-        location /{{ apphost }}/ {
-            proxy_pass http://{{ apphost }}:8181/;
-            add_header Cache-Control no-cache;
-            etag off;
-        }
-{% endfor %}
-{% for sitecon in groups['sitecon'] %}
-        location /{{ sitecon }}/ {
-            proxy_pass http://home1:{{ hostvars[sitecon].diag_port }}/;
-            add_header Cache-Control no-cache;
-            etag off;
-        }
-{% endfor %}
-    }
 
     server {
         listen 443 ssl;

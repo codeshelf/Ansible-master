@@ -6,17 +6,7 @@
   synchronize: src=certs/ dest=/etc/pki/tls/certs/ copy_links=yes
 
 - name: private keys
-  copy: src=keys/{{ item }} dest=/etc/pki/tls/private/ owner=root group=root mode=0600
-  with_items:
-    - admin.codeshelf.com.key
-    - dashboard.codeshelf.com.key
-    - codeshelfcom.key
-
-- name: dhparams file
-  copy: src=dhparams.pem dest=/etc/pki/tls/dhparams.pem owner=root group=root mode=0600
-
-- name: crl file
-  copy: src=crl.pem dest=/etc/pki/tls/crl.pem owner=root group=root mode=0444
+  synchronize: src=keys/ dest=/etc/pki/tls/private/ copy_links=yes
 
 - name: static sites
   synchronize: src=static dest=/var/www
@@ -29,11 +19,11 @@
   file: path=/var/www/cluster/ux/ state=directory
 
 - name: UX versions
-  copy: src=/home/ansible/release/CodeshelfUX/buildweb.txt dest=/var/www/cluster/
+  copy: src=/home/ansible/master/release/CodeshelfUX/buildweb.txt dest=/var/www/cluster/
   register: ux
 
 - name: UX HTML
-  unarchive: src=/home/ansible/release/CodeshelfUX/web_app.tgz dest=/var/www/cluster/
+  unarchive: src=/home/ansible/master/release/CodeshelfUX/web_app.tgz dest=/var/www/cluster/
   when: ux.changed
 
 - name: app browser config files
