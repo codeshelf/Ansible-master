@@ -28,6 +28,7 @@ TODO's:
 nginx: fix config
 nginx: dashboard, admin access, etc site functions
 nginx: document and figure out SSL keys
+nginx: admin.codeshelf.com proxy functionality 
 
 java: make debian safe
 
