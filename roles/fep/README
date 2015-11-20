@@ -24,4 +24,3 @@ cluster_log_port 56445
 cluster_log_socket 56446
 cluster_metric_host hadoop1
 cluster_metric_port 4242
-cluster_schema_management_host 

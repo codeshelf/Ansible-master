@@ -30,6 +30,8 @@ nginx: dashboard, admin access, etc site functions
 nginx: document and figure out SSL keys
 nginx: admin.codeshelf.com proxy functionality 
 
+groupvars: fix all.sample to remove schema management host
+
 java: make debian safe
 
 db: set up replica server

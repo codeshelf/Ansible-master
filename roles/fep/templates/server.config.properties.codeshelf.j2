@@ -39,12 +39,6 @@ metrics.reporter.serverurl=http://{{ cluster_metric_host }}:{{ cluster_metric_po
 
 facility.sequencer=BayDistance
 
-{% if inventory_hostname == cluster_schema_management_host %}
-adminserver.schemamanagement=true
-{% else %}
-adminserver.schemamanagement=false
-{% endif %}
-
 auth.cookie.secure=true
 auth.cookie.domain=
 auth.baseurl=https://{{ codeshelf_base_hostname }}
