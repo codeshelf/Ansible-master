@@ -156,9 +156,9 @@ codeshelf-versions
 promote-stage
  * Makes release out of code in stage
 upgrade-codeshelf
- * Takes arugment and fixes symlinks
+ * Takes argument and fixes symlinks
 upgrade-codeshelfux
- * Takes arugment and fixes symlinks
+ * Takes argument and fixes symlinks
 passwd
  * Change password
 google-authenticator
