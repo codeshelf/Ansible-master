@@ -25,6 +25,8 @@ nginx
 
 TODO's:
 
+fep: db permissions problems..?
+
 nginx: fix config
 nginx: dashboard, admin access, etc site functions
 nginx: document and figure out SSL keys
