@@ -1,28 +1,31 @@
----
-# basic cluster names
-cluster_schema_management_host: fep-00
-codeshelf_base_hostname: east.codeshelf.com
-
-# database connection information
-codeshelf_database_host: dbmaster
-codeshelf_database_master_password: hIgnFMumTHb8FRfuR9MOglwbOkntrl5f
-codeshelf_database_replication_password: HuPTewu1QGp1Fep1EEBwuOV1WDP2IhMA
-codeshelf_manager_schema: manager_fep-00
-codeshelf_default_schema: fep-00
-
-# fep application secrets
-appserver_hmac_secret: vk5A59W33s8BrvVaxseZb5tO2fftOlu9
-appserver_hmac_xor: 67B2F124C098E2B66E7219D3FA2F56
-appserver_sftp_password_key: y3sAeRJJ60WiTSMrPbfOHcUSEDkXkAQs
-appserver_mail_username: notifications@codeshelf.com
-appserver_mail_password: gmail password
-
-# log host
-cluster_log_host: elastic1
-cluster_log_port: 56445
-cluster_log_socket: 56446
-
-# metric host
-cluster_metric_host: hadoop1
-cluster_metric_port: 4242
+#---
+## basic network settings
+#cluster_master_ip: 192.168.75.1
+#cluster_private_subnet: 192.168.75.0/255.255.255.0
+#
+## basic cluster names
+#codeshelf_base_hostname: east.codeshelf.com
+#
+## database connection information
+#codeshelf_database_host: dbmaster
+#codeshelf_database_master_password: hIgnFMumTHb8FRfuR9MOglwbOkntrl5f
+#codeshelf_database_replication_password: HuPTewu1QGp1Fep1EEBwuOV1WDP2IhMA
+#codeshelf_manager_schema: manager_fep-00
+#codeshelf_default_schema: fep-00
+#
+## fep application secrets
+#appserver_hmac_secret: vk5A59W33s8BrvVaxseZb5tO2fftOlu9
+#appserver_hmac_xor: 67B2F124C098E2B66E7219D3FA2F56
+#appserver_sftp_password_key: y3sAeRJJ60WiTSMrPbfOHcUSEDkXkAQs
+#appserver_mail_username: notifications-test@codeshelf.com
+#appserver_mail_password: gmail_password
+#
+## log host
+#cluster_log_host: elastic1
+#cluster_log_port: 56445
+#cluster_log_socket: 56446
+#
+## metric host
+#cluster_metric_host: hadoop1
+#cluster_metric_port: 4242
 
