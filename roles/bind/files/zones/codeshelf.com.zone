@@ -5,7 +5,7 @@ $TTL 1h
 
 ; SOA Record
 CODESHELF.COM.	3600	IN	SOA	ns.codeshelf.com.	devops.codeshelf.com. (
-				2015102901 ; serial
+				2015112401 ; serial
 				2h         ; refresh
 				30M        ; update retry
 				2W         ; expiry
@@ -24,6 +24,7 @@ console		IN	A	166.78.178.4
 dashboard	IN	A	104.130.139.106
 dev		IN	A	104.130.139.106
 drive		IN	A	104.130.139.106
+ganglia		IN	A	104.130.139.106
 grafana		IN	A	104.130.139.106
 home		IN	A	166.78.60.97
 home1		IN	A	166.78.60.97
@@ -58,8 +59,8 @@ ns3		IN	AAAA	2604:180:2:4cf::3  ; d.ns.buddyns.com
 ns-master	IN	AAAA	2001:4800:7812:514:be76:4eff:fe05:9cc4
 
 ; CNAME Records
-a8461bfa1e4fc093b0f28c31e511eea1	IN	CNAME	verify.bing.com
-promo					IN	CNAME	unbouncepages.com
+a8461bfa1e4fc093b0f28c31e511eea1	IN	CNAME	verify.bing.com.
+promo					IN	CNAME	unbouncepages.com.
 
 ; MX Records
 @	IN	MX	5	alt1.aspmx.l.google.com.
