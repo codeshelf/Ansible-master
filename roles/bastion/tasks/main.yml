@@ -13,6 +13,9 @@
     - ayounts
     - reedwaller
     - pmonteiro
+    - jranstrom
+    - zach.gerstein
+    - charlie.martin
 
 # service accounts
 - name: set service accounts
