@@ -9,5 +9,8 @@
 - name: restart ip6tables
   service: name=ip6tables state=restarted
 
+- name: restart gmond
+  service: name=gmond state=restarted
+
 - include: iptables_reload.yml
 

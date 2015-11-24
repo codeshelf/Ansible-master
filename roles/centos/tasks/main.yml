@@ -26,6 +26,7 @@
       - nagios-plugins-log
       - nagios-plugins-swap
       - nagios-plugins-load
+      - ganglia-gmond
 
 - name: ansible user authorized_keys
   copy: src=ansible_authorized_keys dest=/home/ansible/.ssh/authorized_keys owner=ansible mode=0444
@@ -108,6 +109,14 @@
 
 - name: ssh moduli file copy
   copy: src=moduli dest=/etc/ssh/moduli owner=root group=root mode=0444
+
+- name: enable gmond service
+  service: name=gmond enabled=yes
+
+- name: gmond config file
+  copy: src=gmond.conf dest=/etc/ganglia/gmond.conf owner=root group=root mode=0444
+  notify:
+    - restart gmond
 
 - include: assemble_iptables.yml
 
