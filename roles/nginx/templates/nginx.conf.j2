@@ -220,6 +220,25 @@ http {
 
     server {
         listen 443 ssl;
+        ssl_certificate /etc/pki/tls/certs/ganglia.codeshelf.com.crt;
+        ssl_certificate_key /etc/pki/tls/private/ganglia.codeshelf.com.key;
+        ssl_dhparam /etc/pki/tls/dhparams.pem;
+	ssl_crl /etc/pki/tls/crl.pem;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+        add_header Cache-Control no-cache;
+
+        ssl_client_certificate /etc/pki/tls/certs/codeshelf-ca.crt;
+        ssl_verify_client on;
+
+        server_name ganglia.codeshelf.com;
+
+        location / {
+            proxy_pass http://ganglia/;
+        }
+    }
+
+    server {
+        listen 443 ssl;
         ssl_certificate /etc/pki/tls/certs/dev.codeshelf.com.crt;
         ssl_certificate_key /etc/pki/tls/private/dev.codeshelf.com.key;
         ssl_dhparam /etc/pki/tls/dhparams.pem;

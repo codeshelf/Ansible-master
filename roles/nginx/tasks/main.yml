@@ -24,6 +24,7 @@
     - tc.codeshelf.com.key
     - teamcity.codeshelf.com.key
     - dashboard.codeshelf.com.key
+    - ganglia.codeshelf.com.key
     - codeshelfcom.key
 
 - name: dhparams file
