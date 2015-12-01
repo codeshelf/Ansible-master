@@ -233,7 +233,7 @@ http {
         server_name ganglia.codeshelf.com;
 
         location / {
-            proxy_pass http://ganglia/;
+            proxy_pass http://ganglia/ganglia/;
         }
     }
 
