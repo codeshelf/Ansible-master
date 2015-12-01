@@ -5,7 +5,7 @@ $TTL 1h
 
 ; SOA Record
 CODESHELF.COM.	3600	IN	SOA	ns.codeshelf.com.	devops.codeshelf.com. (
-				2015112401 ; serial
+				2015120101 ; serial
 				2h         ; refresh
 				30M        ; update retry
 				2W         ; expiry
@@ -29,6 +29,7 @@ grafana		IN	A	104.130.139.106
 home		IN	A	166.78.60.97
 home1		IN	A	166.78.60.97
 kibana		IN	A	104.130.139.106
+logtest		IN	A	23.253.124.223
 mail		IN	A	104.130.139.106
 master		IN	A	104.130.125.194
 nagios		IN	A	64.49.237.227
