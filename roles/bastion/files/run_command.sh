@@ -53,6 +53,7 @@ if [[ ! ($COMMAND == "status" ||
 	$COMMAND == "promote-stage"  ||
 	$COMMAND == "upgrade-codeshelf"  ||
 	$COMMAND == "upgrade-codeshelfux"  ||
+	$COMMAND == "kick-tunnel"  ||
 	$COMMAND == "reboot-host")  ]]
 then
 	echo "Invalid command"
@@ -350,6 +351,21 @@ case $COMMAND in
 			fi
 
 			ssh -p $SITECON home1 sudo reboot
+		else
+			echo "not implemented for app servers"
+		fi
+	;;
+	'kick-tunnel')
+		if [[ $HOST =~ ^sc[0-9]{5} ]]
+		then
+			SITECON=`echo $HOST | cut -d\c -f 2`
+			if [[ ! ( "$SITECON" -ge "10000" && "$SITECON" -le "20000" ) ]]
+			then
+				echo "Invalid site controller number"
+				exit
+			fi
+
+			ssh home1 "sudo pkill -U u${SITECON}"
 		else
 			echo "not implemented for app servers"
 		fi

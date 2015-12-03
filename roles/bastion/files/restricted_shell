@@ -81,6 +81,9 @@ main_menu () {
                 'upgrade-codeshelfux')
                         remote_command upgrade-codeshelfux
                 ;;
+                'kick-tunnel')
+                        remote_command kick-tunnel
+                ;;
                 'readme')
                         print_readme | less
                 ;;
