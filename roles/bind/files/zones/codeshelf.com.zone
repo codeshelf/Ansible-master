@@ -5,7 +5,7 @@ $TTL 1h
 
 ; SOA Record
 CODESHELF.COM.	3600	IN	SOA	ns.codeshelf.com.	devops.codeshelf.com. (
-				2015120101 ; serial
+				2015120201; serial
 				2h         ; refresh
 				30M        ; update retry
 				2W         ; expiry
@@ -40,6 +40,7 @@ ns3		IN	A	107.191.99.111  ; d.ns.buddyns.com
 ns-master	IN	A	166.78.156.244
 oak		IN	A	70.36.226.20
 productivity	IN	A	104.130.139.106
+reed		IN	A	192.241.193.31
 sftp		IN	A	166.78.155.205
 sites		IN	A	104.130.139.106
 stage		IN	A	104.130.139.106
