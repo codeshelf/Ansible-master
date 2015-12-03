@@ -135,25 +135,49 @@ sub print_error {
 	# it just prints a red panel with nothing in it
 	my ($server) = @_;
 
-	print '
-<div class="panel panel-danger">
-<div class="panel-heading" role="tab" id="headingOne">
-	<h4 class="panel-title">
-		<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'.$server.'" aria-expanded="false" aria-controls="collapse'.$server.'">
-	';
-	print $server . ": Down";
-	print '
-		</a>
-			</h4>
-		</div>
-	<div id="collapse'.$server.'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-	<div class="panel-body">
-	';
+        if ($server eq "sc10022") {
+		print '
+	<div class="panel panel-danger">
+	<div class="panel-heading" role="tab" id="headingOne">
+		<h4 class="panel-title">
+			<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'.$server.'" aria-expanded="false" aria-controls="collapse'.$server.'">
+		';
+		print $server . ": Down";
+		print '
+			</a>
+				</h4>
+			</div>
+		<div id="collapse'.$server.'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+		<div class="panel-body">
+		';
 
-	print "<h2>Please contact Devops</h2>";
+		print "<p>Tunnel might be stuck. Please run "kick-tunnel sc10022" in the Control Panel or contact Devops.</p>";
 
-	print "</div>";
-	print "</div>";
-	print "</div>";
+		print "</div>";
+		print "</div>";
+		print "</div>";
+        } else {
+		print '
+	<div class="panel panel-danger">
+	<div class="panel-heading" role="tab" id="headingOne">
+		<h4 class="panel-title">
+			<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'.$server.'" aria-expanded="false" aria-controls="collapse'.$server.'">
+		';
+		print $server . ": Down";
+		print '
+			</a>
+				</h4>
+			</div>
+		<div id="collapse'.$server.'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+		<div class="panel-body">
+		';
+
+		print "<h2>Please contact Devops</h2>";
+
+		print "</div>";
+		print "</div>";
+		print "</div>";
+        }
+
 }
 
