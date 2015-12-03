@@ -162,6 +162,8 @@ upgrade-codeshelf
  * Takes argument and fixes symlinks
 upgrade-codeshelfux
  * Takes argument and fixes symlinks
+kick-tunnel
+ * Resets the SSH tunnel with a site controller
 passwd
  * Change password
 google-authenticator
