@@ -151,7 +151,7 @@ sub print_error {
 		<div class="panel-body">
 		';
 
-		print "<p>Tunnel might be stuck. Please run "kick-tunnel sc10022" in the Control Panel or contact Devops.</p>";
+		print "<p>Tunnel might be stuck. Please run \"kick-tunnel sc10022\" in the Control Panel or contact Devops.</p>";
 
 		print "</div>";
 		print "</div>";
