@@ -10,8 +10,9 @@
 #codeshelf_database_host: dbmaster
 #codeshelf_database_master_password: hIgnFMumTHb8FRfuR9MOglwbOkntrl5f
 #codeshelf_database_replication_password: HuPTewu1QGp1Fep1EEBwuOV1WDP2IhMA
-#codeshelf_manager_schema: manager_fep-00
-#codeshelf_default_schema: fep-00
+## do not use "-" in the following variables
+#codeshelf_manager_schema: manager_fep00
+#codeshelf_default_schema: fep00
 #
 ## fep application secrets
 #appserver_hmac_secret: vk5A59W33s8BrvVaxseZb5tO2fftOlu9
