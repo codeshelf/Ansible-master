@@ -12,7 +12,7 @@ fi
 cat header.html > index.new
 echo '<div class="col-xs-6">' >> index.new
 echo '<h3>Production</h3>' >> index.new
-for server in betelgeuse capella deneb
+for server in betelgeuse capella deneb procyon
 do
 	./get_status.pl $server >> index.new
 done
