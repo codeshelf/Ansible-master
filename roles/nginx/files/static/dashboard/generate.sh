@@ -57,6 +57,12 @@ cat header.html > aldebaran.new
 ./footer.sh >> aldebaran.new
 mv -f aldebaran.new aldebaran.html
 
+# generate procyon.html
+cat header.html > procyon.new
+./get_status.pl procyon >> procyon.new
+./footer.sh >> procyon.new
+mv -f procyon.new procyon.html
+
 # generate sc.html with all site cons in it
 cat header.html > sc.new
 ./get_status.pl sc10000 30000 >> sc.new
