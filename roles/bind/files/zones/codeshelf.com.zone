@@ -5,7 +5,7 @@ $TTL 1h
 
 ; SOA Record
 CODESHELF.COM.	3600	IN	SOA	ns.codeshelf.com.	devops.codeshelf.com. (
-				2015120401 ; serial
+				2015121101 ; serial
 				2h         ; refresh
 				30M        ; update retry
 				2W         ; expiry
@@ -18,6 +18,7 @@ aldebaran	600	IN	A	104.130.139.106
 betelgeuse	600	IN	A	104.130.139.106
 capella		600	IN	A	104.130.139.106
 deneb		600	IN	A	104.130.139.106
+procyon		600	IN	A	104.130.139.106
 admin		IN	A	104.130.139.106
 calendar	IN	A	104.130.139.106
 console		IN	A	166.78.178.4
