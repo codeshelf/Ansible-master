@@ -1,0 +1,7 @@
+/usr/bin/autossh -f -M 0 \
+        -TNn -i /home/dialhome/.ssh/id_rsa -p 22 -o StrictHostKeyChecking=no \
+        -o ConnectTimeout=20 -o ServerAliveInterval=10 -o ServerAliveCountMax=3 \
+        -L 56440:elastic1:56440 \
+        -L 4242:hadoop1:4242 \
+        -L 5514:elastic1:514 \
+        {{ cluster_dialhome_user }}@{{ cluster_dialhome_server }}

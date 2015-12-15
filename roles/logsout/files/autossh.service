@@ -1,0 +1,15 @@
+[Unit]
+Description=Logging Dial Home
+After=syslog.target
+
+[Service]
+Type=forking
+WorkingDirectory=/home/dialhome
+ExecStart=/usr/bin/bash /home/dialhome/autossh.sh
+User=dialhome
+Group=dialhome
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
