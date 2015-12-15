@@ -6,5 +6,6 @@
     - firewall
     - java
     - unbound
+    - rsyslog
     - hosts
     - fep
