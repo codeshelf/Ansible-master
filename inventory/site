@@ -15,3 +15,7 @@ nginx-01
 [nginx:vars]
 cluster_node_type=nginx
 
+[logsout]
+logsout
+[logsout:vars]
+cluster_node_type=logsout
