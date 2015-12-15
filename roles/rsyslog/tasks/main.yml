@@ -1,0 +1,15 @@
+---
+- name: rsyslog package redhat
+  yum: name=rsyslog state=present
+  when: ansible_os_family == "RedHat"
+
+- name: rsyslog package debian
+  apt: name=rsyslog state=present
+  when: ansible_os_family == "Debian"
+
+- name: rsyslog service
+  service: name=rsyslog enabled=yes
+
+- name: rsyslog remote forward rule
+  lineinfile: line="*.* @@logsout:514" state=present dest=/etc/rsyslog.conf mode=0444 
+  notify: restart rsyslog

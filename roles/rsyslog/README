@@ -1,0 +1,5 @@
+Rsyslog client module
+
+OS Support:
+	Centos 7
+	Debian 8
