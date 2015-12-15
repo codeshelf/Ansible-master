@@ -6,6 +6,10 @@
 ## basic cluster names
 #codeshelf_base_hostname: east.codeshelf.com
 #
+## dial home target
+#codeshelf_dialhome_user: east
+#codeshelf_dialhome_server: dialhome.codeshelf.com
+#
 ## database connection information
 #codeshelf_database_host: dbmaster
 #codeshelf_database_master_password: hIgnFMumTHb8FRfuR9MOglwbOkntrl5f
