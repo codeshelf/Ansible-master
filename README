@@ -13,6 +13,7 @@ firewall
 hosts
 java
 unbound
+rsyslog
 
 OS roles: (must only have 1)
 centos
@@ -22,6 +23,7 @@ Primary roles: (must only have 1)
 db
 fep
 nginx
+logsout
 
 TODO's:
 
@@ -41,6 +43,3 @@ db: set up replica server
 
 sitecon: ???
 
-logging+monitoring???
-    central syslog/metric/monitoring host?
-    nagios + graylog2??

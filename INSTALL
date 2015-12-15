@@ -18,4 +18,4 @@ Steps needed to reconstitute this repository as a real Codeshelf Cluster Master:
 12. Create key repository (mkdir /home/ansible/ssl)
 13. Make symlinks from roles/nginx/files/[certs,keys] to files in /home/ansible/ssl
 14. Run Ansible (ansible-playbook site.yml) and get coffee
-
+15. Copy logsout:/home/dialhome/.ssh/id_rsa.pub to dialhome server
