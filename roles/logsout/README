@@ -1,0 +1,7 @@
+Log collection and forwarding role
+
+OS Support:
+	Centos 7
+	Debian 8 (not complete!)
+
+Requires cluster_dialhome_user, cluster_dialhome_server
