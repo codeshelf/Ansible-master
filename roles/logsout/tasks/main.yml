@@ -9,6 +9,7 @@
 - name: autossh script
   template: src=autossh.sh.j2 dest=/home/dialhome/autossh.sh owner=dialhome group=dialhome mode=0700
   register: initscript
+  notify: restart autossh
 
 - name: autossh service
   copy: src=autossh.service dest=/usr/lib/systemd/autossh.service owner=root group=root mode=0755
@@ -16,3 +17,14 @@
 - name: enable autossh service
   service: name=autossh enabled=yes
   when: initscript.changed
+
+- name: rsyslog package
+  yum: name=rsyslog state=present
+  when: ansible_os_family == "RedHat"
+
+- name: rsyslog config
+  copy: src=rsyslog.conf dest=/etc/rsyslog.conf owner=root group=root mode=0444
+  notify: rsyslog restart
+
+- name: rsyslog service
+  service: name=rsyslog enabled=yes

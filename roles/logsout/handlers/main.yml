@@ -1,0 +1,7 @@
+---
+- name: restart autossh
+  serivce: name=autossh state=restarted
+
+- name: restart rsyslog
+  serivce: name=rsyslog state=restarted
+
