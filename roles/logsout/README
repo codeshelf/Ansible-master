@@ -1,5 +1,7 @@
 Log collection and forwarding role
 
+** Conflict: do not add rsyslog role to hosts with this role!
+
 OS Support:
 	Centos 7
 	Debian 8 (not complete!)
