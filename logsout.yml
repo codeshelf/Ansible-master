@@ -1,0 +1,9 @@
+---
+- hosts: logsout
+  sudo: yes
+  roles:
+    - centos
+    - firewall
+    - unbound
+    - hosts
+    - logsout
