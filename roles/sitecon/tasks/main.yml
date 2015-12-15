@@ -68,15 +68,15 @@
 - name: sshd moduli
   copy: src=moduli dest=/etc/ssh/moduli owner=root group=root mode=0444
 
-- name: Got test site controller
-  local_action: command /home/ansible/release/get_deployed.sh test
-  sudo: False
-  when: codeshelf_version == 'test'
-
-- name: Got stage site controller
-  local_action: command /home/ansible/release/get_deployed.sh stage
-  sudo: False
-  when: codeshelf_version == 'stage'
+#- name: Got test site controller
+#  local_action: command /home/ansible/release/get_deployed.sh test
+#  sudo: False
+#  when: codeshelf_version == 'test'
+#
+#- name: Got stage site controller
+#  local_action: command /home/ansible/release/get_deployed.sh stage
+#  sudo: False
+#  when: codeshelf_version == 'stage'
 
 - name: Version sitecon app
   copy: src=/home/ansible/release/Codeshelf/{{ codeshelf_version }}/build.txt dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0644

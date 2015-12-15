@@ -40,13 +40,13 @@
 - name: admin host list
   template: src=hosts.json.j2 dest=/var/www/static/admin/resources/hosts.json owner=root group=root mode=0644
 
-- name: Got test site
-  local_action: command /home/ansible/release/get_deployed.sh test
-  sudo: False
-
-- name: Got stage site
-  local_action: command /home/ansible/release/get_deployed.sh stage
-  sudo: False
+#- name: Got test site
+#  local_action: command /home/ansible/release/get_deployed.sh test
+#  sudo: False
+#
+#- name: Got stage site
+#  local_action: command /home/ansible/release/get_deployed.sh stage
+#  sudo: False
 
 - name: UX folders
   file: path=/var/www/{{ item }}/ state=directory
