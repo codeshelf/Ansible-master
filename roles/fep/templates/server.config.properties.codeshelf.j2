@@ -25,7 +25,7 @@ shard.default.db.admin_username=codeshelf
 tenant.default.schema={{ inventory_hostname }}
 tenant.default.username=codeshelf
 
-{% if inventory_hostname == 'stage' or inventory_hostname == 'test' %}
+{% if inventory_hostname == 'stage' or inventory_hostname == 'test' or inventory_hostname == 'undying' %}
 manager.db.url=jdbc:postgresql://pgtest:5432/database
 manager.db.password=golbwomgkneomqi
 shard.default.db.url=jdbc:postgresql://pgtest:5432/database
@@ -67,7 +67,7 @@ auth.session.minidleminutes=5
 
 edi.sftp.password_key={{ appserver_sftp_password_key }}
 
-{% if inventory_hostname == 'test' or inventory_hostname == 'stage' %}
+{% if inventory_hostname == 'test' or inventory_hostname == 'stage' or inventory_hostname == 'undying' %}
 mail.username=qatest@codeshelf.com
 mail.password={{ notify_pw_testappserver }}
 {% else %}

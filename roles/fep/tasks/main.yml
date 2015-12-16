@@ -57,7 +57,7 @@
 - name: App engine version
   copy: src=/home/ansible/release/Codeshelf/{{ ansible_hostname }}/build.txt dest=/opt/codeshelf/ owner=codeshelf group=codeshelf mode=0644
   register: engine
-  when: ansible_hostname != 'test' and ansible_hostname != 'stage'
+  when: ansible_hostname != 'test' and ansible_hostname != 'stage' and ansible_hostname != 'undying'
 
 - name: Configuration file from template
   template: src=server.config.properties.codeshelf.j2 dest=/etc/codeshelf/server.config.properties owner=codeshelf group=codeshelf mode=0600
