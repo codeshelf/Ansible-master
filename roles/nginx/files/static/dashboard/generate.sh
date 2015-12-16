@@ -19,7 +19,7 @@ done
 echo "</div>" >> index.new
 echo '<div class="col-xs-6">' >> index.new
 echo '<h3>Testing</h3>' >> index.new
-for server in aldebaran test stage
+for server in aldebaran test stage undying
 do
 	./get_status.pl $server >> index.new
 done
