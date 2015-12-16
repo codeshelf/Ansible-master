@@ -23,6 +23,7 @@ then
 		$HOST == "deneb"  ||
 		$HOST == "test"  ||
 		$HOST == "stage"  ||
+		$HOST == "undying"  ||
 		$HOST =~ ^sc[0-9]{5} ) ]]
 	then
 		echo "Invalid host"
@@ -51,6 +52,7 @@ if [[ ! ($COMMAND == "status" ||
 	$COMMAND == "ansible-host"  ||
 	$COMMAND == "codeshelf-versions"  ||
 	$COMMAND == "promote-stage"  ||
+	$COMMAND == "promote-undying"  ||
 	$COMMAND == "upgrade-codeshelf"  ||
 	$COMMAND == "upgrade-codeshelfux"  ||
 	$COMMAND == "kick-tunnel"  ||
@@ -212,13 +214,17 @@ case $COMMAND in
 			readlink /home/ansible/release/CodeshelfUX/${host} | tr '\n' ' '
 		done
 		echo " "
-		echo " "
-		echo "Next available versions"
+		echo "Stage version:"
 		echo "Codeshelf:"
-		cat /home/ansible/release/Codeshelf/stage/build.txt | egrep '(version.major|version.revision)'
-		echo " "
+		cat /home/ansible/release/Codeshelf/stage/build.txt | egrep '(version.major|version.revision)' | tr '\n' ' '
 		echo "CodeshelfUX: "
-		cat /home/ansible/release/CodeshelfUX/stage/buildweb.txt | egrep '(major|revision)'
+		cat /home/ansible/release/CodeshelfUX/stage/buildweb.txt | egrep '(major|revision)' | tr '\n' ' '
+		echo " "
+		echo "Long term version:"
+		echo "Codeshelf:"
+		cat /home/ansible/release/Codeshelf/undying/build.txt | egrep '(version.major|version.revision)' | tr '\n' ' '
+		echo "CodeshelfUX: "
+		cat /home/ansible/release/CodeshelfUX/undying/buildweb.txt | egrep '(major|revision)' | tr '\n' ' '
 		echo " "
 	;;
 	'promote-stage')
@@ -273,6 +279,65 @@ case $COMMAND in
 		fi
 		echo "Copying CodeshelfUX to v${CODESHELF_UX_MAJOR}.${CODESHELF_UX_REV}"
 		cp -ra stage "v${CODESHELF_UX_MAJOR}.${CODESHELF_UX_REV}"
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Successful!"
+	;;
+	'promote-undying')
+		CODESHELF_MAJOR=`grep version.major /home/ansible/release/Codeshelf/undying/build.txt | cut -d\= -f 2`
+		CODESHELF_REV=`grep version.revision /home/ansible/release/Codeshelf/undying/build.txt | cut -d\= -f 2`
+		CODESHELF_UX_MAJOR=`cat /home/ansible/release/CodeshelfUX/undying/buildweb.txt | tr '{' '\n' | tr ',' '\n' | grep major | cut -d\: -f 2 | tr -d '"' | tr -d ' '`
+		CODESHELF_UX_REV=`cat /home/ansible/release/CodeshelfUX/undying/buildweb.txt | tr '{' '\n' | tr ',' '\n' | grep revision | cut -d\: -f 2 | tr -d '"' | tr -d ' '`
+
+		if [[ $CODESHELF_MAJOR -lt 20 || $CODESHELF_MAJOR -gt 50 ]]
+		then
+			echo "Parse error!"
+			exit
+		fi
+		if [[ $CODESHELF_REV -lt 1 || $CODESHELF_REV -gt 200 ]]
+		then
+			echo "Parse error!"
+			exit
+		fi
+		if [[ $CODESHELF_UX_MAJOR -lt 20 || $CODESHELF_UX_MAJOR -gt 50 ]]
+		then
+			echo "Parse error!"
+			exit
+		fi
+		if [[ $CODESHELF_REV -lt 1 || $CODESHELF_REV -gt 200 ]]
+		then
+			echo "Parse error!"
+			exit
+		fi
+
+		echo "Promoting undying.."
+		echo " "
+		echo "Entering /home/ansible/release/Codeshelf"
+		cd /home/ansible/release/Codeshelf
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Copying Codeshelf to v${CODESHELF_MAJOR}.${CODESHELF_REV}"
+		cp -ra undying "v${CODESHELF_MAJOR}.${CODESHELF_REV}"
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Entering /home/ansible/release/CodeshelfUX"
+		cd /home/ansible/release/CodeshelfUX
+		if [[ $? -ne 0 ]]
+		then
+			echo "Failure!"
+			exit
+		fi
+		echo "Copying CodeshelfUX to v${CODESHELF_UX_MAJOR}.${CODESHELF_UX_REV}"
+		cp -ra undying "v${CODESHELF_UX_MAJOR}.${CODESHELF_UX_REV}"
 		if [[ $? -ne 0 ]]
 		then
 			echo "Failure!"

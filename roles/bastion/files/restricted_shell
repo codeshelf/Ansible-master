@@ -75,6 +75,9 @@ main_menu () {
                 'promote-stage')
                         remote_command promote-stage
                 ;;
+                'promote-undying')
+                        remote_command promote-undying
+                ;;
                 'upgrade-codeshelf')
                         remote_command upgrade-codeshelf
                 ;;
@@ -122,6 +125,7 @@ remote_command () {
 			$HOST == "deneb"  ||
 			$HOST == "test"  ||
 			$HOST == "stage"  ||
+			$HOST == "undying"  ||
 			$HOST =~ ^sc[0-9]{5} ) ]]
 		then
 			echo "Invalid host"
@@ -158,6 +162,8 @@ codeshelf-versions
  * Prints deployed version information
 promote-stage
  * Makes release out of code in stage
+promote-undying
+ * Makes release out of code in undying, long term support
 upgrade-codeshelf
  * Takes argument and fixes symlinks
 upgrade-codeshelfux
