@@ -45,8 +45,8 @@ mv -f betelgeuse.new betelgeuse.html
 # generate deneb.html
 cat header.html > deneb.new
 ./get_status.pl deneb >> deneb.new
-./get_status.pl sc10017 30017 >> deneb.new
 ./get_status.pl sc10019 30019 >> deneb.new
+./get_status.pl sc10026 30026 >> deneb.new
 ./footer.sh >> deneb.new
 mv -f deneb.new deneb.html
 
@@ -60,6 +60,8 @@ mv -f aldebaran.new aldebaran.html
 # generate procyon.html
 cat header.html > procyon.new
 ./get_status.pl procyon >> procyon.new
+./get_status.pl sc10020 30020 >> aldebaran.new
+./get_status.pl sc10021 30021 >> aldebaran.new
 ./footer.sh >> procyon.new
 mv -f procyon.new procyon.html
 
