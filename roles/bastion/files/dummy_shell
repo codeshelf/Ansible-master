@@ -14,12 +14,14 @@ echo "ControlPanel User $USER Started Session" | $LOGGER
 # main menu
 main_menu () {
 	echo " "
-	echo "1. Print test and stage status"
+	echo "1. Print test and stage and undying status"
 	echo "2. Restart test app server and site controller"
 	echo "3. Restart stage app server and site controller"
-	echo "4. Force upgrade test sitecontroller"
-	echo "5. Force upgrade stage sitecontroller"
-	echo "6. Clear screen"
+	echo "4. Restart undying app server and site controller"
+	echo "5. Force upgrade test sitecontroller"
+	echo "6. Force upgrade stage sitecontroller"
+	echo "7. Force upgrade undying sitecontroller"
+	echo "8. Clear screen"
 	echo " "
         echo "Command:"
 
@@ -41,6 +43,9 @@ main_menu () {
 			echo "Stage: "
                         remote_command status stage
 			echo " "
+			echo "Undying: "
+                        remote_command status undying
+			echo " "
                 ;;
                 '2')
 			echo "Restarting test"
@@ -55,14 +60,24 @@ main_menu () {
                         remote_command restart-daemon sc10009
                 ;;
                 '4')
+			echo "Restarting undying"
+                        remote_command restart-daemon undying
+#			echo "Restarting sc10009"
+#                        remote_command restart-daemon sc10009
+                ;;
+                '5')
 			echo "Reseting sc10010"
                         remote_command reset-daemon sc10010
                 ;;
-                '5')
+                '6')
 			echo "Resetting sc10009"
                         remote_command reset-daemon sc10009
                 ;;
-                '6')
+                '7')
+			echo "Resetting UNKNOWN SITE CONTROLLER!!!!"
+#			remote_command reset-daemon sc10099
+                ;;
+                '8')
                         clear
                 ;;
                 *)
