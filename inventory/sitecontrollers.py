@@ -42,7 +42,7 @@ def get_sitecons(db,manager_schema):
 
 sitecons = []
 hostvars = {}
-mgr_schemas = {"pgtest":["manager_test","manager_stage"],"dbmaster":["manager_aldebaran","manager_betelgeuse","manager_capella","manager_deneb"]}
+mgr_schemas = {"pgtest":["manager_test","manager_stage"],"dbmaster":["manager_aldebaran","manager_betelgeuse","manager_capella","manager_deneb","manager_procyon"]}
 for db in mgr_schemas:
 	for schema in mgr_schemas[db]:
 		results = get_sitecons(db,schema)
