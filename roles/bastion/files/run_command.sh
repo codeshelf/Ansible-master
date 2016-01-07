@@ -24,6 +24,7 @@ then
 		$HOST == "test"  ||
 		$HOST == "stage"  ||
 		$HOST == "undying"  ||
+		$HOST == "procyon"  ||
 		$HOST =~ ^sc[0-9]{5} ) ]]
 	then
 		echo "Invalid host"
