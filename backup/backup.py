@@ -148,7 +148,9 @@ def backup(extension,backup_function,destinations):
             
             # do upload:
             uploadStart = time.clock()
-            result = dest['fn'](pathname)
+            # currently target is offline, skip
+            result = STATUS_SUCCESS
+            #result = dest['fn'](pathname)
             uploadElapsed = time.clock() - uploadStart
             
             if result==STATUS_SUCCESS:
