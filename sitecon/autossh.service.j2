@@ -1,0 +1,17 @@
+[Unit]
+Description=Autossh Tunnel
+After=network.target
+
+[Service]
+User=et
+Restart=always
+# -p [PORT]
+# -l [user]
+# -M 0 --> no monitoring
+# -N Just open the connection and do nothing (not interactive)
+# LOCALPORT:IP_ON_EXAMPLE_COM:PORT_ON_EXAMPLE_COM
+ExecStart=/usr/bin/autossh -M 0 -f -N -q -o "StrictHostKeyChecking=yes" -o "ServerAliveInterval=60" -o "ServerAliveCountMax=3" -p 8022 -l u{{ serial }} home1.codeshelf.com -R {{ serial }}:localhost:22 -i /home/et/.ssh/id_rsa
+
+[Install]
+WantedBy=multi-user.target
+

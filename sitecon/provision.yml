@@ -1,0 +1,30 @@
+---
+- name: Provision a new site controller
+  hosts: provision0
+
+  vars:
+    - ansiblepubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDc4mcehc00Id14sAe0H1HvRD2jh6DMVRXzrAF4Svu4QLZVvT5U43DNCCxfFZJcU9VYsWkME3L7Yd/Mjsml1nOCvlMWUvN57F2rqcY1/vDHO+5kVhsddD4gx1MH+uVtt8koT0LlH56Agv8nwMRorR2Del6Ec9mNTRQBQJ3q1Ga7zqqybvJiqPy0WdXh2BtQEwbVnET7Q9kJgH/RMlhDEPscycVktOwV48UMJdNye+4TGjkWFkh3G314p04X/drGr17iqYvXFatczjCJLhgoHEHShEdJTEvL4DPiROZ01XGrBHwvIUNdUFVm/SnqO1VdGjzjqa+ArgY1XVCEr9FVYih/ ansible
+
+  vars_prompt:
+    - name: "serial"
+      prompt: "serial number"
+      private: no
+
+  tasks:
+    - name: Authorize ansible
+      authorized_key: 'key="{{ ansiblepubkey }}" user=ansible'  
+
+    - name: Hostname scXXXXX
+      command: hostnamectl set-hostname --static sc{{ serial }}
+
+    - name: Phone home setup
+      template: src=./autossh.service.j2 dest=/etc/systemd/system/autossh.service
+
+    - name: SSH identity
+      copy: src=/home/ansible/sitecon/home/u{{ serial }}/.ssh/id_rsa
+             dest=/home/et/.ssh/id_rsa
+             owner=et group=et mode=0600
+
+#    - name: Reboot (wait 1 minute)
+#      command: shutdown -r
+
