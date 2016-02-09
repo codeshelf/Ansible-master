@@ -1,5 +1,5 @@
 ---
-- include: fedoracode.yml
+- include: fedoracore.yml
   when: ansible_distribution == "Fedora"
 
 - include: debian.yml
