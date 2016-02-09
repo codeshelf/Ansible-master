@@ -57,13 +57,13 @@
   register: configfile
 
 - name: Startup script installed
-  template: src=start.netcontroller.j2
+  template: src=start.netcontroller.debian.j2
          dest=/opt/codeshelf/start.netcontroller
          owner=codeshelf group=codeshelf mode=0755
   register: servicescript
 
 - name: Service launcher installed
-  copy: src=/home/ansible/roles/sitecon/files/codeshelf.service
+  copy: src=/home/ansible/roles/sitecon/files/codeshelf.service.debian
          dest=/etc/systemd/system/codeshelf.service
          owner=root group=root mode=0644
   register: servicelauncher
