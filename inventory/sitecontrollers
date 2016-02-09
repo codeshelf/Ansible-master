@@ -15,6 +15,6 @@ cred="0.6910096026612129"
 
 [provisioning:vars]
 ansible_ssh_host=home1
-ansible_ssh_user=root
-ansible_ssh_pass=codeshelf510changeme
+#ansible_ssh_user=root
+#ansible_ssh_pass=codeshelf510changeme
 exclude_from_hosts=yes
