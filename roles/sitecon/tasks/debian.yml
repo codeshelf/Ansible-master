@@ -1,0 +1,150 @@
+---
+- name: Firewall configuration
+  copy: src=firewall.debian dest=/etc/network/if-up.d/firewall owner=root group=root mode=0550
+
+- name: Install Useful Packages
+  apt: name={{ item }} state=present
+  with_items:
+    - openssh-client
+    - openssh-server
+    - cron
+    - lsof
+    - telnet
+    - tmux
+    - screen
+    - vim
+    - wget
+    - sudo
+    - dstat
+    - ethtool
+    - pwgen
+    - autossh
+    - logrotate
+    - rsyslog
+    - rsync
+    - openjdk-7-jre
+
+- name: Remove Useless Packages
+  apt: name={{ item }} state=absent
+  with_items:
+    - nano
+    - joe
+    - nfs-kernel-server
+    - autofs
+    - rsh-client
+    - rsh-server
+    - rsh-redone-client
+    - rsh-redone-server
+
+- name: Ensure ntpd is running and enabled
+  service: name=ntpd state=started enabled=yes
+
+- name: Ansible files directory
+  file: path=/home/ansible/files/ state=directory owner=ansible group=ansible
+
+- name: Create codeshelf service user
+  user: name=codeshelf
+
+- name: Create app folder
+  file: path=/opt/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
+
+- name: Create app config folder
+  file: path=/etc/codeshelf/ state=directory owner=codeshelf group=codeshelf mode=0755
+
+- name: Install configuration file
+  template: src=sitecontroller.config.properties.j2
+         dest=/etc/codeshelf/sitecontroller.config.properties owner=codeshelf group=codeshelf mode=0600
+  register: configfile
+
+- name: Startup script installed
+  template: src=start.netcontroller.j2
+         dest=/opt/codeshelf/start.netcontroller
+         owner=codeshelf group=codeshelf mode=0755
+  register: servicescript
+
+- name: Service launcher installed
+  copy: src=/home/ansible/roles/sitecon/files/codeshelf.service
+         dest=/etc/systemd/system/codeshelf.service
+         owner=root group=root mode=0644
+  register: servicelauncher
+
+- name: Reload systemd
+  shell: systemctl daemon-reload
+  when: servicelauncher.changed
+
+- name: Service enabled
+  service: name=codeshelf enabled=yes
+  when: servicelauncher.changed
+
+- name: Radio udev rule installed
+  copy: src=/home/ansible/roles/sitecon/files/99-usbftdi.rules
+         dest=/etc/udev/rules.d/99-usbftdi.rules
+         owner=root group=root mode=0644
+
+- name: limits.conf
+  copy: src=limits.conf dest=/etc/security/limits.conf owner=root group=root mode=0444
+
+#- name: autossh config
+#  template: src=autossh.j2 dest=/etc/init.d/autossh owner=root group=root mode=0755
+#  register: diagport
+#
+#- name: restart autossh
+#  command: service autossh restart
+#  ignore_errors: True
+#  when: diagport.changed
+#
+- name: sshd config
+  copy: src=sshd_config.debian dest=/etc/ssh/sshd_config owner=root group=root mode=0400
+  notify:
+    - restart ssh
+
+- name: sshd moduli
+  copy: src=moduli dest=/etc/ssh/moduli owner=root group=root mode=0444
+
+#- name: Got test site controller
+#  local_action: command /home/ansible/release/get_deployed.sh test
+#  sudo: False
+#  when: codeshelf_version == 'test'
+#
+#- name: Got stage site controller
+#  local_action: command /home/ansible/release/get_deployed.sh stage
+#  sudo: False
+#  when: codeshelf_version == 'stage'
+
+- name: Configure sudoers
+  copy: src=sudoers dest=/etc/sudoers owner=root group=root mode=0440
+
+- name: Version sitecon app
+  copy: src=/home/ansible/release/Codeshelf/{{ codeshelf_version }}/build.txt dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0644
+  register: scversion
+
+- name: Stop site controller
+  command: service codeshelf stop
+  when: scversion.changed or configfile.changed or servicescript.changed
+
+- name: Install app libraries
+  unarchive: src=/home/ansible/release/Codeshelf/{{ codeshelf_version }}/lib.tgz dest=/opt/codeshelf owner=codeshelf group=codeshelf
+  when: scversion.changed
+
+- name: Install app JAR
+  copy: src=/home/ansible/release/Codeshelf/{{ codeshelf_version }}/sitecontroller.codeshelf.jar dest=/opt/codeshelf owner=codeshelf group=codeshelf mode=0644
+  when: scversion.changed
+
+- name: Start site controller
+  command: service codeshelf start
+  when: scversion.changed or configfile.changed or servicescript.changed
+
+- name: Set root password
+  user: name=root password="!!"
+
+- name: Set et password
+  user: name=et password="!!"
+
+- name: Set ansible password
+  user: name=ansible password="!!"
+
+- name: Set codeshelf password
+  user: name=codeshelf password="!!"
+
+#- include: install_logstash.yml
+
