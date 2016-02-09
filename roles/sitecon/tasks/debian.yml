@@ -36,8 +36,8 @@
     - rsh-redone-client
     - rsh-redone-server
 
-- name: Ensure ntpd is running and enabled
-  service: name=ntpd state=started enabled=yes
+- name: Ensure ntp is running and enabled
+  service: name=ntp state=started enabled=yes
 
 - name: Ansible files directory
   file: path=/home/ansible/files/ state=directory owner=ansible group=ansible
