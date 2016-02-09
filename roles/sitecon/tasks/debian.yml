@@ -57,7 +57,7 @@
   register: configfile
 
 - name: Startup script installed
-  template: src=start.netcontroller.j2
+  template: src=start.netcontroller.debian.j2
          dest=/opt/codeshelf/start.netcontroller
          owner=codeshelf group=codeshelf mode=0755
   register: servicescript
