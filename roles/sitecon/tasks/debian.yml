@@ -63,7 +63,7 @@
   register: servicescript
 
 - name: Service launcher installed
-  copy: src=/home/ansible/roles/sitecon/files/codeshelf.service
+  copy: src=/home/ansible/roles/sitecon/files/codeshelf.service.debian
          dest=/etc/systemd/system/codeshelf.service
          owner=root group=root mode=0644
   register: servicelauncher
