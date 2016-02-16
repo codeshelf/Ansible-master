@@ -60,8 +60,8 @@ mv -f aldebaran.new aldebaran.html
 # generate procyon.html
 cat header.html > procyon.new
 ./get_status.pl procyon >> procyon.new
-./get_status.pl sc10020 30020 >> aldebaran.new
-./get_status.pl sc10021 30021 >> aldebaran.new
+./get_status.pl sc10020 30020 >> procyon.new
+./get_status.pl sc10021 30021 >> procyon.new
 ./footer.sh >> procyon.new
 mv -f procyon.new procyon.html
 
