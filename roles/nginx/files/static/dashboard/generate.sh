@@ -94,6 +94,14 @@ cat header.html > sc.new
 ./get_status.pl sc10024 30024 >> sc.new
 ./get_status.pl sc10025 30025 >> sc.new
 ./get_status.pl sc10026 30026 >> sc.new
+./get_status.pl sc10026 30027 >> sc.new
+./get_status.pl sc10026 30028 >> sc.new
+./get_status.pl sc10026 30029 >> sc.new
+./get_status.pl sc10026 30030 >> sc.new
+./get_status.pl sc10026 30031 >> sc.new
+./get_status.pl sc10026 30032 >> sc.new
+./get_status.pl sc10026 30033 >> sc.new
+./get_status.pl sc10026 30034 >> sc.new
 ./footer.sh >> sc.new
 mv -f sc.new sc.html
 
