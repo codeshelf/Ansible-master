@@ -205,7 +205,7 @@ case $COMMAND in
 		echo -n "CodeshelfUX: "
 		ls /home/ansible/release/CodeshelfUX | grep ^v | tr '\n' ' '
 		echo " "
-		for host in aldebaran betelgeuse capella deneb
+		for host in aldebaran betelgeuse capella deneb procyon
 		do
 			echo " "
 			echo "${host}"
