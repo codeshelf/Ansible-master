@@ -146,5 +146,7 @@
 - name: Set codeshelf password
   user: name=codeshelf password="!!"
 
-#- include: install_logstash.yml
+- name: Logstash config files
+  copy: src=conf.d dest=/etc/logstash/ owner=root group=root mode=0644
+  notify: restart logstash
 
