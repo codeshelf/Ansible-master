@@ -118,5 +118,11 @@
   notify:
     - restart gmond
 
+- name: fix egrep
+  file: src=/usr/bin/egrep dest=/bin/egrep state=link
+
+- name: fix tail
+  file: src=/bin/tail dest=/usr/bin/tail state=link
+
 - include: assemble_iptables.yml
 
