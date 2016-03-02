@@ -197,12 +197,11 @@ case $COMMAND in
 	;;
 	'codeshelf-versions')
 		echo "Available Versions"
-		echo " "
-		echo -n "Codeshelf: "
+		echo -n "	Codeshelf: "
 		ls /home/ansible/release/Codeshelf | grep ^v | tr '\n' ' '
 		echo " "
 		echo " "
-		echo -n "CodeshelfUX: "
+		echo -n "	CodeshelfUX: "
 		ls /home/ansible/release/CodeshelfUX | grep ^v | tr '\n' ' '
 		echo " "
 		for host in aldebaran betelgeuse capella deneb procyon
@@ -211,20 +210,21 @@ case $COMMAND in
 			echo "${host}"
 			echo -n "	Codeshelf: "
 			readlink /home/ansible/release/Codeshelf/${host} | tr '\n' ' '
-			echo -n "CodeshelfUX: "
+			echo " " 
+			echo -n "	CodeshelfUX: "
 			readlink /home/ansible/release/CodeshelfUX/${host} | tr '\n' ' '
 		done
 		echo " "
 		echo "Stage version:"
-		echo "Codeshelf:"
+		echo "		Codeshelf: "
 		cat /home/ansible/release/Codeshelf/stage/build.txt | egrep '(version.major|version.revision)' | tr '\n' ' '
-		echo "CodeshelfUX: "
+		echo "		CodeshelfUX: "
 		cat /home/ansible/release/CodeshelfUX/stage/buildweb.txt | egrep '(major|revision)' | tr '\n' ' '
 		echo " "
 		echo "Long term version:"
-		echo "Codeshelf:"
+		echo "		Codeshelf: "
 		cat /home/ansible/release/Codeshelf/undying/build.txt | egrep '(version.major|version.revision)' | tr '\n' ' '
-		echo "CodeshelfUX: "
+		echo "		CodeshelfUX: "
 		cat /home/ansible/release/CodeshelfUX/undying/buildweb.txt | egrep '(major|revision)' | tr '\n' ' '
 		echo " "
 	;;
