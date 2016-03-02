@@ -60,10 +60,12 @@ auth.token.secret={{ appserver_hmac_secret }}
 auth.token.xor={{ appserver_hmac_xor }}
 auth.cookie.domain=
 auth.cookie.secure=false
+{% if inventory_hostname != 'test' and inventory_hostname != 'stage' and inventory_hostname != 'undying' %}
 auth.cookie.maxagehours=24
-auth.session.maxfutureseconds=30
 auth.session.maxidleminutes=10
+auth.session.maxfutureseconds=30
 auth.session.minidleminutes=5
+{% endif %}
 
 edi.sftp.password_key={{ appserver_sftp_password_key }}
 
