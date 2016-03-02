@@ -215,16 +215,19 @@ case $COMMAND in
 			readlink /home/ansible/release/CodeshelfUX/${host} | tr '\n' ' '
 		done
 		echo " "
+		echo " "
 		echo "Stage version:"
-		echo "		Codeshelf: "
+		echo -n "		Codeshelf: "
 		cat /home/ansible/release/Codeshelf/stage/build.txt | egrep '(version.major|version.revision)' | tr '\n' ' '
-		echo "		CodeshelfUX: "
+		echo ""
+		echo -n "		CodeshelfUX: "
 		cat /home/ansible/release/CodeshelfUX/stage/buildweb.txt | egrep '(major|revision)' | tr '\n' ' '
 		echo " "
 		echo "Long term version:"
-		echo "		Codeshelf: "
+		echo -n "		Codeshelf: "
 		cat /home/ansible/release/Codeshelf/undying/build.txt | egrep '(version.major|version.revision)' | tr '\n' ' '
-		echo "		CodeshelfUX: "
+		echo ""
+		echo -n "		CodeshelfUX: "
 		cat /home/ansible/release/CodeshelfUX/undying/buildweb.txt | egrep '(major|revision)' | tr '\n' ' '
 		echo " "
 	;;
