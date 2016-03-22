@@ -5,7 +5,7 @@ $TTL 1h
 
 ; SOA Record
 CODESHELF.COM.	3600	IN	SOA	ns.codeshelf.com.	devops.codeshelf.com. (
-				2016032201 ; serial
+				2016032202 ; serial
 				2h         ; refresh
 				30M        ; update retry
 				2W         ; expiry
@@ -22,6 +22,9 @@ procyon		600	IN	A	104.130.139.106
 foobar		600	IN	A	198.199.100.142
 foobar-kibana	600	IN	A	198.199.100.142
 foobar-grafana	600	IN	A	198.199.100.142
+testing		600	IN	A	159.203.234.56
+testing-kibana	600	IN	A	159.203.234.56
+testing-grafana	600	IN	A	159.203.234.56
 admin		IN	A	104.130.139.106
 calendar	IN	A	104.130.139.106
 console		IN	A	166.78.178.4
